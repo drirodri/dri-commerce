@@ -71,7 +71,7 @@ function Cart() {
 
   return (
     <>
-      <button className="back-button" onClick={() => navigate(-1)}>
+      <button className="back-button" onClick={() => navigate("/")}>
         Voltar
       </button>
       {parsedData && (

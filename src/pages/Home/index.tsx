@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { categoriesProps, ProductProps } from "../../type";
-import CartButton from "../../components/CartButton";
 import * as api from "../../services/api";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
 import SendToCart from "../../components/SendToCart";
 import useCartData from "../../hooks/CartData";
+import { BiCart } from "react-icons/bi";
 
 function Home() {
   const [categories, setCategories] = useState<categoriesProps>();
@@ -129,7 +129,10 @@ function Home() {
           <input defaultValue="" type="text" name="product-name" />
           <button type="submit">Pesquisar</button>
         </form>
-        <CartButton length={parsedData.length} />
+        <button onClick={() => navigate("/cart")} className="cart-button">
+          <BiCart className="cart" />
+          {parsedData.length}
+        </button>
       </div>
       {loadingList && <h2>Pesquisando produtos!</h2>}
       {!loadingList && <div className="products">{divProducts}</div>}

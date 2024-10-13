@@ -118,6 +118,9 @@ function Product() {
     </form>
   );
 
+  useEffect(() => {
+    window.localStorage.setItem("evaluation", "");
+  });
   const handleEvaluationSubmit = (event: any) => {
     event.preventDefault();
   };

@@ -9,10 +9,8 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-
         <Route path="/cart" element={<Cart />} />
         <Route path="product/:id" element={<Product />} />
-        <Route />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </>
