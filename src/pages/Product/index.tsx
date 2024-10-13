@@ -1,10 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom";
-import * as api from "../../services/api";
-import { useEffect, useState } from "react";
-import { ProductProps } from "../../type";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import "./product.css";
+import * as api from "../../services/api";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import useCartData from "../../hooks/CartData";
-import StarRate from "../../components/StarRate";
+import { ProductProps } from "../../type";
+import { Rating } from "@smastrom/react-rating";
 
 function Product() {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function Product() {
   const productId: string = params.id ?? "no-id";
   const [cartItem, setCartItem] = useState<ProductProps>();
   const { parsedData, setParsedData } = useCartData();
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     const existingItem = parsedData
@@ -44,7 +46,6 @@ function Product() {
     productToSend: ProductProps
   ) => {
     event.preventDefault();
-    console.log("submit");
 
     const formData = new FormData(event.currentTarget);
 
@@ -87,7 +88,6 @@ function Product() {
     const newValue = Math.max(1, parseInt(event.target.value) || 1); // Ensure at least 1
     setQuantity(newValue);
   };
-  console.log(product);
 
   const productDescription = product && (
     <form
@@ -118,14 +118,25 @@ function Product() {
     </form>
   );
 
+  const handleEvaluationSubmit = (event: any) => {
+    event.preventDefault();
+  };
+
   return (
     <div className="product-page">
       <div>
         {productDescription}
-        <form className="product-evaluation" action="">
+        <form
+          onSubmit={(event) => handleEvaluationSubmit(event)}
+          className="product-evaluation"
+        >
           <input type="email" placeholder="Email" />
-          <StarRate />
-          <input type="textarea" />
+          <Rating
+            style={{ maxWidth: 250 }}
+            value={rating}
+            onChange={setRating}
+          />
+          <textarea placeholder="Mensagem (opcional)"></textarea>
           <button type="submit">Avaliar</button>
         </form>
       </div>
