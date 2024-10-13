@@ -1,0 +1,20 @@
+.div-quantity button {
+  padding: 5px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.div-quantity input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.div-quantity input {
+  width: 20px;
+  text-align: center;
+}
+
+.div-quantity {
+  display: flex;
+  gap: 5px;
+}
