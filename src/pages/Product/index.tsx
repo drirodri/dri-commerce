@@ -89,6 +89,14 @@ function Product() {
     setQuantity(newValue);
   };
 
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1); // Go back if there is a history stack.
+    } else {
+      navigate("/"); // Fallback to the home page.
+    }
+  };
+
   const productDescription = product && (
     <form
       onSubmit={(event) => handleCartSubmit(event, product)}
@@ -143,7 +151,7 @@ function Product() {
           <button type="submit">Avaliar</button>
         </form>
       </div>
-      <button onClick={() => navigate(-1)}>Voltar</button>
+      <button onClick={handleBack}>Voltar</button>
     </div>
   );
 }

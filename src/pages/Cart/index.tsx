@@ -40,6 +40,14 @@ function Cart() {
     setParsedData(updatedData);
   }
 
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1); // Go back if there is a history stack.
+    } else {
+      navigate("/"); // Fallback to the home page.
+    }
+  };
+
   // Create cart items
   const cartList = parsedData?.map((item: ProductProps) => (
     <div className="cart-item" key={item.id}>
@@ -71,7 +79,7 @@ function Cart() {
 
   return (
     <>
-      <button className="back-button" onClick={() => navigate("/")}>
+      <button className="back-button" onClick={handleBack}>
         Voltar
       </button>
       {parsedData && (
