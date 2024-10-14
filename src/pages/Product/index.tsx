@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import "./product.css";
 import * as api from "../../services/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useCartData from "../../hooks/CartData";
 import { ProductProps } from "../../type";
+import EvaluationForm from "../../components/EvaluationForm";
+import useEvaluationData from "../../hooks/EvaluationData";
 import { Rating } from "@smastrom/react-rating";
 
 function Product() {
@@ -14,7 +15,7 @@ function Product() {
   const productId: string = params.id ?? "no-id";
   const [cartItem, setCartItem] = useState<ProductProps>();
   const { parsedData, setParsedData } = useCartData();
-  const [rating, setRating] = useState(0);
+  const { evaluationData, setEvaluationData } = useEvaluationData();
 
   useEffect(() => {
     const existingItem = parsedData
@@ -91,9 +92,9 @@ function Product() {
 
   const handleBack = () => {
     if (window.history.length > 1) {
-      navigate(-1); // Go back if there is a history stack.
+      navigate(-1);
     } else {
-      navigate("/"); // Fallback to the home page.
+      navigate("/");
     }
   };
 
@@ -108,8 +109,8 @@ function Product() {
       <p>{product.available_quantity}</p>
       <p>{product.warranty}</p>
       <div className="div-quantity">
-        <button type="button" onClick={handleQuantityClick} value={"-"}>
-          {"-"}
+        <button type="button" onClick={handleQuantityClick} value="-">
+          -
         </button>
         <input
           onChange={handleInputChange}
@@ -117,8 +118,8 @@ function Product() {
           name="quantity"
           value={quantity}
         />
-        <button type="button" onClick={handleQuantityClick} value={"+"}>
-          {"+"}
+        <button type="button" onClick={handleQuantityClick} value="+">
+          +
         </button>
       </div>
 
@@ -126,30 +127,28 @@ function Product() {
     </form>
   );
 
-  useEffect(() => {
-    window.localStorage.setItem("evaluation", "");
-  });
-  const handleEvaluationSubmit = (event: any) => {
-    event.preventDefault();
-  };
-
   return (
     <div className="product-page">
       <div>
         {productDescription}
-        <form
-          onSubmit={(event) => handleEvaluationSubmit(event)}
-          className="product-evaluation"
-        >
-          <input type="email" placeholder="Email" />
-          <Rating
-            style={{ maxWidth: 250 }}
-            value={rating}
-            onChange={setRating}
-          />
-          <textarea placeholder="Mensagem (opcional)"></textarea>
-          <button type="submit">Avaliar</button>
-        </form>
+        <EvaluationForm setEvaluationData={setEvaluationData} />
+        {evaluationData.length && (
+          <div>
+            {evaluationData
+              .filter((evaluation) => evaluation.id === params.id)
+              .map((evaluation, index) => (
+                <div key={index}>
+                  <h4>{evaluation.email}</h4>
+                  <Rating
+                    style={{ maxWidth: 150 }}
+                    readOnly
+                    value={evaluation.rating}
+                  />
+                  {evaluation.message !== "" && <p>{evaluation.message}</p>}
+                </div>
+              ))}
+          </div>
+        )}
       </div>
       <button onClick={handleBack}>Voltar</button>
     </div>

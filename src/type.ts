@@ -34,3 +34,10 @@ export type QuantityInputProps = {
   updateQuantity: (quantity: number, id: string) => void;
   handleChange: (event: any, item: ProductProps) => void;
 };
+
+export type Evaluation = {
+  email: string;
+  rating: number;
+  id: string;
+  message?: string;
+};

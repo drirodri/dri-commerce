@@ -42,9 +42,9 @@ function Cart() {
 
   const handleBack = () => {
     if (window.history.length > 1) {
-      navigate(-1); // Go back if there is a history stack.
+      navigate(-1);
     } else {
-      navigate("/"); // Fallback to the home page.
+      navigate("/");
     }
   };
 
