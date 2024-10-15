@@ -132,7 +132,7 @@ function Product() {
       <div>
         {productDescription}
         <EvaluationForm setEvaluationData={setEvaluationData} />
-        {evaluationData.length && (
+        {evaluationData.some((evaluation) => evaluation.id === params.id) && (
           <div>
             {evaluationData
               .filter((evaluation) => evaluation.id === params.id)

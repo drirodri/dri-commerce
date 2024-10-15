@@ -3,9 +3,9 @@ import { categoriesProps, ProductProps } from "../../type";
 import * as api from "../../services/api";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
-import SendToCart from "../../components/SendToCart";
 import useCartData from "../../hooks/CartData";
 import { BiCart } from "react-icons/bi";
+import { FaShippingFast } from "react-icons/fa";
 
 function Home() {
   const [categories, setCategories] = useState<categoriesProps>();
@@ -61,6 +61,13 @@ function Home() {
     };
   }, [productName, categoryId]);
 
+  // Disable "Adicionar ao Carrinho" button if quantity on cart is = to available.quantity
+  const isDisabled = (product: ProductProps) => {
+    const existingItem = parsedData.find((item) => item.id === product.id);
+    if (product.id === existingItem?.id) {
+      return product.available_quantity <= existingItem.quantity;
+    }
+  };
   const divProducts = products?.map((product) => (
     <form
       onSubmit={(event) => handleCartSubmit(event, product)}
@@ -76,7 +83,21 @@ function Home() {
       </button>
       <p>Preço: R${product.price}</p>
       <p>Quantidade Disponível: {product.available_quantity}un. </p>
-      <SendToCart />
+      {product.shipping.free_shipping && (
+        <span className="free-shipping">
+          <FaShippingFast />
+          <p>Frete grátis!</p>
+        </span>
+      )}
+      <button
+        disabled={isDisabled(product)}
+        type="submit"
+        className="send-to-cart"
+      >
+        {isDisabled(product)
+          ? "Quantidade máxima atingida"
+          : "Adicionar ao Carrinho"}
+      </button>
     </form>
   ));
 

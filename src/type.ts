@@ -15,7 +15,12 @@ export interface ProductProps {
   thumbnail: string;
   title: string;
   warranty: string;
+  shipping: Shipping;
 }
+
+type Shipping = {
+  free_shipping: boolean;
+};
 
 export type QuantityProps = {
   item: ProductProps;

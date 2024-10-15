@@ -92,7 +92,7 @@ function Cart() {
             </h2>
             {cartList}
           </div>
-          {parsedData.length > 0 && (
+          {parsedData.length && (
             <div className="total-price-div">
               <span>Preço total: R${totalPrice}</span>
               <br />

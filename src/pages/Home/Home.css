@@ -52,3 +52,8 @@
   border: none;
   cursor: pointer;
 }
+
+.send-to-cart {
+  padding: 10px;
+  margin: 20px;
+}
