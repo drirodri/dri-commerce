@@ -66,14 +66,24 @@ function Cart() {
         </button>
         <span className="title-price">
           <a href={`product/${item.id}`}>{item.title}</a>
-          <p>Preço R${item.price}</p>
+          <p>
+            Preço R$
+            {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
+              item.price
+            )}
+          </p>
         </span>
       </span>
       <QuantityDiv
         item={item}
         updateQuantity={() => updateQuantity(item.quantity, item.id)}
       />
-      <p>Valor total R${item.price * item.quantity}</p>
+      <p>
+        Valor total R$
+        {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
+          item.price * item.quantity
+        )}
+      </p>
     </div>
   ));
 
@@ -94,7 +104,12 @@ function Cart() {
           </div>
           {parsedData.length && (
             <div className="total-price-div">
-              <span>Preço total: R${totalPrice}</span>
+              <span>
+                Preço total: R$
+                {new Intl.NumberFormat("BRL", {
+                  maximumFractionDigits: 2,
+                }).format(totalPrice)}
+              </span>
               <br />
               <button onClick={handleClearButton} className="clear-button">
                 Limpar carrinho

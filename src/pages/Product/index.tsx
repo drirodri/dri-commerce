@@ -98,6 +98,12 @@ function Product() {
     }
   };
 
+  const isDisabled = () => {
+    if (cartItem) {
+      return quantity >= cartItem.available_quantity;
+    }
+  };
+
   const productDescription = product && (
     <form
       onSubmit={(event) => handleCartSubmit(event, product)}
@@ -105,7 +111,12 @@ function Product() {
     >
       <p>{product.title}</p>
       <img src={product.thumbnail} alt={product.id} />
-      <p>Preço R${product.price}</p>
+      <p>
+        Preço R$
+        {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
+          product.price
+        )}
+      </p>
       <p>{product.available_quantity}</p>
       <p>{product.warranty}</p>
       <div className="div-quantity">
@@ -117,12 +128,17 @@ function Product() {
           type="number"
           name="quantity"
           value={quantity}
+          id="quantity"
         />
-        <button type="button" onClick={handleQuantityClick} value="+">
+        <button
+          disabled={isDisabled()}
+          type="button"
+          onClick={handleQuantityClick}
+          value="+"
+        >
           +
         </button>
       </div>
-
       <button type="submit">Adicionar ao Carrinho</button>
     </form>
   );

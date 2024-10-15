@@ -81,7 +81,12 @@ function Home() {
       >
         <img src={product.thumbnail} alt={product.id} />
       </button>
-      <p>Preço: R${product.price}</p>
+      <p>
+        Preço: R$
+        {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
+          product.price
+        )}
+      </p>
       <p>Quantidade Disponível: {product.available_quantity}un. </p>
       {product.shipping.free_shipping && (
         <span className="free-shipping">
