@@ -4,7 +4,6 @@
   width: 100%;
 }
 
-.checkout-button,
 .back-button {
   width: 20%;
   padding: 10px;
@@ -25,35 +24,4 @@
   flex-direction: column;
   width: 90%;
   margin: 10px;
-}
-
-.checkout-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 90%;
-  padding: 10px;
-  border: solid thin;
-  margin: 10px;
-}
-.checkout-form span {
-  display: flex;
-  justify-content: stretch;
-  gap: 10px;
-  padding: 5px;
-}
-
-.checkout-form input {
-  width: 100%;
-}
-.payment-method {
-  border: solid thin;
-  margin: 10px;
-  padding: 10px;
-  width: 90%;
-  display: flex;
-  gap: 20px;
-}
-.payment-method input {
-  padding: 50px;
 }
