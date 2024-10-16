@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import NotFound from "./pages/NotFound";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="product/:id" element={<Product />} />
+        <Route path="checkout" element={<CheckoutPage />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </>

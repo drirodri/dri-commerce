@@ -1,0 +1,59 @@
+.checkout-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.checkout-button,
+.back-button {
+  width: 20%;
+  padding: 10px;
+  margin: 10px;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+}
+.summary-item button {
+  padding: 7px;
+}
+.summary {
+  padding: 10px;
+  border: solid thin;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 10px;
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 90%;
+  padding: 10px;
+  border: solid thin;
+  margin: 10px;
+}
+.checkout-form span {
+  display: flex;
+  justify-content: stretch;
+  gap: 10px;
+  padding: 5px;
+}
+
+.checkout-form input {
+  width: 100%;
+}
+.payment-method {
+  border: solid thin;
+  margin: 10px;
+  padding: 10px;
+  width: 90%;
+  display: flex;
+  gap: 20px;
+}
+.payment-method input {
+  padding: 50px;
+}

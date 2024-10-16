@@ -114,7 +114,12 @@ function Cart() {
               <button onClick={handleClearButton} className="clear-button">
                 Limpar carrinho
               </button>
-              <button className="finish-button">Finalizar compra</button>
+              <button
+                onClick={() => navigate("/checkout")}
+                className="finish-button"
+              >
+                Finalizar compra
+              </button>
             </div>
           )}
         </>
