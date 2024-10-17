@@ -7,24 +7,51 @@
   border: solid thin;
   margin: 10px;
 }
-.checkout-form span {
+.checkout-div {
   display: flex;
-  justify-content: stretch;
+  flex-direction: column;
   gap: 10px;
   padding: 5px;
 }
 
-.checkout-form input {
+.checkout-input {
+  margin: 15px;
   width: 100%;
+  height: 20px;
+  box-shadow: none;
+  -webkit-box-shadow: none; /* Safari, Chrome */
+  -moz-box-shadow: none; /* Firefox */
+}
+.payment-selection {
+  border: solid thin;
+  margin: 10px;
+  padding: 10px;
+}
+.methods {
+  display: flex;
 }
 .payment-method {
   border: solid thin;
   margin: 10px;
   padding: 10px;
   width: 90%;
+
   display: flex;
-  gap: 20px;
 }
 .payment-method input {
   padding: 50px;
+}
+.input-error {
+  border: 1px, solid, rgb(248, 33, 33);
+  outline: none;
+  box-shadow: none;
+  -webkit-box-shadow: none; /* Safari, Chrome */
+  -moz-box-shadow: none; /* Firefox */
+}
+.input-error:focus {
+  border: 1px, solid, rgb(248, 33, 33);
+  outline: none;
+  box-shadow: none;
+  -webkit-box-shadow: none; /* Safari, Chrome */
+  -moz-box-shadow: none; /* Firefox */
 }

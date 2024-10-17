@@ -46,3 +46,17 @@ export type Evaluation = {
   id: string;
   message?: string;
 };
+
+export type FormValues = {
+  name: string;
+  cpf: string;
+  email: string;
+  cep: string;
+  phone: string;
+  street: string;
+  houseComplement: string;
+  houseNumber: string;
+  city: string;
+  state: string;
+  radio: string;
+};

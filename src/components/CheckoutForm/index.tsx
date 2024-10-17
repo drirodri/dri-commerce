@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FormValues } from "../../type";
+import { inputsArray } from "../../utils/inputsArray";
 import "./checkout-form.css";
 import { useForm } from "react-hook-form";
 
@@ -5,6 +8,8 @@ function CheckoutForm() {
   const {
     register,
     handleSubmit,
+    setValue,
+    setFocus,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -13,13 +18,117 @@ function CheckoutForm() {
       email: "",
       cep: "",
       phone: "",
-      address: "",
+      street: "",
       houseComplement: "",
       houseNumber: "",
+      city: "",
+      state: "",
+      radio: "",
     },
   });
 
-  console.log(errors);
+  const checkCep = (event: any) => {
+    const cepValue = Number(event.target.value.replace(/\D/g, ""));
+    fetch(`http://viacep.com.br/ws/${cepValue}/json/`).then((response) =>
+      response.json().then((data) => {
+        setValue("street", data.logradouro);
+        setValue("city", data.localidade);
+        setValue("state", data.uf);
+        setValue("houseComplement", data.complemento);
+        setFocus("houseNumber");
+      })
+    );
+  };
+
+  const brazilianStates = [
+    "AC",
+    "AL",
+    "AP",
+    "AM",
+    "BA",
+    "CE",
+    "DF",
+    "ES",
+    "GO",
+    "MA",
+    "MT",
+    "MS",
+    "MG",
+    "PA",
+    "PB",
+    "PR",
+    "PE",
+    "PI",
+    "RJ",
+    "RN",
+    "RS",
+    "RO",
+    "RR",
+    "SC",
+    "SP",
+    "SE",
+    "TO",
+  ];
+  const stateOptions = brazilianStates.map((state) => (
+    <option key={state} value={state}>
+      {state}
+    </option>
+  ));
+
+  const paymentMethods = [
+    { value: "boleto", label: "Boleto" },
+    { value: "visa", label: "Visa" },
+    { value: "master-card", label: "MasterCard" },
+    { value: "elo", label: "Elo" },
+    { value: "pix", label: "Pix" },
+  ];
+
+  const paymentRadios = paymentMethods.map((method) => (
+    <div key={method.value} className="payment-method">
+      <label htmlFor={method.value}>{method.label}</label>
+      <input
+        {...register("radio", { required: "Selecione uma forma de pagamento" })}
+        type="radio"
+        id={method.value}
+        value={method.value}
+      />
+    </div>
+  ));
+
+  const mapInputs = inputsArray.map((input) => (
+    <div className="checkout-input" key={input.id}>
+      <input
+        {...register(input.id as keyof FormValues, {
+          required: input.required
+            ? `${input.placeholder} é obrigatório`
+            : false,
+          minLength: input.minLength?.boolean
+            ? {
+                value: input.minLength.value,
+                message: `${input.placeholder} deve conter no mínimo ${input.minLength.value} caracteres`,
+              }
+            : undefined,
+          maxLength: input.maxLength?.boolean
+            ? {
+                value: input.maxLength.value,
+                message: `${input.placeholder} deve conter no máximo ${input.maxLength.value} caracteres`,
+              }
+            : undefined,
+          pattern: input.pattern?.boolean
+            ? {
+                value: input.pattern.value,
+                message: `${input.placeholder} deve conter apenas números`,
+              }
+            : undefined,
+        })}
+        type={input.type}
+        placeholder={input.placeholder}
+        className={errors[input.id as keyof FormValues] ? "input-error" : ""}
+        onBlur={input.onBlur ? (event: any) => checkCep(event) : undefined}
+      />
+      <p>{errors[input.id as keyof FormValues]?.message}</p>
+    </div>
+  ));
 
   return (
     <>
@@ -31,140 +140,22 @@ function CheckoutForm() {
         className="checkout-form"
       >
         <h2>Informações do Comprador</h2>
-        <span>
-          <input
-            {...register("name", {
-              required: "Campo obrigatório",
-              minLength: {
-                value: 4,
-                message: "Nome deve conter no mínimo 4 caracteres",
-              },
-            })}
-            type="text"
-            placeholder="Nome Completo"
-          />
-          <p>{errors.name?.message}</p>
-          <input
-            {...register("cpf", {
-              required: "Campo obrigatório",
-              pattern: {
-                value: /^[0-9]{11}$/,
-                message: "Insira apenas números",
-              },
-              minLength: {
-                value: 11,
-                message: "CPF deve conter no mínimo 11 números",
-              },
-              maxLength: {
-                value: 11,
-                message: "CPF deve conter no máximo 11 números",
-              },
-            })}
-            type="text"
-            placeholder="CPF"
-          />
-          <p>{errors.cpf?.message}</p>
 
-          <input
-            {...register("email", {
-              required: "Campo obrigatório",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Insira um email válido",
-              },
-            })}
-            id="email"
-            type="email"
-            placeholder="Email"
-          />
-          <p>{errors.email?.message}</p>
+        <div className="checkout-div">{mapInputs}</div>
 
-          <input
-            {...register("phone", {
-              required: "Campo obrigatório",
-              pattern: {
-                value: /^[0-9]/,
-                message: "Insira apenas números",
-              },
-              minLength: {
-                value: 11,
-                message: "Telefone deve conter no mínimo 11 números",
-              },
-              maxLength: {
-                value: 12,
-                message: "Telefone deve conter no máximo 12 números",
-              },
-            })}
-            id="phone"
-            type="text"
-            placeholder="Telefone"
-          />
-        </span>
-        <span>
-          <input
-            {...register("cep", {
-              required: "Campo obrigatório",
-              pattern: {
-                value: /^[0-9]{8}$/,
-                message: "Insira apenas números",
-              },
-              minLength: {
-                value: 8,
-                message: "CEP deve conter no mínimo 8 números",
-              },
-              maxLength: {
-                value: 8,
-                message: "CEP deve conter no máximo 8 números",
-              },
-            })}
-            type="text"
-            placeholder="CEP"
-          />
-          <input
-            {...register("address", {
-              required: "Campo obrigatório",
-              minLength: {
-                value: 3,
-                message: "Endereço deve conter no mínimo 3 caracteres",
-              },
-            })}
-            id="address"
-            type="text"
-            placeholder="Endereço"
-          />
-        </span>
-        <span>
-          <input
-            {...register("houseComplement")}
-            id="house-complement"
-            type="text"
-            placeholder="Complemento"
-          />
-          <input
-            {...register("houseNumber", {
-              required: "Campo obrigatório!",
-            })}
-            id="houseNumber"
-            type="number"
-            placeholder="Número"
-          />
-          <input id="city" type="text" placeholder="Cidade" />
-          <select id="state">
-            <option defaultValue="0">Estado</option>
-            <option value="">MG</option>
-          </select>
-        </span>
-        <div className="payment-method">
-          <span>
-            <p>Boleto</p>
-            <input type="radio" />
-          </span>
-          <span>
-            <p>Cartão de Crédito</p>
-            <input type="radio" name="visa" />
-            <input type="radio" name="master-card" />
-            <input type="radio" name="elo" />
-          </span>
+        <select
+          {...register("state", {
+            required: "Selecione um estado",
+          })}
+          id="state"
+        >
+          <option defaultValue="0">Estado</option>
+          {stateOptions}
+        </select>
+
+        <div className="payment-selection">
+          <h2>Selecione uma forma de pagamento:</h2>
+          <div className="methods">{paymentRadios}</div>
         </div>
         <button className="checkout-button" type="submit">
           Finalizar compra!
