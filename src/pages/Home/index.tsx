@@ -4,8 +4,8 @@ import * as api from "../../services/api";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
 import useCartData from "../../hooks/CartData";
-import { BiCart } from "react-icons/bi";
 import { FaShippingFast } from "react-icons/fa";
+import CartButton from "../../components/CartButton";
 
 function Home() {
   const [categories, setCategories] = useState<categoriesProps>();
@@ -155,10 +155,7 @@ function Home() {
           <input defaultValue="" type="text" name="product-name" />
           <button type="submit">Pesquisar</button>
         </form>
-        <button onClick={() => navigate("/cart")} className="cart-button">
-          <BiCart className="cart" />
-          {parsedData.length}
-        </button>
+        <CartButton cartData={parsedData} />
       </div>
       {loadingList && <h2>Pesquisando produtos!</h2>}
       {!loadingList && <div className="products">{divProducts}</div>}

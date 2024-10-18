@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormValues } from "../../type";
+import { useNavigate } from "react-router-dom";
+import { cartDataProps, FormValues } from "../../type";
 import { inputsArray } from "../../utils/inputsArray";
 import "./checkout-form.css";
 import { useForm } from "react-hook-form";
+import { FaCcMastercard, FaPix, FaBarcode, FaCcVisa } from "react-icons/fa6";
 
-function CheckoutForm() {
+function CheckoutForm({ cartData }: cartDataProps) {
   const {
     register,
     handleSubmit,
@@ -23,9 +25,12 @@ function CheckoutForm() {
       houseNumber: "",
       city: "",
       state: "",
-      radio: "",
+      paymentMethod: "",
     },
   });
+
+  const navigate = useNavigate();
+  const parsedData = cartData;
 
   const checkCep = (event: any) => {
     const cepValue = Number(event.target.value.replace(/\D/g, ""));
@@ -70,29 +75,37 @@ function CheckoutForm() {
     "TO",
   ];
   const stateOptions = brazilianStates.map((state) => (
-    <option key={state} value={state}>
+    <option className="state-option" key={state} value={state}>
       {state}
     </option>
   ));
 
   const paymentMethods = [
-    { value: "boleto", label: "Boleto" },
-    { value: "visa", label: "Visa" },
-    { value: "master-card", label: "MasterCard" },
-    { value: "elo", label: "Elo" },
-    { value: "pix", label: "Pix" },
+    { value: "boleto", label: "Boleto", icon: <FaBarcode size={50} /> },
+    { value: "visa", label: "Visa", icon: <FaCcVisa size={50} /> },
+    {
+      value: "master-card",
+      label: "MasterCard",
+      icon: <FaCcMastercard size={50} />,
+    },
+    { value: "pix", label: "Pix", icon: <FaPix size={50} /> },
   ];
 
   const paymentRadios = paymentMethods.map((method) => (
-    <div key={method.value} className="payment-method">
-      <label htmlFor={method.value}>{method.label}</label>
-      <input
-        {...register("radio", { required: "Selecione uma forma de pagamento" })}
-        type="radio"
-        id={method.value}
-        value={method.value}
-      />
-    </div>
+    <label className="payment-method" key={method.value} htmlFor={method.value}>
+      <div key={method.value}>
+        <input
+          {...register("paymentMethod", {
+            required: "Selecione uma forma de pagamento",
+          })}
+          type="radio"
+          id={method.value}
+          value={method.value}
+        />
+        {method.label}
+        {method.icon}
+      </div>
+    </label>
   ));
 
   const mapInputs = inputsArray.map((input) => (
@@ -134,7 +147,11 @@ function CheckoutForm() {
     <>
       <form
         onSubmit={handleSubmit((data) => {
-          console.log(data);
+          const submitData = { ...data, cart: parsedData };
+          console.log(submitData);
+          alert("Obrigado por comprar no Dri-Commerce!");
+          localStorage.clear();
+          navigate("/");
         })}
         id="checkout-form"
         className="checkout-form"
@@ -148,6 +165,7 @@ function CheckoutForm() {
             required: "Selecione um estado",
           })}
           id="state"
+          className="checkout-select"
         >
           <option defaultValue="0">Estado</option>
           {stateOptions}

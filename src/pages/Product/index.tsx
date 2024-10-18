@@ -7,6 +7,7 @@ import { ProductProps } from "../../type";
 import EvaluationForm from "../../components/EvaluationForm";
 import useEvaluationData from "../../hooks/EvaluationData";
 import { Rating } from "@smastrom/react-rating";
+import CartButton from "../../components/CartButton";
 
 function Product() {
   const navigate = useNavigate();
@@ -145,6 +146,7 @@ function Product() {
 
   return (
     <div className="product-page">
+      <CartButton cartData={parsedData} />
       <div>
         {productDescription}
         <EvaluationForm setEvaluationData={setEvaluationData} />

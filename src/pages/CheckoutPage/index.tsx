@@ -49,9 +49,9 @@ function CheckoutPage() {
       </button>
       <div className="summary">
         {cartSummary}
-        <p>Valor total: R${totalPrice}</p>
+        <p className="total-value">Valor total: R${totalPrice}</p>
       </div>
-      <CheckoutForm />
+      <CheckoutForm cartData={parsedData} />
     </div>
   );
 }

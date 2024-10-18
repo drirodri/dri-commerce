@@ -58,5 +58,9 @@ export type FormValues = {
   houseNumber: string;
   city: string;
   state: string;
-  radio: string;
+  paymentMethod: string;
+};
+
+export type cartDataProps = {
+  cartData: ProductProps[];
 };

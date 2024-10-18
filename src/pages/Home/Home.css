@@ -47,12 +47,6 @@
   height: 50px;
 }
 
-.cart-button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
 .send-to-cart {
   padding: 10px;
   margin: 20px;
