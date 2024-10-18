@@ -27,7 +27,10 @@ function CheckoutPage() {
   const cartSummary = parsedData.map((item) => (
     <div className="summary-item" key={item.id}>
       <button onClick={(event) => removeItem(event, item.id)}> X </button>
-      <img src={item.thumbnail} alt={item.id} />
+      <img
+        src={item.thumbnail.replace(/^(http:)?\/\//, "https://")}
+        alt={item.id}
+      />
       <span>
         <p>
           {item.title} ~ {item.quantity}un.

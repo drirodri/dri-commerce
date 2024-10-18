@@ -62,7 +62,10 @@ function Cart() {
           onClick={() => navigate(`product/${item.id}`)}
           className="cart-thumbnail"
         >
-          <img src={item.thumbnail} alt={item.id} />
+          <img
+            src={item.thumbnail.replace(/^(http:)?\/\//, "https://")}
+            alt={item.id}
+          />
         </button>
         <span className="title-price">
           <a href={`product/${item.id}`}>{item.title}</a>

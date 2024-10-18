@@ -79,7 +79,10 @@ function Home() {
         className="thumbnail-button"
         onClick={() => navigate(`/product/${product.id}`)}
       >
-        <img src={product.thumbnail} alt={product.id} />
+        <img
+          src={product.thumbnail.replace(/^(http:)?\/\//, "https://")}
+          alt={product.id}
+        />
       </button>
       <p>
         Preço: R$

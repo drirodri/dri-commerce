@@ -111,7 +111,10 @@ function Product() {
       className="product-box"
     >
       <p>{product.title}</p>
-      <img src={product.thumbnail} alt={product.id} />
+      <img
+        src={product.thumbnail.replace(/^(http:)?\/\//, "https://")}
+        alt={product.id}
+      />
       <p>
         Preço R$
         {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
