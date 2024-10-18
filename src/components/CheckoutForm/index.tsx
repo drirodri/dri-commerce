@@ -34,7 +34,7 @@ function CheckoutForm({ cartData }: cartDataProps) {
 
   const checkCep = (event: any) => {
     const cepValue = Number(event.target.value.replace(/\D/g, ""));
-    fetch(`http://viacep.com.br/ws/${cepValue}/json/`).then((response) =>
+    fetch(`https://viacep.com.br/ws/${cepValue}/json/`).then((response) =>
       response.json().then((data) => {
         setValue("street", data.logradouro);
         setValue("city", data.localidade);
