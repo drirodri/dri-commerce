@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router-dom";
 import { ProductProps } from "../../type";
-import "./cart.css";
 import { useMemo } from "react";
-import QuantityDiv from "../../components/QuantityDiv";
 import useCartData from "../../hooks/CartData";
+import CartList from "../../components/CartList";
+import "./cart.css";
 
 function Cart() {
   const navigate = useNavigate();
@@ -18,11 +18,13 @@ function Cart() {
     );
   }, [parsedData]);
 
+  // Reset the cart
   function handleClearButton() {
     localStorage.clear();
     setParsedData([]);
   }
 
+  // Remove the item by filtering it out of the localStorage
   function removeItem(event: any, id: string) {
     event.preventDefault();
 
@@ -30,6 +32,7 @@ function Cart() {
     setParsedData(dataWithoutItem);
   }
 
+  // Update quantity of an existing item directly in localStorage
   function updateQuantity(quantity: number, id: string) {
     const updatedData = parsedData?.map((cartItem) =>
       cartItem.id === id
@@ -48,85 +51,19 @@ function Cart() {
     }
   };
 
-  // Create cart items
-  const cartList = parsedData?.map((item: ProductProps) => (
-    <div className="cart-item" key={item.id}>
-      <button
-        onClick={(event) => removeItem(event, item.id)}
-        className="button-item"
-      >
-        X
-      </button>
-      <span>
-        <button
-          onClick={() => navigate(`product/${item.id}`)}
-          className="cart-thumbnail"
-        >
-          <img
-            src={item.thumbnail.replace(/^(http:)?\/\//, "https://")}
-            alt={item.id}
-          />
-        </button>
-        <span className="title-price">
-          <a href={`product/${item.id}`}>{item.title}</a>
-          <p>
-            Preço R$
-            {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
-              item.price
-            )}
-          </p>
-        </span>
-      </span>
-      <QuantityDiv
-        item={item}
-        updateQuantity={() => updateQuantity(item.quantity, item.id)}
-      />
-      <p>
-        Valor total R$
-        {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
-          item.price * item.quantity
-        )}
-      </p>
-    </div>
-  ));
-
   return (
     <>
       <button className="back-button" onClick={handleBack}>
         Voltar
       </button>
-      {parsedData && (
-        <>
-          <div className="product-list">
-            {}
-            <h2>
-              Seu carrinho
-              {(!parsedData?.length || !parsedData) && " está vazio"}
-            </h2>
-            {cartList}
-          </div>
-          {parsedData.length && (
-            <div className="total-price-div">
-              <span>
-                Preço total: R$
-                {new Intl.NumberFormat("BRL", {
-                  maximumFractionDigits: 2,
-                }).format(totalPrice)}
-              </span>
-              <br />
-              <button onClick={handleClearButton} className="clear-button">
-                Limpar carrinho
-              </button>
-              <button
-                onClick={() => navigate("/checkout")}
-                className="finish-button"
-              >
-                Finalizar compra
-              </button>
-            </div>
-          )}
-        </>
-      )}
+
+      <CartList
+        cartItems={parsedData}
+        updateQuantity={updateQuantity}
+        removeItem={removeItem}
+        totalPrice={totalPrice}
+        handleClear={handleClearButton}
+      />
     </>
   );
 }

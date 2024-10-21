@@ -27,6 +27,14 @@ export type QuantityProps = {
   updateQuantity: (quantity: number, id: string) => void;
 };
 
+export type CartListProps = {
+  cartItems: ProductProps[];
+  updateQuantity: (quantity: number, id: string) => void;
+  removeItem: (event: any, id: string) => void;
+  handleClear: () => void;
+  totalPrice: number;
+};
+
 export type QuantityButtonProps = {
   item: ProductProps;
   updateQuantity: (quantity: number, id: string) => void;

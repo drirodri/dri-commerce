@@ -20,6 +20,9 @@ function QuantityButton({
     if (operator === "+") {
       return item.available_quantity <= item.quantity;
     }
+    if (operator === "-") {
+      return item.quantity === 1;
+    }
   };
 
   return (
