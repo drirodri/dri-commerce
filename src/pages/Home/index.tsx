@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { categoriesProps, ProductProps } from "../../type";
 import * as api from "../../services/api";
@@ -14,6 +15,7 @@ function Home() {
 
   const [products, setProducts] = useState<ProductProps[]>();
   const [loadingList, setLoadingList] = useState(true);
+  const [sortChoice, setSortChoice] = useState("0");
 
   const { parsedData, setParsedData } = useCartData();
 
@@ -37,15 +39,31 @@ function Home() {
 
   // Fetch products from API using categoryId and productName
 
-  async function fetchProduct(categoryId: string, productName: string) {
+  async function fetchProduct(
+    categoryId: string,
+    productName: string,
+    sort: string
+  ) {
     try {
       const product = await api.getProductsFromCategoryAndQuery(
         categoryId,
         productName
       );
+      if (sort === "1") {
+        setProducts(
+          product?.results.sort((a: any, b: any) => a.price - b.price)
+        );
 
-      setProducts(product?.results);
-      setLoadingList(false);
+        setLoadingList(false);
+      } else if (sort === "2") {
+        setProducts(
+          product?.results.sort((a: any, b: any) => b.price - a.price)
+        );
+        setLoadingList(false);
+      } else {
+        setProducts(product?.results);
+        setLoadingList(false);
+      }
     } catch (err) {
       setProducts([]);
       console.error(err);
@@ -53,13 +71,13 @@ function Home() {
   }
 
   useEffect(() => {
-    fetchProduct(categoryId, productName);
+    fetchProduct(categoryId, productName, sortChoice);
 
     return () => {
       setProducts([]);
       setLoadingList(true);
     };
-  }, [productName, categoryId]);
+  }, [productName, categoryId, sortChoice]);
 
   // Disable "Adicionar ao Carrinho" button if quantity on cart is = to available.quantity
   const isDisabled = (product: ProductProps) => {
@@ -145,17 +163,39 @@ function Home() {
     setCategoryId(category ?? "");
   };
 
+  const sortChoices = ["Mais relevante", "Menor preço", "Maior preço"];
+
+  const selectChoices = sortChoices.map((choice, index) => (
+    <option defaultValue={index === 0 ? "0" : undefined} value={index}>
+      {choice}
+    </option>
+  ));
+
   return (
     <>
       <div className="top-page">
         <form onSubmit={handleSubmit} className="product-input">
-          <select name="category" id="categories-select">
+          <select
+            onChange={(e) => setCategoryId(e.target.value)}
+            name="category"
+            id="categories-select"
+          >
             <option defaultValue="" value="">
               Escolha uma categoria
             </option>
             {categoriesSelect}
           </select>
           <input defaultValue="" type="text" name="product-name" />
+          <div className="sort-select">
+            <label htmlFor="sort-select">Ordernar por:</label>
+            <select
+              onChange={(e) => setSortChoice(e.target.value)}
+              name="sort-select"
+              id="sort-select"
+            >
+              {selectChoices}
+            </select>
+          </div>
           <button type="submit">Pesquisar</button>
         </form>
         <CartButton cartData={parsedData} />
