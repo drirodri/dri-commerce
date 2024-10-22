@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import QuantityDiv from "../QuantityDiv";
-import { CartListProps, ProductProps } from "../../type";
+import { ProductProps } from "../../type";
 import "./cart-list.css";
+import { useCartContext } from "../../context/CartContext/CartContext";
 
-function CartList({
-  cartItems,
-  updateQuantity,
-  removeItem,
-  totalPrice,
-  handleClear,
-}: CartListProps) {
+function CartList() {
   const navigate = useNavigate();
+
+  const { parsedData, totalPrice, handleClearButton, removeItem } =
+    useCartContext();
+
+  const cartItems = parsedData;
 
   const cartList = cartItems?.map((item: ProductProps) => (
     <div className="cart-item" key={item.id}>
@@ -40,10 +40,7 @@ function CartList({
           </p>
         </span>
       </span>
-      <QuantityDiv
-        item={item}
-        updateQuantity={() => updateQuantity(item.quantity, item.id)}
-      />
+      <QuantityDiv item={item} />
       <p className="total-item-price">
         Valor total R$
         {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
@@ -52,6 +49,7 @@ function CartList({
       </p>
     </div>
   ));
+
   return (
     <>
       <div className="product-list">
@@ -69,7 +67,7 @@ function CartList({
               }).format(totalPrice)}
             </span>
             <br />
-            <button onClick={handleClear} className="clear-button">
+            <button onClick={handleClearButton} className="clear-button">
               Limpar carrinho
             </button>
             <button

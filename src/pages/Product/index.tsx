@@ -2,12 +2,12 @@ import "./product.css";
 import * as api from "../../services/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import useCartData from "../../hooks/CartData";
 import { ProductProps } from "../../type";
 import EvaluationForm from "../../components/EvaluationForm";
 import useEvaluationData from "../../hooks/EvaluationData";
 import { Rating } from "@smastrom/react-rating";
 import CartButton from "../../components/CartButton";
+import { useCartContext } from "../../context/CartContext/CartContext";
 
 function Product() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ function Product() {
   const params = useParams();
   const productId: string = params.id ?? "no-id";
   const [cartItem, setCartItem] = useState<ProductProps>();
-  const { parsedData, setParsedData } = useCartData();
+  const { parsedData, setParsedData } = useCartContext();
   const { evaluationData, setEvaluationData } = useEvaluationData();
 
   useEffect(() => {

@@ -1,9 +1,11 @@
-import { QuantityInputProps } from "../../type";
+import { useQuantityContext } from "../../context/QuantityContext/QuantityContext";
+import { itemProps } from "../../type";
 
-function QuantityInput({ item, handleChange }: QuantityInputProps) {
+function QuantityInput({ item }: itemProps) {
+  const { handleOnChangeQuantity } = useQuantityContext();
   return (
     <input
-      onChange={(event) => handleChange(event, item)}
+      onChange={(event) => handleOnChangeQuantity(event, item)}
       type="number"
       name="quantity"
       value={item.quantity ?? 1}

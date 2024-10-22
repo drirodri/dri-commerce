@@ -4,9 +4,9 @@ import { categoriesProps, ProductProps } from "../../type";
 import * as api from "../../services/api";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
-import useCartData from "../../hooks/CartData";
 import { FaShippingFast } from "react-icons/fa";
 import CartButton from "../../components/CartButton";
+import { useCartContext } from "../../context/CartContext/CartContext";
 
 function Home() {
   const [categories, setCategories] = useState<categoriesProps>();
@@ -17,7 +17,7 @@ function Home() {
   const [loadingList, setLoadingList] = useState(true);
   const [sortChoice, setSortChoice] = useState("0");
 
-  const { parsedData, setParsedData } = useCartData();
+  const { parsedData, setParsedData } = useCartContext();
 
   const navigate = useNavigate();
 
@@ -166,7 +166,11 @@ function Home() {
   const sortChoices = ["Mais relevante", "Menor preço", "Maior preço"];
 
   const selectChoices = sortChoices.map((choice, index) => (
-    <option defaultValue={index === 0 ? "0" : undefined} value={index}>
+    <option
+      key={index}
+      defaultValue={index === 0 ? "0" : undefined}
+      value={index}
+    >
       {choice}
     </option>
   ));

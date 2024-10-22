@@ -22,11 +22,6 @@ type Shipping = {
   free_shipping: boolean;
 };
 
-export type QuantityProps = {
-  item: ProductProps;
-  updateQuantity: (quantity: number, id: string) => void;
-};
-
 export type CartListProps = {
   cartItems: ProductProps[];
   updateQuantity: (quantity: number, id: string) => void;
@@ -37,8 +32,6 @@ export type CartListProps = {
 
 export type QuantityButtonProps = {
   item: ProductProps;
-  updateQuantity: (quantity: number, id: string) => void;
-  handleClick: (event: any, item: ProductProps) => void;
   operator: string;
 };
 
@@ -71,4 +64,8 @@ export type FormValues = {
 
 export type cartDataProps = {
   cartData: ProductProps[];
+};
+
+export type itemProps = {
+  item: ProductProps;
 };
