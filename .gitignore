@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node.js Modules and Build Artifacts
 node_modules
 dist
 dist-ssr
@@ -23,5 +24,8 @@ dist-ssr
 *.sln
 *.sw?
 
-
+# Old Source Files
 src/old
+
+# Documentation
+README.md
