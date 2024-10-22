@@ -8,8 +8,7 @@ Dri-Commerce is an e-commerce application built using modern web technologies. T
 ## 🌐 Technologies Used
 - **React**: A JavaScript library for building user interfaces.
 - **Vite**: A fast build tool and development server that enhances the development experience.
-- **TypeScript**: A superset of JavaScript that adds static types, helping us write more robust code.
-- **JavaScript**: The core language used for client-side scripting.
+- **TypeScript**: A superset of JavaScript that adds static types.
 - **CSS**: Styles the application to create a visually appealing user interface.
 
 ## 📦 Features
