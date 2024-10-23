@@ -58,7 +58,7 @@ function CartList() {
           {(!cartItems?.length || !cartItems) && " está vazio"}
         </h2>{" "}
         {cartList}
-        {cartItems.length && (
+        {cartItems.length > 0 && (
           <div className="total-price-div">
             <span>
               Preço total: R$

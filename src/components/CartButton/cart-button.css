@@ -2,4 +2,21 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
+  padding: 10px 20px;
+}
+
+.slider-list {
+  position: fixed;
+  top: 100px;
+  right: -300px; /* Hidden by default */
+  width: 800px;
+  height: 80vh;
+  background-color: #fff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  transform: translateX(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.slider-list.visible {
+  transform: translateX(-300px); /* Slides in */
 }
