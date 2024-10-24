@@ -16,7 +16,7 @@ function CartList() {
     <div className="cart-item" key={item.id}>
       <button
         onClick={(event) => removeItem(event, item.id)}
-        className="button-item"
+        className="remove-button"
       >
         X
       </button>

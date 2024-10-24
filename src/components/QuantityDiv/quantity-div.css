@@ -1,17 +1,30 @@
-.div-quantity button {
+.quantity-button {
   padding: 5px;
+  border-radius: 100px;
+  border: none;
+  height: 25px;
+  width: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  background-color: var(--sky-blue);
+}
+.quantity-button:hover {
+  background-color: var(--soft-aqua);
 }
 
 /* Chrome, Safari, Edge, Opera */
-.div-quantity input::-webkit-outer-spin-button,
+.quantity-input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.div-quantity input {
+.quantity-input {
   width: 20px;
   text-align: center;
+  border: none;
 }
 
 .div-quantity {

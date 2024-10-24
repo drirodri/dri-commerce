@@ -7,17 +7,20 @@
 
 .slider-list {
   position: fixed;
+  border-radius: 8px;
+  padding: 20px;
   top: 100px;
-  right: -300px; /* Hidden by default */
-  width: 800px;
-  height: 80vh;
+  right: 0; /* Hidden by default */
+  width: 900px;
+  height: fit-content;
   background-color: #fff;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-  transform: translateX(0);
+  transform: translateX(100%); /* Start off-screen */
   transition: transform 0.3s ease-in-out;
   z-index: 1;
+  overflow-y: auto;
 }
 
 .slider-list.visible {
-  transform: translateX(-300px); /* Slides in */
+  transform: translateX(0); /* Slides in */
 }

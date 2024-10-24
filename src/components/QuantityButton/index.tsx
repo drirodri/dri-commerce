@@ -9,6 +9,7 @@ function QuantityButton({ item, operator }: QuantityButtonProps) {
       onClick={(event) => handleQuantityButton(event, item)}
       value={operator}
       disabled={isDisabled(item, operator)}
+      className="quantity-button"
     >
       {operator}
     </button>

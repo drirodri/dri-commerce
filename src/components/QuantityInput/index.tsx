@@ -9,6 +9,7 @@ function QuantityInput({ item }: itemProps) {
       type="number"
       name="quantity"
       value={item.quantity ?? 1}
+      className="quantity-input"
     />
   );
 }
