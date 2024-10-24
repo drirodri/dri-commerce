@@ -1,14 +1,21 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 a {
   text-decoration: none;
+  color: var(--cyan-black);
 }
 
 html,
 body {
   height: 100%;
   width: 100%;
+  background-color: var(--soft-aqua);
+}
+
+p {
+  color: var(--cyan-black);
 }

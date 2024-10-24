@@ -1,0 +1,35 @@
+/* blue-purple {
+  color: #b8b0d8;
+  color: RGBA(184, 176, 216, 100);
+  background-color: #b8b0d8;
+  background-color: RGBA(184, 176, 216, 100);
+}
+
+lavender {
+  color: #e2f0ff;
+  color: RGBA(226, 240, 255, 100);
+  background-color: #e2f0ff;
+  background-color: RGBA(226, 240, 255, 100);
+}
+
+magic-mint {
+  color: #a5ecde;
+  color: RGBA(165, 236, 222, 100);
+  background-color: #a5ecde;
+  background-color: RGBA(165, 236, 222, 100);
+}
+
+cell {
+  color: #88a4d6;
+  color: RGBA(136, 164, 214, 100);
+  background-color: #88a4d6;
+  background-color: RGBA(136, 164, 214, 100);
+} */
+
+:root {
+  --cyan-black: #040f0f;
+  --blue-gray: #57737a;
+  --soft-aqua: #85bdbf;
+  --pale-aqua: #c2fcf7;
+  --sky-blue: #c9fbff;
+}

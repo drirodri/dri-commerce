@@ -1,0 +1,94 @@
+.product-form {
+  border-radius: 8px;
+  padding: 20px;
+  width: 240px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: white;
+  box-shadow: var(--blue-gray) 0px 5px 15px;
+  position: relative;
+}
+
+.product-form img {
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+}
+
+.thumbnail-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  height: 250px;
+}
+
+.pricing-div {
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Text */
+.price-text {
+  font-weight: 700;
+  color: var(--cyan-black);
+}
+.quantity-text {
+  color: var(--blue-gray);
+  font-size: 0.8rem;
+}
+
+.product-form a {
+  text-align: center;
+  font-size: 14px;
+  height: 50px;
+}
+
+.free-shipping {
+  font-size: 0.9rem;
+  justify-self: flex-end;
+  margin-top: 10px;
+  color: rgb(23, 163, 23);
+  font-weight: bold;
+}
+.split-price {
+  font-size: 0.9rem;
+}
+
+/* Send-to-Cart button */
+
+.send-to-cart {
+  padding: 10px;
+  margin: 20px;
+  height: 50px;
+  width: 80%;
+  align-self: center;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--blue-gray);
+  color: var(--sky-blue);
+}
+.send-to-cart:hover {
+  background-color: var(--cyan-black);
+  border: none;
+}
+.send-to-cart:disabled {
+  background-color: var(--cyan-black);
+  color: var(--sky-blue);
+  border: none;
+}
+
+/* Different css for products thar are in cart */
+
+#item-found {
+  background-color: var(--sky-blue);
+}
+#item-found img {
+  border: solid thin var(--cyan-black);
+}

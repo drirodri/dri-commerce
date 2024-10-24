@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App.tsx";
 import "@smastrom/react-rating/style.css";
+import "./styles/scheme-color.css";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>

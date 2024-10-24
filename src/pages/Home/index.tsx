@@ -3,10 +3,9 @@ import { useState, useEffect } from "react";
 import { categoriesProps, ProductProps } from "../../type";
 import * as api from "../../services/api";
 import "./Home.css";
-import { useNavigate } from "react-router-dom";
-import { FaShippingFast } from "react-icons/fa";
 import CartButton from "../../components/CartButton";
 import { useCartContext } from "../../context/CartContext/CartContext";
+import ProductForm from "../../components/ProductForm";
 
 function Home() {
   const [categories, setCategories] = useState<categoriesProps>();
@@ -17,9 +16,7 @@ function Home() {
   const [loadingList, setLoadingList] = useState(true);
   const [sortChoice, setSortChoice] = useState("0");
 
-  const { parsedData, setParsedData } = useCartContext();
-
-  const navigate = useNavigate();
+  const { parsedData } = useCartContext();
 
   // Fetch categories from API to create select options
   async function fetchCategories() {
@@ -79,79 +76,6 @@ function Home() {
     };
   }, [productName, categoryId, sortChoice]);
 
-  // Disable "Adicionar ao Carrinho" button if quantity on cart is = to available.quantity
-  const isDisabled = (product: ProductProps) => {
-    const existingItem = parsedData.find((item) => item.id === product.id);
-    if (product.id === existingItem?.id) {
-      return product.available_quantity <= existingItem.quantity;
-    }
-  };
-  const divProducts = products?.map((product) => (
-    <form
-      onSubmit={(event) => handleCartSubmit(event, product)}
-      key={product.id}
-      className="product-form"
-    >
-      <a href={`/product/${product.id}`}>{product.title}</a>
-      <button
-        className="thumbnail-button"
-        onClick={() => navigate(`/product/${product.id}`)}
-      >
-        <img
-          src={product.thumbnail.replace(/^(http:)?\/\//, "https://")}
-          alt={product.id}
-        />
-      </button>
-      <p>
-        Preço: R$
-        {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
-          product.price
-        )}
-      </p>
-      <p>Quantidade Disponível: {product.available_quantity}un. </p>
-      {product.shipping.free_shipping && (
-        <span className="free-shipping">
-          <FaShippingFast />
-          <p>Frete grátis!</p>
-        </span>
-      )}
-      <button
-        disabled={isDisabled(product)}
-        type="submit"
-        className="send-to-cart"
-      >
-        {isDisabled(product)
-          ? "Quantidade máxima atingida"
-          : "Adicionar ao Carrinho"}
-      </button>
-    </form>
-  ));
-
-  const handleCartSubmit = (
-    event: React.FormEvent<HTMLFormElement>,
-    productToSend: ProductProps
-  ) => {
-    event.preventDefault();
-
-    setParsedData((prevCart) => {
-      const existingProduct = prevCart.find(
-        (product) => product.id === productToSend.id
-      );
-      if (existingProduct) {
-        return prevCart.map((product) =>
-          product.id === productToSend.id
-            ? {
-                ...product,
-                quantity: product.quantity + 1,
-              }
-            : product
-        );
-      } else {
-        return [...prevCart, { ...productToSend, quantity: 1 }];
-      }
-    });
-  };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -205,7 +129,13 @@ function Home() {
         <CartButton cartData={parsedData} />
       </div>
       {loadingList && <h2>Pesquisando produtos!</h2>}
-      {!loadingList && <div className="products">{divProducts}</div>}
+      {!loadingList && (
+        <div className="products">
+          {products?.map((product) => (
+            <ProductForm key={product.id} item={product} />
+          ))}
+        </div>
+      )}
     </>
   );
 }
