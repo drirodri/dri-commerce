@@ -19,11 +19,9 @@ function CartButton({ cartData }: cartDataProps) {
         <BiCart className="cart" />
         {parsedData.length}
       </button>
-      {visibility && (
-        <div className={`slider-list ${visibility ? "visible" : ""}`}>
-          <CartList />
-        </div>
-      )}
+      <div className={`slider-list ${visibility ? "visible" : ""}`}>
+        <CartList />
+      </div>
     </div>
   );
 }

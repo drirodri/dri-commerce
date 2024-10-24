@@ -6,6 +6,7 @@ import "./Home.css";
 import CartButton from "../../components/CartButton";
 import { useCartContext } from "../../context/CartContext/CartContext";
 import ProductForm from "../../components/ProductForm";
+import { FaSearch } from "react-icons/fa";
 
 function Home() {
   const [categories, setCategories] = useState<categoriesProps>();
@@ -28,10 +29,24 @@ function Home() {
     fetchCategories();
   }, []);
 
-  const categoriesSelect = categories?.map((category) => (
-    <option value={category.id} key={category.id}>
+  // const categoriesSelect = categories?.map((category) => (
+  //   <option value={category.id} key={category.id}>
+  //     {category.name}
+  //   </option>
+  // ));
+
+  const categoriesLi = categories?.map((category) => (
+    <li
+      className="category-li"
+      key={category.id}
+      onClick={(e) => {
+        const target = e.target as HTMLLIElement;
+        setCategoryId(target.dataset.value || "");
+      }}
+      data-value={category.id}
+    >
       {category.name}
-    </option>
+    </li>
   ));
 
   // Fetch products from API using categoryId and productName
@@ -103,39 +118,51 @@ function Home() {
     <>
       <div className="top-page">
         <form onSubmit={handleSubmit} className="product-input">
-          <select
-            onChange={(e) => setCategoryId(e.target.value)}
-            name="category"
-            id="categories-select"
-          >
-            <option defaultValue="" value="">
-              Escolha uma categoria
-            </option>
-            {categoriesSelect}
-          </select>
-          <input defaultValue="" type="text" name="product-name" />
-          <div className="sort-select">
-            <label htmlFor="sort-select">Ordernar por:</label>
-            <select
-              onChange={(e) => setSortChoice(e.target.value)}
-              name="sort-select"
-              id="sort-select"
-            >
-              {selectChoices}
-            </select>
+          <div className="search-div">
+            <input
+              className="product-name-input"
+              defaultValue=""
+              type="text"
+              name="product-name"
+            />
+            <button className="search-button" type="submit">
+              <FaSearch />
+            </button>
           </div>
-          <button type="submit">Pesquisar</button>
         </form>
         <CartButton cartData={parsedData} />
       </div>
-      {loadingList && <h2>Pesquisando produtos!</h2>}
-      {!loadingList && (
-        <div className="products">
-          {products?.map((product) => (
-            <ProductForm key={product.id} item={product} />
-          ))}
+      <div className="home-grid">
+        <aside className="aside-menu">
+          <div className="sort-and-filter-div">
+            <div className="sort-select-div">
+              <label htmlFor="sort-select-name">Ordernar por:</label>
+              <select
+                onChange={(e) => setSortChoice(e.target.value)}
+                name="sort-select-name"
+                id="sort-select"
+                className="sort-select"
+              >
+                {selectChoices}
+              </select>
+            </div>
+          </div>
+          <ul className="category-ul">
+            <h2>Categorias</h2>
+            {categoriesLi}
+          </ul>
+        </aside>
+        <div>
+          {loadingList && <h2>Pesquisando produtos!</h2>}
+          {!loadingList && (
+            <div className="products">
+              {products?.map((product) => (
+                <ProductForm key={product.id} item={product} />
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </>
   );
 }

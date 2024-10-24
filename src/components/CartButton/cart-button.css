@@ -9,16 +9,17 @@
   position: fixed;
   border-radius: 8px;
   padding: 20px;
-  top: 100px;
+  top: 70px;
   right: 0; /* Hidden by default */
   width: 900px;
-  height: fit-content;
+  max-height: 800px;
   background-color: #fff;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
   transform: translateX(100%); /* Start off-screen */
   transition: transform 0.3s ease-in-out;
   z-index: 1;
   overflow-y: auto;
+  scrollbar-width: smooth;
 }
 
 .slider-list.visible {
