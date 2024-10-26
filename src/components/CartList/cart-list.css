@@ -16,7 +16,7 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 800px;
+  width: 60%;
   background-color: white;
 }
 .cart-item span {
@@ -26,21 +26,33 @@ h2 {
 .cart-item span p {
   width: 50%;
 }
+.cart-item-price {
+  font-weight: 700;
+  color: var(--cyan-black);
+}
+.title-price {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.title-price a {
+  font-size: 0.9rem;
+}
 .total-item-price {
   padding: 10px;
   text-align: right;
+  font-size: 0.9rem;
 }
 
 .cart-thumbnail {
   background: none;
   border: none;
   cursor: pointer;
+  margin-right: 10px;
 }
-
-.title-price {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.cart-thumbnail img {
+  width: 100px;
+  height: auto;
 }
 
 .total-price-div {

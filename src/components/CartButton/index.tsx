@@ -20,7 +20,7 @@ function CartButton({ cartData }: cartDataProps) {
         {parsedData.length}
       </button>
       <div className={`slider-list ${visibility ? "visible" : ""}`}>
-        <CartList />
+        <CartList sliderCart={true} />
       </div>
     </div>
   );

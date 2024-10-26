@@ -4,7 +4,11 @@ import { ProductProps } from "../../type";
 import "./cart-list.css";
 import { useCartContext } from "../../context/CartContext/CartContext";
 
-function CartList() {
+type CartClass = {
+  sliderCart: boolean;
+};
+
+function CartList({ sliderCart }: CartClass) {
   const navigate = useNavigate();
 
   const { parsedData, totalPrice, handleClearButton, removeItem } =
@@ -13,7 +17,10 @@ function CartList() {
   const cartItems = parsedData;
 
   const cartList = cartItems?.map((item: ProductProps) => (
-    <div className="cart-item" key={item.id}>
+    <div
+      className={sliderCart ? "slider-cart-item" : "cart-item"}
+      key={item.id}
+    >
       <button
         onClick={(event) => removeItem(event, item.id)}
         className="remove-button"
@@ -32,7 +39,7 @@ function CartList() {
         </button>
         <span className="title-price">
           <a href={`product/${item.id}`}>{item.title}</a>
-          <p>
+          <p className="cart-item-price">
             Preço R$
             {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
               item.price

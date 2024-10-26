@@ -53,7 +53,7 @@ function Cart() {
       <button className="back-button" onClick={handleBack}>
         Voltar
       </button>
-      <CartList />
+      <CartList sliderCart={false} />
     </>
   );
 }
