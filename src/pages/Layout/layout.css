@@ -1,0 +1,43 @@
+.layout-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+.content-page {
+  flex: 1;
+  padding: 20px;
+  min-height: 100vh;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: transparent;
+}
+.header-logo {
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;
+}
+
+footer {
+  height: 100px;
+  width: 100%;
+  text-align: center;
+  color: #262626;
+  padding-top: 20px;
+  align-self: flex-end;
+  margin-top: 20px;
+  position: relative;
+}
+footer ul {
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+footer ul li {
+  list-style-type: none;
+}

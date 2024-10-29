@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import { categoriesProps, ProductProps } from "../../type";
 import * as api from "../../services/api";
 import "./Home.css";
-import CartButton from "../../components/CartButton";
-import { useCartContext } from "../../context/CartContext/CartContext";
 import ProductForm from "../../components/ProductForm";
 import { FaSearch } from "react-icons/fa";
 
@@ -16,8 +14,6 @@ function Home() {
   const [products, setProducts] = useState<ProductProps[]>();
   const [loadingList, setLoadingList] = useState(true);
   const [sortChoice, setSortChoice] = useState("0");
-
-  const { parsedData } = useCartContext();
 
   // Fetch categories from API to create select options
   async function fetchCategories() {
@@ -130,7 +126,6 @@ function Home() {
             </button>
           </div>
         </form>
-        <CartButton cartData={parsedData} />
       </div>
       <div className="home-grid">
         <aside className="aside-menu">
@@ -152,7 +147,7 @@ function Home() {
             {categoriesLi}
           </ul>
         </aside>
-        <div>
+        <div className="products-list">
           {loadingList && <h2>Pesquisando produtos!</h2>}
           {!loadingList && (
             <div className="products">

@@ -6,6 +6,14 @@ export type categoryProps = {
 
 export type categoriesProps = categoryProps[];
 
+type GalleryUnity = {
+  id: string;
+  url: string;
+};
+export type Gallery = {
+  pictures: GalleryUnity[];
+};
+
 export interface ProductProps {
   id: string;
   price: number;
@@ -16,6 +24,7 @@ export interface ProductProps {
   title: string;
   warranty: string;
   shipping: Shipping;
+  pictures: GalleryUnity[];
 }
 
 type Shipping = {

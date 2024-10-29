@@ -6,8 +6,8 @@ import { ProductProps } from "../../type";
 import EvaluationForm from "../../components/EvaluationForm";
 import useEvaluationData from "../../hooks/EvaluationData";
 import { Rating } from "@smastrom/react-rating";
-import CartButton from "../../components/CartButton";
 import { useCartContext } from "../../context/CartContext/CartContext";
+import GallerySlider from "../../components/GallerySlider";
 
 function Product() {
   const navigate = useNavigate();
@@ -111,10 +111,7 @@ function Product() {
       className="product-box"
     >
       <p>{product.title}</p>
-      <img
-        src={product.thumbnail.replace(/^(http:)?\/\//, "https://")}
-        alt={product.id}
-      />
+      <GallerySlider pictures={product.pictures} />
       <p>
         Preço R$
         {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
@@ -124,10 +121,16 @@ function Product() {
       <p>{product.available_quantity}</p>
       <p>{product.warranty}</p>
       <div className="div-quantity">
-        <button type="button" onClick={handleQuantityClick} value="-">
+        <button
+          className="quantity-button"
+          type="button"
+          onClick={handleQuantityClick}
+          value="-"
+        >
           -
         </button>
         <input
+          className="quantity-input"
           onChange={handleInputChange}
           type="number"
           name="quantity"
@@ -135,6 +138,7 @@ function Product() {
           id="quantity"
         />
         <button
+          className="quantity-button"
           disabled={isDisabled()}
           type="button"
           onClick={handleQuantityClick}
@@ -149,8 +153,9 @@ function Product() {
 
   return (
     <div className="product-page">
-      <CartButton cartData={parsedData} />
       <div>
+        {/* {product && <GallerySlider pictures={product.pictures} />} */}
+
         {productDescription}
         <EvaluationForm setEvaluationData={setEvaluationData} />
         {evaluationData.some((evaluation) => evaluation.id === params.id) && (

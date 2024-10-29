@@ -77,13 +77,16 @@
 /* Home grid */
 .home-grid {
   margin-top: 20px;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   display: grid;
   grid-template-columns: 260px 1fr;
 }
 
 /* Products div */
+.products-list {
+  height: fit-content;
+}
 .products {
   flex: 1;
   display: grid;

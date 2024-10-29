@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import CartList from "../../components/CartList";
 import "./cart.css";
 
 function Cart() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // const { parsedData, setParsedData } = useCartData();
 
@@ -40,19 +39,19 @@ function Cart() {
   //   setParsedData(updatedData);
   // }
 
-  const handleBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-    } else {
-      navigate("/");
-    }
-  };
+  // const handleBack = () => {
+  //   if (window.history.length > 1) {
+  //     navigate(-1);
+  //   } else {
+  //     navigate("/");
+  //   }
+  // };
 
   return (
     <>
-      <button className="back-button" onClick={handleBack}>
+      {/* <button className="back-button" onClick={handleBack}>
         Voltar
-      </button>
+      </button> */}
       <CartList sliderCart={false} />
     </>
   );

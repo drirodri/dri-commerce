@@ -1,0 +1,16 @@
+.clear-button {
+  padding: 10px;
+  width: 200px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--blue-gray);
+  color: #fff;
+  margin: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, letter-spacing 0.3s ease-in-out;
+}
+
+.clear-button:hover {
+  background-color: rgba(230, 102, 102, 0.795);
+  transform: scale(1.05);
+}

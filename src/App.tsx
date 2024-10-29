@@ -5,17 +5,20 @@ import Product from "./pages/Product";
 import NotFound from "./pages/NotFound";
 import CheckoutPage from "./pages/CheckoutPage";
 import { CartProvider } from "./context/CartContext/CartProvider";
+import Layout from "./pages/Layout";
 
 function App() {
   return (
     <>
       <CartProvider>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="product/:id" element={<Product />} />
-          <Route path="checkout" element={<CheckoutPage />} />
-          <Route path="/*" element={<NotFound />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="product/:id" element={<Product />} />
+            <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="/*" element={<NotFound />} />
+          </Route>
         </Routes>
       </CartProvider>
     </>

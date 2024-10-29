@@ -5,45 +5,27 @@
   padding: 10px 20px;
 }
 
-.slider-list {
-  position: fixed;
-  border-radius: 8px;
-  padding: 20px;
-  top: 70px;
-  right: 0; /* Hidden by default */
-  width: 30%;
-  max-height: 800px;
-  background-color: var(--pale-aqua);
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-  transform: translateX(100%); /* Start off-screen */
-  transition: transform 0.3s ease-in-out;
-  z-index: 1;
-  overflow-y: auto;
-  scrollbar-width: smooth;
+.slider-product-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.slider-list.visible {
-  transform: translateX(0); /* Slides in */
-}
-
-.slider-cart-item {
-  box-shadow: var(--blue-gray) 0px 5px 15px;
-  border-radius: 12px;
-  padding: 30px;
-  margin: 10px;
+.slider-total-price-div {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  width: 90%;
-  background-color: white;
+  justify-content: center;
 }
-.slider-cart-item span {
-  display: flex;
-  align-items: center;
+.slider-total-price-div h3 {
+  color: var(--cyan-black);
 }
-.slider-cart-item span {
+.slider-buttons {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  gap: 10px;
 }
 /* .slider-cart-item span p {
   width: 50%;

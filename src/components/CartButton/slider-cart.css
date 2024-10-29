@@ -1,0 +1,97 @@
+.slider-list {
+  position: fixed;
+  border-radius: 8px;
+  padding: 20px;
+  top: 70px;
+  right: 0; /* Hidden by default */
+  width: 30%;
+  max-height: 800px;
+  background-color: var(--pale-aqua);
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  transform: translateX(100%); /* Start off-screen */
+  transition: transform 0.3s ease-in-out;
+  z-index: 1;
+  overflow-y: auto;
+  scrollbar-width: smooth;
+}
+
+.slider-list.visible {
+  transform: translateX(0); /* Slides in */
+}
+
+.slider-cart-item {
+  box-shadow: var(--blue-gray) 0px 5px 15px;
+  border-radius: 12px;
+  padding: 30px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  background-color: white;
+  position: relative;
+}
+.slider-cart-thumbnail {
+  width: 20%;
+  height: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 30px;
+  margin-left: 0;
+}
+
+.slider-item-description {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.title-and-price {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 80%;
+  gap: 5px;
+}
+.title-and-price a {
+  font-size: 0.8rem;
+}
+.title-and-price p {
+  font-size: 0.9rem;
+}
+
+.slider-quantity-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+  align-self: last baseline;
+}
+
+.slider-total-item-price {
+  font-size: 0.9rem;
+  width: 40%;
+  color: var(--cyan-black);
+  text-align: right;
+}
+
+.remove-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 100px;
+  border: none;
+  height: 25px;
+  width: 25px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(219, 47, 47, 0.736);
+  font-weight: 600;
+}

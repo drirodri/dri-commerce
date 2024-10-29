@@ -1,0 +1,16 @@
+.finish-button {
+  padding: 10px;
+  width: 200px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--blue-gray);
+  color: #fff;
+  margin: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, letter-spacing 0.3s ease-in-out;
+}
+.finish-button:hover {
+  background-color: lightgreen;
+  color: var(--cyan-black);
+  transform: scale(1.05);
+}

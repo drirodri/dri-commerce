@@ -3,6 +3,8 @@ import QuantityDiv from "../QuantityDiv";
 import { ProductProps } from "../../type";
 import "./cart-list.css";
 import { useCartContext } from "../../context/CartContext/CartContext";
+import ClearButton from "../ClearButton";
+import FinishButton from "../FinishButton";
 
 type CartClass = {
   sliderCart: boolean;
@@ -11,22 +13,19 @@ type CartClass = {
 function CartList({ sliderCart }: CartClass) {
   const navigate = useNavigate();
 
-  const { parsedData, totalPrice, handleClearButton, removeItem } =
-    useCartContext();
+  const { parsedData, totalPrice, removeItem } = useCartContext();
 
-  const cartItems = parsedData;
-
-  const cartList = cartItems?.map((item: ProductProps) => (
+  const cartList = parsedData?.map((item: ProductProps) => (
     <div
       className={sliderCart ? "slider-cart-item" : "cart-item"}
       key={item.id}
     >
-      <button
+      {/* <button
         onClick={(event) => removeItem(event, item.id)}
         className="remove-button"
       >
         X
-      </button>
+      </button> */}
       <span>
         <button
           onClick={() => navigate(`product/${item.id}`)}
@@ -47,13 +46,24 @@ function CartList({ sliderCart }: CartClass) {
           </p>
         </span>
       </span>
-      <QuantityDiv item={item} />
+      <div className="quantity-div-width">
+        <QuantityDiv item={item} />
+      </div>
+
       <p className="total-item-price">
         Valor total R$
         {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
           item.price * item.quantity
         )}
       </p>
+      <div className="remove-button-width">
+        <button
+          onClick={(event) => removeItem(event, item.id)}
+          className="remove-button-cart"
+        >
+          X
+        </button>
+      </div>
     </div>
   ));
 
@@ -62,10 +72,10 @@ function CartList({ sliderCart }: CartClass) {
       <div className="product-list">
         <h2>
           Seu carrinho
-          {(!cartItems?.length || !cartItems) && " está vazio"}
+          {(!parsedData?.length || !parsedData) && " está vazio"}
         </h2>{" "}
         {cartList}
-        {cartItems.length > 0 && (
+        {parsedData.length > 0 && (
           <div className="total-price-div">
             <span>
               Preço total: R$
@@ -74,15 +84,8 @@ function CartList({ sliderCart }: CartClass) {
               }).format(totalPrice)}
             </span>
             <br />
-            <button onClick={handleClearButton} className="clear-button">
-              Limpar carrinho
-            </button>
-            <button
-              onClick={() => navigate("/checkout")}
-              className="finish-button"
-            >
-              Finalizar compra
-            </button>
+            <ClearButton />
+            <FinishButton />
           </div>
         )}
       </div>

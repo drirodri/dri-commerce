@@ -11,13 +11,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.product-box img {
-  border: solid thin;
-  width: 378px;
-  height: 468;
-  margin: 30px;
+  flex-direction: column;
 }
 
 .product-evaluation {

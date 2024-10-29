@@ -7,11 +7,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 600;
+  font-weight: 1000;
   background-color: var(--sky-blue);
 }
 .quantity-button:hover {
   background-color: var(--soft-aqua);
+}
+.quantity-button:disabled {
+  background-color: rgba(238, 43, 43, 0.267);
 }
 
 /* Chrome, Safari, Edge, Opera */
