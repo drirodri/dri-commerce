@@ -18,7 +18,9 @@ function CartButton() {
     <div className="slider-cart-item" key={item.id}>
       <div className="slider-item-description">
         <button
-          onClick={() => navigate(`product/${item.id}`)}
+          onClick={() =>
+            navigate(`product/${item.id}/${item.available_quantity}`)
+          }
           className="slider-cart-thumbnail"
         >
           <img
@@ -27,7 +29,9 @@ function CartButton() {
           />
         </button>
         <span className="title-and-price">
-          <a href={`product/${item.id}`}>{item.title}</a>
+          <a href={`product/${item.id}/${item.available_quantity}`}>
+            {item.title}
+          </a>
           <p className="cart-item-price">
             Preço R$
             {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(

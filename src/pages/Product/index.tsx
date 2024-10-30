@@ -14,6 +14,7 @@ function Product() {
   const [product, setProduct] = useState<ProductProps>();
   const params = useParams();
   const productId: string = params.id ?? "no-id";
+  const available_quantity: number = Number(params.quantity);
   const [cartItem, setCartItem] = useState<ProductProps>();
   const { parsedData, setParsedData } = useCartContext();
   const { evaluationData, setEvaluationData } = useEvaluationData();
@@ -60,13 +61,20 @@ function Product() {
             ? {
                 ...product,
                 quantity: quantity ? quantity : product.quantity + 1,
+                available_quantity: product.available_quantity
+                  ? product.available_quantity
+                  : available_quantity,
               }
             : product
         );
       } else {
         return [
           ...prevCart,
-          { ...productToSend, quantity: quantity ? quantity : 1 },
+          {
+            ...productToSend,
+            quantity: quantity ? quantity : 1,
+            available_quantity: available_quantity,
+          },
         ];
       }
     });
@@ -82,7 +90,7 @@ function Product() {
     const value = event.currentTarget.value;
     setQuantity(
       (prevQuantity) =>
-        value === "+" ? prevQuantity + 1 : Math.max(prevQuantity - 1, 1) // Prevent going below 1
+        value === "+" ? Number(prevQuantity) + 1 : Math.max(prevQuantity - 1, 1) // Prevent going below 1
     );
   };
 
@@ -102,6 +110,8 @@ function Product() {
   const isDisabled = () => {
     if (cartItem) {
       return quantity >= cartItem.available_quantity;
+    } else {
+      return quantity >= available_quantity;
     }
   };
 
@@ -110,44 +120,65 @@ function Product() {
       onSubmit={(event) => handleCartSubmit(event, product)}
       className="product-box"
     >
-      <p>{product.title}</p>
       <GallerySlider pictures={product.pictures} />
-      <p>
-        Preço R$
-        {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
-          product.price
-        )}
-      </p>
-      <p>{product.available_quantity}</p>
-      <p>{product.warranty}</p>
-      <div className="div-quantity">
-        <button
-          className="quantity-button"
-          type="button"
-          onClick={handleQuantityClick}
-          value="-"
-        >
-          -
-        </button>
-        <input
-          className="quantity-input"
-          onChange={handleInputChange}
-          type="number"
-          name="quantity"
-          value={quantity}
-          id="quantity"
-        />
-        <button
-          className="quantity-button"
-          disabled={isDisabled()}
-          type="button"
-          onClick={handleQuantityClick}
-          value="+"
-        >
-          +
+      <div className="product-info">
+        <h4>{product.title}</h4>
+        <p className="price-text">
+          Preço R$
+          {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
+            product.price
+          )}
+        </p>
+        <p>{product.available_quantity}</p>
+        <p>{product.warranty}</p>
+        <div>
+          {product.shipping.free_shipping && (
+            <p className="product-free-shipping">Frete grátis!</p>
+          )}
+        </div>
+
+        <p>
+          Esta é uma demonstração,{" "}
+          <a
+            style={{ fontWeight: 550 }}
+            target="_blank"
+            href={product.permalink}
+          >
+            clique aqui
+          </a>{" "}
+          para encontrar este produto no MercadoLivre.
+        </p>
+        <div className="div-quantity">
+          <button
+            className="quantity-button"
+            type="button"
+            onClick={handleQuantityClick}
+            value="-"
+          >
+            -
+          </button>
+          <input
+            className="quantity-input"
+            onChange={handleInputChange}
+            type="number"
+            name="quantity"
+            value={quantity}
+            id="quantity"
+          />
+          <button
+            className="quantity-button"
+            disabled={isDisabled()}
+            type="button"
+            onClick={handleQuantityClick}
+            value="+"
+          >
+            +
+          </button>
+        </div>
+        <button className="send-to-cart" type="submit">
+          Adicionar ao Carrinho
         </button>
       </div>
-      <button type="submit">Adicionar ao Carrinho</button>
     </form>
   );
 

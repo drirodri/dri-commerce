@@ -54,7 +54,7 @@ function ProductForm({ item }: itemProps) {
       }
     >
       <a
-        href={`/product/${item.id}`}
+        href={`/product/${item.id}/${item.available_quantity}`}
         className={item.title.length > 60 ? "name-tooltip" : undefined}
         onMouseEnter={
           item.title.length > 60 ? () => setTooltip(true) : undefined
@@ -69,7 +69,9 @@ function ProductForm({ item }: itemProps) {
       </a>
       <button
         className="thumbnail-button"
-        onClick={() => navigate(`/product/${item.id}`)}
+        onClick={() =>
+          navigate(`/product/${item.id}/${item.available_quantity}`)
+        }
       >
         <img
           src={item.thumbnail.replace(/^(http:)?\/\//, "https://")}

@@ -25,12 +25,15 @@ input::-webkit-inner-spin-button {
 }
 
 .quantity-input {
-  width: 20px;
+  width: 30px;
+  height: 30px;
   text-align: center;
   border: none;
 }
 
 .div-quantity {
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 5px;
 }

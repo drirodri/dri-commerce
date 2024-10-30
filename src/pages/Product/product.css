@@ -1,17 +1,35 @@
-.product-box {
-  display: flex;
-  flex-direction: column;
-  padding: 30px;
-  justify-content: center;
-  align-items: center;
-}
-
 .product-page {
   border: solid thin;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  height: 100vh;
+  background-color: white;
+}
+
+.product-box {
+  display: flex;
+  flex-direction: row;
+  padding: 30px;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+}
+
+.product-info {
+  padding: 30px;
+  display: grid;
+  height: 100%;
+  width: 30%;
+  grid-template-rows: 20%;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+h4 {
+  color: var(--cyan-black);
 }
 
 .product-evaluation {
@@ -22,4 +40,11 @@
 .product-evaluation textarea {
   height: 50px;
   padding: 5px;
+}
+
+.product-free-shipping {
+  font-size: 0.9rem;
+  margin-top: 10px;
+  color: rgb(23, 163, 23);
+  font-weight: bold;
 }

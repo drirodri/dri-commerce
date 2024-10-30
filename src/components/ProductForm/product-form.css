@@ -73,6 +73,7 @@
   border: none;
   background-color: var(--blue-gray);
   color: var(--sky-blue);
+  cursor: pointer;
 }
 .send-to-cart:hover {
   background-color: var(--cyan-black);
