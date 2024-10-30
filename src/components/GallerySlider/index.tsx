@@ -17,6 +17,15 @@ function GallerySlider({ pictures }: Gallery) {
   return (
     <div className="gallery-slider">
       <div className="img-wrapper">
+        {/* {pictures.map((image, index) => (
+          <img
+            key={index}
+            src={image.url}
+            alt={`image-${index + 1}`}
+            className="slider-img"
+          />
+        ))} */}
+
         <button
           style={{ transform: "rotate(180deg" }}
           className="prev-button"

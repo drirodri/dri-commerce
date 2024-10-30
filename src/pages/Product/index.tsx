@@ -1,6 +1,6 @@
 import "./product.css";
 import * as api from "../../services/api";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ProductProps } from "../../type";
 import EvaluationForm from "../../components/EvaluationForm";
@@ -8,9 +8,10 @@ import useEvaluationData from "../../hooks/EvaluationData";
 import { Rating } from "@smastrom/react-rating";
 import { useCartContext } from "../../context/CartContext/CartContext";
 import GallerySlider from "../../components/GallerySlider";
+import { LuUserCircle } from "react-icons/lu";
 
 function Product() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [product, setProduct] = useState<ProductProps>();
   const params = useParams();
   const productId: string = params.id ?? "no-id";
@@ -99,13 +100,13 @@ function Product() {
     setQuantity(newValue);
   };
 
-  const handleBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-    } else {
-      navigate("/");
-    }
-  };
+  // const handleBack = () => {
+  //   if (window.history.length > 1) {
+  //     navigate(-1);
+  //   } else {
+  //     navigate("/");
+  //   }
+  // };
 
   const isDisabled = () => {
     if (cartItem) {
@@ -184,30 +185,38 @@ function Product() {
 
   return (
     <div className="product-page">
-      <div>
-        {/* {product && <GallerySlider pictures={product.pictures} />} */}
-
-        {productDescription}
-        <EvaluationForm setEvaluationData={setEvaluationData} />
-        {evaluationData.some((evaluation) => evaluation.id === params.id) && (
-          <div>
+      {productDescription}
+      {evaluationData.some((evaluation) => evaluation.id === params.id) && (
+        <>
+          <h3 style={{ margin: 20 }}>Avaliação de clientes:</h3>
+          <div className="evaluations-div">
             {evaluationData
               .filter((evaluation) => evaluation.id === params.id)
               .map((evaluation, index) => (
-                <div key={index}>
-                  <h4>{evaluation.email}</h4>
-                  <Rating
-                    style={{ maxWidth: 150 }}
-                    readOnly
-                    value={evaluation.rating}
-                  />
+                <div className="user-evaluation" key={index}>
+                  <span className="user-span">
+                    <LuUserCircle />
+                    <h4>{evaluation.email}</h4>
+                  </span>
+                  <span className="user-rating">
+                    <Rating
+                      style={{ maxWidth: 100 }}
+                      readOnly
+                      value={evaluation.rating}
+                    />
+                  </span>
                   {evaluation.message !== "" && <p>{evaluation.message}</p>}
+                  <p className="user-evaluation-date">
+                    Avaliado em {evaluation.currentDate.toLocaleString()}
+                  </p>
                 </div>
               ))}
           </div>
-        )}
-      </div>
-      <button onClick={handleBack}>Voltar</button>
+        </>
+      )}
+      <EvaluationForm setEvaluationData={setEvaluationData} />
+
+      {/* <button onClick={handleBack}>Voltar</button> */}
     </div>
   );
 }

@@ -1,20 +1,43 @@
 import { Outlet } from "react-router-dom";
 import CartButton from "../../components/CartButton";
 import "./layout.css";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 function Layout() {
   const contentPageRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
+  const updateHeight = useCallback(() => {
     const contentPage = contentPageRef.current;
     if (contentPage) {
       contentPage.style.height = `${contentPage.scrollHeight}px`;
     }
   }, []);
 
+  useEffect(() => {
+    updateHeight();
+
+    const observer = new MutationObserver(updateHeight);
+    const contentPage = contentPageRef.current;
+
+    if (contentPage) {
+      observer.observe(contentPage, { childList: true, subtree: true });
+    }
+
+    window.addEventListener("resize", updateHeight);
+
+    // Cleanup
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, [updateHeight]);
+
   return (
-    <div className="layout-page">
+    <div
+      style={{ transition: "height 0.3s ease" }}
+      ref={contentPageRef}
+      className="layout-page"
+    >
       <header>
         <a href="/">
           <img className="header-logo" src="/logo_transparent.png" />
@@ -22,7 +45,7 @@ function Layout() {
 
         <CartButton />
       </header>
-      <div ref={contentPageRef} className="content-page">
+      <div className="content-page">
         <Outlet />
       </div>
       <footer>

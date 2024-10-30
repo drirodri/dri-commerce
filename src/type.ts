@@ -55,6 +55,7 @@ export type Evaluation = {
   rating: number;
   id: string;
   message?: string;
+  currentDate: string;
 };
 
 export type FormValues = {

@@ -1,11 +1,10 @@
 .product-page {
-  border: solid thin;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  height: 100vh;
-  background-color: white;
+  min-height: 100vh;
+  height: 100%;
 }
 
 .product-box {
@@ -26,20 +25,12 @@
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 h4 {
   color: var(--cyan-black);
-}
-
-.product-evaluation {
-  display: flex;
-  flex-direction: column;
-}
-
-.product-evaluation textarea {
-  height: 50px;
-  padding: 5px;
 }
 
 .product-free-shipping {
@@ -47,4 +38,41 @@ h4 {
   margin-top: 10px;
   color: rgb(23, 163, 23);
   font-weight: bold;
+}
+
+.evaluations-div {
+  display: grid;
+  flex-direction: column;
+  height: 20%;
+  overflow: auto;
+  width: 60%;
+  gap: 10px;
+  justify-content: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
+    rgb(209, 213, 219) 0px 0px 0px 1px inset;
+}
+
+.user-evaluation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  padding: 10px;
+  background-color: white;
+}
+
+.user-span {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.user-evaluation-date {
+  font-size: 0.9rem;
+  color: var(--blue-gray);
 }

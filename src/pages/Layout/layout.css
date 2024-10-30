@@ -2,12 +2,13 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  position: relative;
 }
 .content-page {
+  width: 100%;
+  transition: height 0.3s ease;
   flex: 1;
-  padding: 20px;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 header {
   display: flex;
@@ -28,9 +29,10 @@ footer {
   text-align: center;
   color: #262626;
   padding-top: 20px;
+  padding-bottom: 10px;
   align-self: flex-end;
-  margin-top: 20px;
-  position: relative;
+  margin-top: auto;
+  /* position: relative; */
 }
 footer ul {
   margin-top: 5px;
