@@ -116,76 +116,94 @@ function Product() {
     }
   };
 
-  const productDescription = product && (
-    <form
-      onSubmit={(event) => handleCartSubmit(event, product)}
-      className="product-box"
-    >
-      <GallerySlider pictures={product.pictures} />
-      <div className="product-info">
-        <h4>{product.title}</h4>
-        <p className="price-text">
-          Preço R$
-          {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
-            product.price
-          )}
-        </p>
-        <p>{product.available_quantity}</p>
-        <p>{product.warranty}</p>
-        <div>
-          {product.shipping.free_shipping && (
-            <p className="product-free-shipping">Frete grátis!</p>
-          )}
-        </div>
+  const productAttributes = product?.attributes.map((attribute) => (
+    <tr key={attribute.id} className="product-attribute">
+      <th>{attribute.name}</th>
+      <td>{attribute.value_name}</td>
+    </tr>
+    // <p key={attribute.id} className="product-attribute">
+    //   {attribute.name} : {attribute.value_name}
+    // </p>
+  ));
 
-        <p>
-          Esta é uma demonstração,{" "}
-          <a
-            style={{ fontWeight: 550 }}
-            target="_blank"
-            href={product.permalink}
-          >
-            clique aqui
-          </a>{" "}
-          para encontrar este produto no MercadoLivre.
-        </p>
-        <div className="div-quantity">
-          <button
-            className="quantity-button"
-            type="button"
-            onClick={handleQuantityClick}
-            value="-"
-          >
-            -
-          </button>
-          <input
-            className="quantity-input"
-            onChange={handleInputChange}
-            type="number"
-            name="quantity"
-            value={quantity}
-            id="quantity"
-          />
-          <button
-            className="quantity-button"
-            disabled={isDisabled()}
-            type="button"
-            onClick={handleQuantityClick}
-            value="+"
-          >
-            +
+  const productDescription = product && (
+    <div className="product-main-box">
+      <form
+        onSubmit={(event) => handleCartSubmit(event, product)}
+        className="product-box"
+      >
+        <GallerySlider pictures={product.pictures} />
+        <div className="product-info">
+          <h4>{product.title}</h4>
+          <p className="price-text">
+            Preço R$
+            {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
+              product.price
+            )}
+          </p>
+          <p>{product.available_quantity}</p>
+          <p>{product.warranty}</p>
+          <div>
+            {product.shipping.free_shipping && (
+              <p className="product-free-shipping">Frete grátis!</p>
+            )}
+          </div>
+
+          <p>
+            Esta é uma demonstração,{" "}
+            <a
+              style={{ fontWeight: 550 }}
+              target="_blank"
+              href={product.permalink}
+            >
+              clique aqui
+            </a>{" "}
+            para encontrar este produto no MercadoLivre.
+          </p>
+          <div className="div-quantity">
+            <button
+              className="quantity-button"
+              type="button"
+              onClick={handleQuantityClick}
+              value="-"
+            >
+              -
+            </button>
+            <input
+              className="quantity-input"
+              onChange={handleInputChange}
+              type="number"
+              name="quantity"
+              value={quantity}
+              id="quantity"
+            />
+            <button
+              className="quantity-button"
+              disabled={isDisabled()}
+              type="button"
+              onClick={handleQuantityClick}
+              value="+"
+            >
+              +
+            </button>
+          </div>
+
+          <button className="send-to-cart" type="submit">
+            Adicionar ao Carrinho
           </button>
         </div>
-        <button className="send-to-cart" type="submit">
-          Adicionar ao Carrinho
-        </button>
-      </div>
-    </form>
+      </form>
+      <h2 style={{ margin: 20 }}>Características do produto</h2>
+      <table>
+        <tbody className="attributes-body">{productAttributes}</tbody>
+      </table>
+    </div>
   );
 
   return (
     <div className="product-page">
       {productDescription}
+
       {evaluationData.some((evaluation) => evaluation.id === params.id) && (
         <>
           <h3 style={{ margin: 20 }}>Avaliação de clientes:</h3>

@@ -156,3 +156,27 @@
   color: var(--cyan-black);
   cursor: pointer;
 }
+
+.pages {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  margin: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-button {
+  border: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50px;
+  color: var(--cyan-black);
+  background-color: var(--sky-blue);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.page-button:hover {
+  background-color: lightgreen;
+}

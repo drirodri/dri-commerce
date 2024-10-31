@@ -7,6 +7,18 @@
   height: 100%;
 }
 
+.product-main-box {
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--blue-gray) 0px 5px 15px;
+}
+
 .product-box {
   display: flex;
   flex-direction: row;
@@ -14,6 +26,8 @@
   justify-content: center;
   align-items: center;
   height: 80%;
+  background-color: white;
+  border-radius: 8px;
 }
 
 .product-info {
@@ -51,8 +65,7 @@ h4 {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
-    rgb(209, 213, 219) 0px 0px 0px 1px inset;
+  box-shadow: var(--blue-gray) 0px 5px 15px;
 }
 
 .user-evaluation {
@@ -75,4 +88,41 @@ h4 {
 .user-evaluation-date {
   font-size: 0.9rem;
   color: var(--blue-gray);
+}
+
+.attributes-body {
+  height: 100%;
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+table {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.product-attribute {
+  display: flex;
+  width: 100%;
+  flex: 1;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: var(--cyan-black);
+}
+.product-attribute td,
+.product-attribute th {
+  width: 50%;
+  text-align: left;
+  padding: 5px;
+}
+.product-attribute th {
+  color: var(--blue-gray);
+  background-color: #f0f2f2;
+  font-weight: 500;
 }

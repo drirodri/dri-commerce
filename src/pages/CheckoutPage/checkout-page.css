@@ -2,33 +2,53 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.summary {
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 10px;
+  background-color: white;
+}
+.summary-item {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  padding: 10px;
+  /* border-bottom: solid thin; */
+  box-shadow: rgba(0, 0, 0, 0.35) 0px -20px 25px -28px inset;
+}
+.summary-item img {
+  margin-left: 10%;
+}
+.summary-item h4 {
+  font-size: 0.9rem;
+}
+.summary-item p {
+  color: var(--blue-gray);
+  font-size: 0.8rem;
+}
+.summary-item button {
+  padding: 7px;
+  margin: 10px;
+  justify-self: flex-end;
+}
+.summary-item span {
+  margin: 10px;
+}
+.total-value {
+  margin: 10px;
+  padding: 20px;
+  align-self: flex-end;
+  font-weight: 600;
 }
 
 .back-button {
   width: 20%;
   padding: 10px;
-  margin: 10px;
-}
-
-.summary-item {
-  display: flex;
-  align-items: center;
-}
-.summary-item button {
-  padding: 7px;
-  margin: 10px;
-}
-.summary-item span {
-  margin: 10px;
-}
-.summary {
-  padding: 10px;
-  border: solid thin;
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  margin: 10px;
-}
-.total-value {
   margin: 10px;
 }

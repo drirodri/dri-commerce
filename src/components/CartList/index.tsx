@@ -5,6 +5,7 @@ import "./cart-list.css";
 import { useCartContext } from "../../context/CartContext/CartContext";
 import ClearButton from "../ClearButton";
 import FinishButton from "../FinishButton";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 type CartClass = {
   sliderCart: boolean;
@@ -28,7 +29,9 @@ function CartList({ sliderCart }: CartClass) {
       </button> */}
       <span>
         <button
-          onClick={() => navigate(`product/${item.id}`)}
+          onClick={() =>
+            navigate(`/product/${item.id}/${item.available_quantity}`)
+          }
           className="cart-thumbnail"
         >
           <img
@@ -37,7 +40,13 @@ function CartList({ sliderCart }: CartClass) {
           />
         </button>
         <span className="title-price">
-          <a href={`product/${item.id}`}>{item.title}</a>
+          <a
+            onClick={() =>
+              navigate(`/product/${item.id}/${item.available_quantity}`)
+            }
+          >
+            {item.title}
+          </a>
           <p className="cart-item-price">
             Preço R$
             {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
@@ -61,7 +70,8 @@ function CartList({ sliderCart }: CartClass) {
           onClick={(event) => removeItem(event, item.id)}
           className="remove-button-cart"
         >
-          X
+          {/* X */}
+          <AiOutlineCloseCircle size={25} />
         </button>
       </div>
     </div>

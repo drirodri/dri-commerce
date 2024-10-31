@@ -13,6 +13,11 @@ type GalleryUnity = {
 export type Gallery = {
   pictures: GalleryUnity[];
 };
+type ProductAttributes = {
+  id: string;
+  name: string;
+  value_name: string;
+};
 
 export interface ProductProps {
   id: string;
@@ -25,6 +30,7 @@ export interface ProductProps {
   warranty: string;
   shipping: Shipping;
   pictures: GalleryUnity[];
+  attributes: ProductAttributes[];
 }
 
 type Shipping = {

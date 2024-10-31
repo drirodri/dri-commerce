@@ -5,6 +5,8 @@ import { inputsArray } from "../../utils/inputsArray";
 import "./checkout-form.css";
 import { useForm } from "react-hook-form";
 import { FaCcMastercard, FaPix, FaBarcode, FaCcVisa } from "react-icons/fa6";
+import ErrorTooltip from "../ErrorTooltip";
+import { MdError } from "react-icons/md";
 
 function CheckoutForm({ cartData }: cartDataProps) {
   const {
@@ -101,6 +103,7 @@ function CheckoutForm({ cartData }: cartDataProps) {
           type="radio"
           id={method.value}
           value={method.value}
+          className="method-radio"
         />
         {method.label}
         {method.icon}
@@ -108,39 +111,63 @@ function CheckoutForm({ cartData }: cartDataProps) {
     </label>
   ));
 
-  const mapInputs = inputsArray.map((input) => (
-    <div className="checkout-input" key={input.id}>
-      <input
-        {...register(input.id as keyof FormValues, {
-          required: input.required
-            ? `${input.placeholder} é obrigatório`
-            : false,
-          minLength: input.minLength?.boolean
-            ? {
-                value: input.minLength.value,
-                message: `${input.placeholder} deve conter no mínimo ${input.minLength.value} caracteres`,
-              }
-            : undefined,
-          maxLength: input.maxLength?.boolean
-            ? {
-                value: input.maxLength.value,
-                message: `${input.placeholder} deve conter no máximo ${input.maxLength.value} caracteres`,
-              }
-            : undefined,
-          pattern: input.pattern?.boolean
-            ? {
-                value: input.pattern.value,
-                message: `${input.placeholder} deve conter apenas números`,
-              }
-            : undefined,
-        })}
-        type={input.type}
-        placeholder={input.placeholder}
-        className={errors[input.id as keyof FormValues] ? "input-error" : ""}
-        onBlur={input.onBlur ? (event: any) => checkCep(event) : undefined}
-      />
-      <p>{errors[input.id as keyof FormValues]?.message}</p>
-    </div>
+  const mapInputs = inputsArray.map((input, index) => (
+    <>
+      <div className="checkout-input" key={input.id}>
+        <input
+          {...register(input.id as keyof FormValues, {
+            required: input.required
+              ? `${input.placeholder} é obrigatório`
+              : false,
+            minLength: input.minLength?.boolean
+              ? {
+                  value: input.minLength.value,
+                  message: `${input.placeholder} deve conter no mínimo ${input.minLength.value} caracteres`,
+                }
+              : undefined,
+            maxLength: input.maxLength?.boolean
+              ? {
+                  value: input.maxLength.value,
+                  message: `${input.placeholder} deve conter no máximo ${input.maxLength.value} caracteres`,
+                }
+              : undefined,
+            pattern: input.pattern?.boolean
+              ? {
+                  value: input.pattern.value,
+                  message: `${input.placeholder} deve conter apenas números`,
+                }
+              : undefined,
+          })}
+          type={input.type}
+          placeholder={input.placeholder}
+          className={
+            errors[input.id as keyof FormValues]
+              ? "input-error"
+              : "checkout-input-unity"
+          }
+          onBlur={input.onBlur ? (event: any) => checkCep(event) : undefined}
+        />
+        {errors[input.id as keyof FormValues] && (
+          <ErrorTooltip text={errors[input.id as keyof FormValues]?.message}>
+            <MdError />
+          </ErrorTooltip>
+        )}
+
+        {/* <p>{errors[input.id as keyof FormValues]?.message}</p> */}
+      </div>
+      {index === 4 && (
+        <select
+          {...register("state", {
+            required: "Selecione um estado",
+          })}
+          id="state"
+          className="checkout-select"
+        >
+          <option defaultValue="0">Estado</option>
+          {stateOptions}
+        </select>
+      )}
+    </>
   ));
 
   return (
@@ -160,19 +187,8 @@ function CheckoutForm({ cartData }: cartDataProps) {
 
         <div className="checkout-div">{mapInputs}</div>
 
-        <select
-          {...register("state", {
-            required: "Selecione um estado",
-          })}
-          id="state"
-          className="checkout-select"
-        >
-          <option defaultValue="0">Estado</option>
-          {stateOptions}
-        </select>
-
         <div className="payment-selection">
-          <h2>Selecione uma forma de pagamento:</h2>
+          <h2 style={{ margin: 20 }}>Selecione uma forma de pagamento:</h2>
           <div className="methods">{paymentRadios}</div>
         </div>
         <button className="checkout-button" type="submit">

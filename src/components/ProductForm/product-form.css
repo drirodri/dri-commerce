@@ -88,8 +88,6 @@
 /* Different css for products thar are in cart */
 
 #item-found {
-  background-color: var(--sky-blue);
-}
-#item-found img {
-  border: solid thin var(--cyan-black);
+  box-shadow: rgba(41, 206, 41, 0.185) 0px 1px 4px,
+    rgba(50, 189, 50, 0.562) 0px 0px 0px 3px;
 }

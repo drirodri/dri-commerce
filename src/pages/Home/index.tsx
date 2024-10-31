@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { categoriesProps, ProductProps } from "../../type";
 import * as api from "../../services/api";
 import "./Home.css";
@@ -12,8 +12,10 @@ function Home() {
   const [categoryId, setCategoryId] = useState("");
 
   const [products, setProducts] = useState<ProductProps[]>();
-  const [loadingList, setLoadingList] = useState(true);
+  const [loadingList, setLoadingList] = useState("");
   const [sortChoice, setSortChoice] = useState("0");
+
+  const [page, setPage] = useState<number>(0);
 
   // Fetch categories from API to create select options
   async function fetchCategories() {
@@ -50,42 +52,57 @@ function Home() {
   async function fetchProduct(
     categoryId: string,
     productName: string,
-    sort: string
+    sort: string,
+    page: number
   ) {
     try {
       const product = await api.getProductsFromCategoryAndQuery(
         categoryId,
-        productName
+        productName,
+        page
       );
       if (sort === "1") {
         setProducts(
           product?.results.sort((a: any, b: any) => a.price - b.price)
         );
 
-        setLoadingList(false);
+        setLoadingList("found");
       } else if (sort === "2") {
         setProducts(
           product?.results.sort((a: any, b: any) => b.price - a.price)
         );
-        setLoadingList(false);
+        setLoadingList("found");
       } else {
         setProducts(product?.results);
-        setLoadingList(false);
+        setLoadingList("found");
       }
     } catch (err) {
       setProducts([]);
       console.error(err);
+      setLoadingList("");
     }
   }
 
+  const firstMount = useRef(true);
+
   useEffect(() => {
-    fetchProduct(categoryId, productName, sortChoice);
+    if (firstMount.current) {
+      firstMount.current = false;
+      return;
+    }
+    fetchProduct(categoryId, productName, sortChoice, page);
 
     return () => {
       setProducts([]);
-      setLoadingList(true);
+      setLoadingList("searching");
     };
-  }, [productName, categoryId, sortChoice]);
+  }, [productName, categoryId, sortChoice, page]);
+
+  useEffect(() => {
+    setPage(0);
+
+    return () => setLoadingList("searching");
+  }, [categoryId, productName, sortChoice]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -110,6 +127,14 @@ function Home() {
     </option>
   ));
 
+  const pages = Array.from({ length: 10 }, (_, index) => index).map(
+    (page, index) => (
+      <button key={index} className="page-button" onClick={() => setPage(page)}>
+        {page + 1}
+      </button>
+    )
+  );
+
   return (
     <>
       <div className="top-page">
@@ -127,6 +152,7 @@ function Home() {
           </div>
         </form>
       </div>
+
       <div className="home-grid">
         <aside className="aside-menu">
           <div className="sort-and-filter-div">
@@ -148,8 +174,8 @@ function Home() {
           </ul>
         </aside>
         <div className="products-list">
-          {loadingList && <h2>Pesquisando produtos!</h2>}
-          {!loadingList && (
+          {loadingList === "searching" && <h2>Pesquisando produtos!</h2>}
+          {loadingList === "found" && (
             <div className="products">
               {products?.map((product) => (
                 <ProductForm key={product.id} item={product} />
@@ -158,6 +184,7 @@ function Home() {
           )}
         </div>
       </div>
+      {loadingList === "found" && <div className="pages">{pages}</div>}
     </>
   );
 }

@@ -39,6 +39,7 @@ h2 {
 }
 .title-price a {
   font-size: 0.9rem;
+  cursor: pointer;
 }
 .total-item-price {
   padding: 10px;
@@ -76,7 +77,7 @@ h2 {
   width: 10%;
 }
 .remove-button-cart {
-  margin: 10px;
+  /* margin: 10px;
   padding: 10px;
   border-radius: 100px;
   border: none;
@@ -87,8 +88,14 @@ h2 {
   justify-content: center;
   align-items: center;
   background-color: rgba(219, 47, 47, 0.736);
-  font-weight: 600;
+  font-weight: 600; */
+
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
 }
-.remove-button:hover {
-  background-color: rgb(219, 47, 47);
+.remove-button-cart:hover {
+  /* background-color: rgb(219, 47, 47); */
+  color: rgb(219, 47, 47);
 }

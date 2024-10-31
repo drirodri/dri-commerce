@@ -57,6 +57,7 @@
 }
 .title-and-price a {
   font-size: 0.8rem;
+  cursor: pointer;
 }
 .title-and-price p {
   font-size: 0.9rem;
@@ -80,10 +81,11 @@
 
 .remove-button {
   position: absolute;
-  right: 0;
+  right: -10px;
   top: 0;
   margin: 10px;
-  padding: 10px;
+  /* padding: 10px; */
+  /*
   border-radius: 100px;
   border: none;
   height: 25px;
@@ -93,5 +95,15 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(219, 47, 47, 0.736);
-  font-weight: 600;
+  font-weight: 600; */
+
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.remove-button:hover {
+  /* background-color: rgb(219, 47, 47); */
+  color: rgb(219, 47, 47);
 }

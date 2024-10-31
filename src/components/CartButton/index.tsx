@@ -8,6 +8,7 @@ import "./slider-cart.css";
 import "./cart-button.css";
 import ClearButton from "../ClearButton";
 import FinishButton from "../FinishButton";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 function CartButton() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ function CartButton() {
       <div className="slider-item-description">
         <button
           onClick={() =>
-            navigate(`product/${item.id}/${item.available_quantity}`)
+            navigate(`/product/${item.id}/${item.available_quantity}`)
           }
           className="slider-cart-thumbnail"
         >
@@ -31,7 +32,7 @@ function CartButton() {
         <span className="title-and-price">
           <a
             onClick={() =>
-              navigate(`product/${item.id}/${item.available_quantity}`)
+              navigate(`/product/${item.id}/${item.available_quantity}`)
             }
           >
             {item.title}
@@ -48,7 +49,8 @@ function CartButton() {
         onClick={(event) => removeItem(event, item.id)}
         className="remove-button"
       >
-        X
+        <AiOutlineCloseCircle size={20} />
+        {/* X */}
       </button>
       <div className="slider-quantity-div">
         <QuantityDiv item={item} />
