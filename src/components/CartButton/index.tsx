@@ -29,7 +29,11 @@ function CartButton() {
           />
         </button>
         <span className="title-and-price">
-          <a href={`product/${item.id}/${item.available_quantity}`}>
+          <a
+            onClick={() =>
+              navigate(`product/${item.id}/${item.available_quantity}`)
+            }
+          >
             {item.title}
           </a>
           <p className="cart-item-price">
