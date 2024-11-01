@@ -1,12 +1,11 @@
 import "./checkout-page.css";
-import { useNavigate } from "react-router-dom";
+
 import CheckoutForm from "../../components/CheckoutForm";
 import { useCartContext } from "../../context/CartContext/CartContext";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
 function CheckoutPage() {
   const { parsedData, totalPrice, removeItem } = useCartContext();
-  const navigate = useNavigate();
 
   const cartSummary = parsedData.map((item) => (
     <div className="summary-item" key={item.id}>
@@ -34,12 +33,12 @@ function CheckoutPage() {
       </button>
     </div>
   ));
+  // <button className="back-button" onClick={() => navigate(-1)}>
+  //       Voltar
+  //     </button>
 
   return (
     <div className="checkout-page">
-      <button className="back-button" onClick={() => navigate(-1)}>
-        Voltar
-      </button>
       <div className="summary">
         <h2 style={{ margin: 15 }}>Seu carrinho:</h2>
         {cartSummary}

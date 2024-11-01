@@ -114,6 +114,14 @@ function CheckoutForm({ cartData }: cartDataProps) {
   const mapInputs = inputsArray.map((input, index) => (
     <>
       <div className="checkout-input" key={input.id}>
+        <label className="input-title" htmlFor={input.id}>
+          <p>{input.placeholder}:</p>
+          {errors[input.id as keyof FormValues] && (
+            <ErrorTooltip text={errors[input.id as keyof FormValues]?.message}>
+              <MdError />
+            </ErrorTooltip>
+          )}
+        </label>
         <input
           {...register(input.id as keyof FormValues, {
             required: input.required
@@ -138,8 +146,9 @@ function CheckoutForm({ cartData }: cartDataProps) {
                 }
               : undefined,
           })}
+          id={input.id}
           type={input.type}
-          placeholder={input.placeholder}
+          // placeholder={input.placeholder}
           className={
             errors[input.id as keyof FormValues]
               ? "input-error"
@@ -147,25 +156,22 @@ function CheckoutForm({ cartData }: cartDataProps) {
           }
           onBlur={input.onBlur ? (event: any) => checkCep(event) : undefined}
         />
-        {errors[input.id as keyof FormValues] && (
-          <ErrorTooltip text={errors[input.id as keyof FormValues]?.message}>
-            <MdError />
-          </ErrorTooltip>
-        )}
 
         {/* <p>{errors[input.id as keyof FormValues]?.message}</p> */}
       </div>
       {index === 4 && (
-        <select
-          {...register("state", {
-            required: "Selecione um estado",
-          })}
-          id="state"
-          className="checkout-select"
-        >
-          <option defaultValue="0">Estado</option>
-          {stateOptions}
-        </select>
+        <div className="select-state">
+          <label htmlFor="state">Estado:</label>
+          <select
+            {...register("state", {
+              required: "Selecione um estado",
+            })}
+            id="state"
+            className="checkout-select"
+          >
+            {stateOptions}
+          </select>
+        </div>
       )}
     </>
   ));
@@ -183,7 +189,7 @@ function CheckoutForm({ cartData }: cartDataProps) {
         id="checkout-form"
         className="checkout-form"
       >
-        <h2>Informações do Comprador</h2>
+        <h2 style={{ margin: 20 }}>Dados de Entrega</h2>
 
         <div className="checkout-div">{mapInputs}</div>
 

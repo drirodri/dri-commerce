@@ -9,6 +9,17 @@ export const inputsArray = [
       value: 4,
     },
   },
+
+  {
+    id: "email",
+    type: "email",
+    placeholder: "Email",
+    required: true,
+    pattern: {
+      boolean: true,
+      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+    },
+  },
   {
     id: "cpf",
     type: "text",
@@ -25,16 +36,6 @@ export const inputsArray = [
     pattern: {
       boolean: true,
       value: /^[0-9]{11}$/,
-    },
-  },
-  {
-    id: "email",
-    type: "email",
-    placeholder: "Email",
-    required: true,
-    pattern: {
-      boolean: true,
-      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
     },
   },
   {

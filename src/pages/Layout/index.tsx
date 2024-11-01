@@ -20,7 +20,7 @@ function Layout() {
     const contentPage = contentPageRef.current;
 
     if (contentPage) {
-      observer.observe(contentPage, { childList: true, subtree: true });
+      observer.observe(contentPage, { childList: true });
     }
 
     window.addEventListener("resize", updateHeight);

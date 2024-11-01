@@ -30,7 +30,7 @@ function CartList({ sliderCart }: CartClass) {
       <span>
         <button
           onClick={() =>
-            navigate(`/product/${item.id}/${item.available_quantity}`)
+            navigate(`product/${item.id}/${item.available_quantity}`)
           }
           className="cart-thumbnail"
         >
@@ -42,7 +42,7 @@ function CartList({ sliderCart }: CartClass) {
         <span className="title-price">
           <a
             onClick={() =>
-              navigate(`/product/${item.id}/${item.available_quantity}`)
+              navigate(`product/${item.id}/${item.available_quantity}`)
             }
           >
             {item.title}
@@ -87,12 +87,12 @@ function CartList({ sliderCart }: CartClass) {
         {cartList}
         {parsedData.length > 0 && (
           <div className="total-price-div">
-            <span>
+            <h3 style={{ margin: 20 }}>
               Preço total: R$
               {new Intl.NumberFormat("BRL", {
                 maximumFractionDigits: 2,
               }).format(totalPrice)}
-            </span>
+            </h3>
             <br />
             <ClearButton />
             <FinishButton />
