@@ -40,7 +40,7 @@ function CheckoutPage() {
   return (
     <div className="checkout-page">
       <div className="summary">
-        <h2 style={{ margin: 15 }}>Seu carrinho:</h2>
+        <h2 style={{ margin: 20 }}>Seu carrinho:</h2>
         {cartSummary}
         <p className="total-value">
           Valor total: <br />
