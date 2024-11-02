@@ -155,7 +155,7 @@
   border-bottom: solid thin;
   text-align: center;
   padding: 2px;
-  color: var(--blue-gray);
+  color: var(--cyan-black);
 }
 .sort-select:hover {
   font-weight: 800;
