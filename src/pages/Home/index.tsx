@@ -5,6 +5,8 @@ import * as api from "../../services/api";
 import "./Home.css";
 import ProductForm from "../../components/ProductForm";
 import { FaSearch } from "react-icons/fa";
+import CartButton from "../../components/CartButton";
+import { useMediaQuery } from "react-responsive";
 
 function Home() {
   const [categories, setCategories] = useState<categoriesProps>();
@@ -34,8 +36,8 @@ function Home() {
   // ));
 
   const categoriesLi = categories?.map((category) => (
-    <li
-      className="category-li"
+    <button
+      className="button-li"
       key={category.id}
       onClick={(e) => {
         const target = e.target as HTMLLIElement;
@@ -44,7 +46,7 @@ function Home() {
       data-value={category.id}
     >
       {category.name}
-    </li>
+    </button>
   ));
 
   // Fetch products from API using categoryId and productName
@@ -135,6 +137,8 @@ function Home() {
     )
   );
 
+  const isMobile = useMediaQuery({ query: "(max-width: 500px)" });
+
   return (
     <>
       <div className="top-page">
@@ -150,29 +154,27 @@ function Home() {
               <FaSearch />
             </button>
           </div>
+          {isMobile && <CartButton />}
         </form>
       </div>
 
       <div className="home-grid">
-        <aside className="aside-menu">
-          <div className="sort-and-filter-div">
-            <div className="sort-select-div">
-              <label htmlFor="sort-select-name">Ordernar por:</label>
-              <select
-                onChange={(e) => setSortChoice(e.target.value)}
-                name="sort-select-name"
-                id="sort-select"
-                className="sort-select"
-              >
-                {selectChoices}
-              </select>
-            </div>
+        <nav className="nav-menu">
+          <div className="sort-and-filter-div"></div>
+          <h2 style={{ margin: 20 }}>Categorias</h2>
+          <ul className="category-ul">{categoriesLi}</ul>
+          <div className="sort-select-div">
+            <label htmlFor="sort-select">Ordernar por:</label>
+            <select
+              onChange={(e) => setSortChoice(e.target.value)}
+              name="sort-select-name"
+              id="sort-select"
+              className="sort-select"
+            >
+              {selectChoices}
+            </select>
           </div>
-          <ul className="category-ul">
-            <h2>Categorias</h2>
-            {categoriesLi}
-          </ul>
-        </aside>
+        </nav>
         <div className="products-list">
           {loadingList === "searching" && <h2>Pesquisando produtos!</h2>}
           {loadingList === "found" && (

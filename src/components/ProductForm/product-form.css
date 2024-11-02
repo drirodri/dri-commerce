@@ -1,5 +1,6 @@
 .product-form {
   border-radius: 8px;
+  margin-bottom: 10px;
   padding: 20px;
   width: 240px;
   height: 500px;
@@ -9,6 +10,7 @@
   background-color: white;
   box-shadow: var(--blue-gray) 0px 5px 15px;
   position: relative;
+  flex: 0 0 calc(20% - 20px);
 }
 
 .product-form img {
@@ -49,9 +51,9 @@
 .free-shipping {
   font-size: 0.9rem;
   justify-self: flex-end;
-  margin-top: 10px;
   color: rgb(23, 163, 23);
   font-weight: bold;
+  padding-top: 5px;
 }
 .split-price {
   font-size: 0.9rem;

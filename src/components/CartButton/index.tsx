@@ -1,4 +1,3 @@
-import { BiCart } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { ProductProps } from "../../type";
 import { useState } from "react";
@@ -9,6 +8,7 @@ import "./cart-button.css";
 import ClearButton from "../ClearButton";
 import FinishButton from "../FinishButton";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { TiShoppingCart } from "react-icons/ti";
 
 function CartButton() {
   const navigate = useNavigate();
@@ -70,8 +70,9 @@ function CartButton() {
       onMouseLeave={() => setVisibility(false)}
     >
       <button onClick={() => navigate("/cart")} className="cart-button">
-        <BiCart className="cart" />
-        {parsedData.length}
+        {/* <BiCart className="cart" /> */}
+        <TiShoppingCart className="cart" />
+        <p>{parsedData.length}</p>
       </button>
       <div className={`slider-list ${visibility ? "visible" : ""}`}>
         <div className="slider-product-list">

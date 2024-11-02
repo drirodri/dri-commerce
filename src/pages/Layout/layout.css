@@ -17,6 +17,11 @@ header {
   padding: 10px 20px;
   background-color: transparent;
 }
+@media (max-width: 500px) {
+  header {
+    flex-direction: column;
+  }
+}
 .header-logo {
   max-width: 200px;
   height: auto;

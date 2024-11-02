@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import CartButton from "../../components/CartButton";
 import "./layout.css";
 import { useCallback, useEffect, useRef } from "react";
+import { useMediaQuery } from "react-responsive";
 
 function Layout() {
   const contentPageRef = useRef<HTMLDivElement | null>(null);
@@ -32,6 +33,8 @@ function Layout() {
     };
   }, [updateHeight]);
 
+  const notMobile = useMediaQuery({ query: "(min-width:501px)" });
+
   return (
     <div
       style={{ transition: "height 0.3s ease" }}
@@ -42,8 +45,7 @@ function Layout() {
         <a href="/">
           <img className="header-logo" src="/logo_transparent.png" />
         </a>
-
-        <CartButton />
+        {notMobile && <CartButton />}
       </header>
       <div className="content-page">
         <Outlet />
