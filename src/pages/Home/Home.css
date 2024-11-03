@@ -145,21 +145,21 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 0;
-  padding: 0;
+  margin: 5px;
+  padding: 2px;
   font-size: 0.9rem;
   gap: 5px;
+  color: var(--sky-blue);
 }
 .sort-select {
   all: unset;
   border-bottom: solid thin;
   text-align: center;
-  padding: 2px;
+  padding: 5px;
   color: var(--cyan-black);
 }
-.sort-select:hover {
+.sort-select-div:hover {
   font-weight: 800;
-  color: var(--cyan-black);
 }
 
 /* Nav Menu */

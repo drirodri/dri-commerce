@@ -5,7 +5,7 @@ function FinishButton() {
   const navigate = useNavigate();
 
   return (
-    <button onClick={() => navigate("/checkout")} className="finish-button">
+    <button onClick={() => navigate("/cartcheckout")} className="finish-button">
       Finalizar compra
     </button>
   );

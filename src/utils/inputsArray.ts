@@ -71,6 +71,14 @@ export const inputsArray = [
     },
     onBlur: true,
   },
+
+  {
+    id: "city",
+    type: "text",
+    placeholder: "Cidade",
+    required: true,
+  },
+
   {
     id: "street",
     type: "text",
@@ -82,21 +90,15 @@ export const inputsArray = [
     },
   },
   {
-    id: "houseComplement",
-    type: "text",
-    placeholder: "Complemento",
-    required: false, // Complemento is optional
-  },
-  {
     id: "houseNumber",
     type: "number",
     placeholder: "Número",
     required: true,
   },
   {
-    id: "city",
+    id: "houseComplement",
     type: "text",
-    placeholder: "Cidade",
-    required: true,
+    placeholder: "Complemento",
+    required: false, // Complemento is optional
   },
 ];

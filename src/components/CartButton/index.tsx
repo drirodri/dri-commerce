@@ -4,7 +4,6 @@ import { useState } from "react";
 import QuantityDiv from "../QuantityDiv";
 import { useCartContext } from "../../context/CartContext/CartContext";
 import "./slider-cart.css";
-import "./cart-button.css";
 import ClearButton from "../ClearButton";
 import FinishButton from "../FinishButton";
 import { AiOutlineCloseCircle } from "react-icons/ai";
@@ -72,7 +71,7 @@ function CartButton() {
       onMouseEnter={() => setVisibility(true)}
       onMouseLeave={() => setVisibility(false)}
     >
-      <button onClick={() => navigate("/cart")} className="cart-button">
+      <button onClick={() => navigate("/cartcheckout")} className="cart-button">
         {/* <BiCart className="cart" /> */}
         <TiShoppingCart className="cart" />
         <p>{parsedData.length}</p>

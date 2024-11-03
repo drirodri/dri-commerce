@@ -3,11 +3,10 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
+  width: 100%;
   padding: 10px;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
-  margin: 10px;
   background-color: white;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
@@ -15,17 +14,19 @@
   margin: 20px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  flex-direction: column;
   align-items: center;
   gap: 15px;
   padding: 5px;
   justify-content: center;
+  width: 80%;
 }
 
 .checkout-input {
-  display: flex;
+  /* display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: column; */
+  display: grid;
+  grid-template-rows: 1fr 1fr;
   padding: 5px;
   gap: 5px;
 }
@@ -47,7 +48,7 @@
 .checkout-input-unity {
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-  width: 300px;
+  width: 100%;
   height: 20px;
   border: none;
   /* box-shadow: none; */
@@ -101,14 +102,24 @@
 }
 
 .payment-selection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin: 10px;
   padding: 10px;
   width: 70%;
   border-radius: 8px;
+  width: 100%;
+}
+.method-radio {
+  display: none;
 }
 .methods {
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(4, 25%);
+  gap: 10px;
 }
 .payment-method {
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
@@ -118,23 +129,21 @@
   background-color: white;
   border-radius: 8px;
 }
-.payment-method div {
+.payment-method {
   padding: 10px;
   gap: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
-.payment-method div:hover {
+
+.payment-method:hover {
   background-color: var(--sky-blue);
   border-radius: 8px;
 }
-.payment-selection input[type="radio"]:checked + .payment-method {
+.payment-method.selected {
   background-color: var(--sky-blue);
-}
-
-.payment-method input {
-  padding: 50px;
 }
 
 .checkout-button {
@@ -152,4 +161,60 @@
   background-color: lightgreen;
   color: var(--cyan-black);
   transform: scale(1.05);
+}
+
+.city-state-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.city-state-box .input-title {
+  align-self: center;
+  width: 30%;
+}
+
+@media (max-width: 1250px) {
+  .methods {
+    width: 80%;
+    grid-template-columns: repeat(2, 50%);
+  }
+}
+
+@media (max-width: 1100px) {
+  .checkout-div {
+    width: 95%;
+  }
+}
+
+@media (max-width: 860px) {
+  .checkout-div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+@media (max-width: 600px) {
+  .methods {
+    width: 100%;
+  }
+}
+
+@media (max-width: 550px) {
+  .city-state-box {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .city-state-box .input-title {
+    width: 100%;
+  }
+  .city-state-box .select-state {
+    width: 100%;
+  }
+  .methods {
+    grid-template-columns: 1fr;
+    width: 80%;
+  }
 }
