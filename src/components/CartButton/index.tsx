@@ -9,6 +9,7 @@ import ClearButton from "../ClearButton";
 import FinishButton from "../FinishButton";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { TiShoppingCart } from "react-icons/ti";
+import { useMediaQuery } from "react-responsive";
 
 function CartButton() {
   const navigate = useNavigate();
@@ -64,6 +65,8 @@ function CartButton() {
     </div>
   ));
 
+  const notMobile = useMediaQuery({ query: "(min-width:768px)" });
+
   return (
     <div
       onMouseEnter={() => setVisibility(true)}
@@ -74,14 +77,16 @@ function CartButton() {
         <TiShoppingCart className="cart" />
         <p>{parsedData.length}</p>
       </button>
-      <div className={`slider-list ${visibility ? "visible" : ""}`}>
-        <div className="slider-product-list">
-          <h2>
-            Seu carrinho
-            {(!parsedData?.length || !parsedData) && " está vazio"}
-          </h2>{" "}
-          {cartList}
-          {parsedData.length > 0 && (
+      <div
+        className={`slider-list ${visibility && notMobile ? "visible" : ""}`}
+      >
+        <h2 style={{ marginBottom: 10 }}>
+          Seu carrinho
+          {(!parsedData?.length || !parsedData) && " está vazio"}
+        </h2>{" "}
+        <div className="slider-product-list">{cartList}</div>
+        {parsedData.length > 0 && (
+          <>
             <div className="slider-total-price-div">
               <h3>
                 Preço total: R$
@@ -90,13 +95,13 @@ function CartButton() {
                 }).format(totalPrice)}
               </h3>
               <br />
-              <div className="slider-buttons">
-                <ClearButton />
-                <FinishButton />
-              </div>
             </div>
-          )}
-        </div>
+            <div className="slider-buttons">
+              <ClearButton />
+              <FinishButton />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
