@@ -77,7 +77,7 @@ function CheckoutPage() {
       </div>
 
       {!checkoutVisibility && (
-        <div>
+        <div className="cart-handle-buttons">
           <button
             onClick={() => setCheckoutVisilibity(true)}
             className="finish-button"
