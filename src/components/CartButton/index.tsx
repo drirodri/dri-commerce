@@ -71,7 +71,12 @@ function CartButton() {
       onMouseEnter={() => setVisibility(true)}
       onMouseLeave={() => setVisibility(false)}
     >
-      <button onClick={() => navigate("/cartcheckout")} className="cart-button">
+      <button
+        onClick={
+          parsedData.length > 0 ? () => navigate("/cartcheckout") : undefined
+        }
+        className="cart-button"
+      >
         {/* <BiCart className="cart" /> */}
         <TiShoppingCart className="cart" />
         <p>{parsedData.length}</p>

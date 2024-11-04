@@ -160,7 +160,6 @@ function Home() {
 
       <div className="home-grid">
         <nav className="nav-menu">
-          <div className="sort-and-filter-div"></div>
           <h2 style={{ margin: 20 }}>Categorias</h2>
           <ul className="category-ul">{categoriesLi}</ul>
           <div className="sort-select-div">

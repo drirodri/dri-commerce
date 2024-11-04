@@ -47,3 +47,24 @@
 .prev-button:hover {
   background-color: rgba(173, 216, 230, 0.384);
 }
+
+@media (max-width: 1200px) {
+  .gallery-slider {
+    min-width: 50%;
+    max-width: 50%;
+  }
+  .img-wrapper {
+    width: 100%;
+  }
+  .slider-img {
+    width: 80%;
+    height: 80%;
+  }
+}
+
+@media (max-width: 850px) {
+  .gallery-slider {
+    min-width: 90%;
+    max-height: 90%;
+  }
+}

@@ -50,3 +50,17 @@
   color: var(--sky-blue);
   border: none;
 }
+
+@media (max-width: 800px) {
+  .product-evaluation > *,
+  .product-evaluation textarea {
+    width: 50%;
+  }
+}
+
+@media (max-width: 650px) {
+  .product-evaluation > *,
+  .product-evaluation textarea {
+    width: 80%;
+  }
+}

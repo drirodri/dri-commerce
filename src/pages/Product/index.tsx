@@ -193,10 +193,13 @@ function Product() {
           </button>
         </div>
       </form>
-      <table>
+      <div className="attributes-div">
         <h2 style={{ margin: 20 }}>Características do produto</h2>
-        <tbody className="attributes-body">{productAttributes}</tbody>
-      </table>
+
+        <table>
+          <tbody className="attributes-body">{productAttributes}</tbody>
+        </table>
+      </div>
     </div>
   );
 

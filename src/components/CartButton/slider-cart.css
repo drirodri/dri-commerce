@@ -6,7 +6,8 @@
   top: 70px;
   padding-top: 20px;
   right: 0;
-  height: 70%;
+  height: fit-content;
+  max-height: 70%;
   background-color: var(--pale-aqua);
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
   transform: translateX(100%); /* Start off-screen */
