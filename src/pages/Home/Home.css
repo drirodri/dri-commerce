@@ -252,6 +252,7 @@
 @media (max-width: 550px) {
   .home-grid {
     margin-top: 0;
+    max-height: 100vh;
   }
   .products {
     /* flex-wrap: nowrap;
@@ -266,6 +267,7 @@
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
     scroll-padding: var(--gap);
+    padding: 10px;
   }
   .nav-menu {
     margin-top: 0;
