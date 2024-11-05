@@ -93,3 +93,14 @@
   box-shadow: rgba(41, 206, 41, 0.185) 0px 1px 4px,
     rgba(50, 189, 50, 0.562) 0px 0px 0px 3px;
 }
+
+@media (max-width: 550px) {
+  #item-found {
+    box-shadow: rgba(41, 206, 41, 0.185) 0px 6px 24px 0px,
+      rgba(50, 189, 50, 0.562) 0px 0px 0px 1px;
+  }
+  .product-form {
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  }
+}
