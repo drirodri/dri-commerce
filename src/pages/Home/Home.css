@@ -250,9 +250,17 @@
 }
 
 @media (max-width: 550px) {
+  .content-page {
+    min-height: fit-content;
+    max-height: 100vh;
+  }
   .home-grid {
     margin-top: 0;
+    min-height: fit-content;
     max-height: 100vh;
+    height: fit-content;
+    align-items: center;
+    justify-content: center;
   }
   .products {
     /* flex-wrap: nowrap;
