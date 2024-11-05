@@ -65,18 +65,23 @@ function CheckoutPage() {
   return (
     <div className="checkout-page">
       <div className="summary">
-        <h2 style={{ margin: 20 }}>Seu carrinho:</h2>
+        <h2 style={{ margin: 20 }}>
+          Seu carrinho
+          {!parsedData?.length || !parsedData ? " está vazio!" : ":"}
+        </h2>
         {cartSummary}
-        <p className="total-value">
-          Valor total: <br />
-          R${" "}
-          {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
-            totalPrice
-          )}
-        </p>
+        {totalPrice > 0 && (
+          <p className="total-value">
+            Valor total: <br />
+            R${" "}
+            {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
+              totalPrice
+            )}
+          </p>
+        )}
       </div>
 
-      {!checkoutVisibility && (
+      {!checkoutVisibility && parsedData?.length > 0 ? (
         <div className="cart-handle-buttons">
           <button
             onClick={() => setCheckoutVisilibity(true)}
@@ -86,6 +91,10 @@ function CheckoutPage() {
           </button>
           <ClearButton />
         </div>
+      ) : (
+        <button onClick={() => navigate("/")} className="finish-button">
+          Voltar
+        </button>
       )}
       {checkoutVisibility && (
         <div className="form-box">
