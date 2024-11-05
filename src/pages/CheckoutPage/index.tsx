@@ -92,9 +92,11 @@ function CheckoutPage() {
           <ClearButton />
         </div>
       ) : (
-        <button onClick={() => navigate("/")} className="finish-button">
-          Voltar
-        </button>
+        !checkoutVisibility && (
+          <button onClick={() => navigate("/")} className="finish-button">
+            Voltar
+          </button>
+        )
       )}
       {checkoutVisibility && (
         <div className="form-box">
