@@ -4,6 +4,7 @@
   width: 100%;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 }
 
 /* Search box */
@@ -232,6 +233,63 @@
   background-color: lightgreen;
 }
 
+.categories-newselect {
+  width: 100%;
+  position: relative;
+}
+.category-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.category-header p {
+  margin-left: 5px;
+}
+
+.categories-newselect:hover {
+  cursor: pointer;
+}
+
+.categories-div {
+  display: grid;
+  grid-template-rows: 1 100%;
+  background-color: white;
+  width: 100%;
+  position: absolute;
+  height: 400px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  left: 0;
+  right: 0;
+}
+.categories-span {
+  color: var(--blue-gray);
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.9rem;
+  margin: 3px;
+}
+
+.categories-span:hover {
+  width: 100%;
+  color: var(--cyan-black);
+  cursor: pointer;
+  /* background-color: var(--sky-blue); */
+  font-weight: 550;
+}
+
+@media (min-width: 1300px) {
+  .top-page {
+    width: 30%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: blue;
+  }
+}
+
 @media (max-width: 1000px) {
   .nav-menu {
     height: 30vh;
@@ -244,15 +302,6 @@
 @media (min-width: 900px) {
   .products-list {
     width: 90%;
-  }
-}
-@media (min-width: 768px) {
-  .top-page {
-    width: 30%;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, 0);
   }
 }
 
@@ -268,6 +317,11 @@
     height: fit-content;
     align-items: center;
     justify-content: center;
+  }
+  .products-list {
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
   }
   .products {
     /* flex-wrap: nowrap;
@@ -299,14 +353,21 @@
     background: none;
     box-shadow: none;
   }
+  .product-name-input {
+    padding: 0px;
+  }
   .category-label,
-  .product-input-label {
+  .product-input-label,
+  .categories-newselect {
     width: 80%;
     background-color: white;
     padding: 5px;
     border-radius: 50px;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
       rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  }
+  .categories-newselect {
+    z-index: 2;
   }
   .product-name-input,
   .category-select {

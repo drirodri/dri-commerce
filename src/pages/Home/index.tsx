@@ -12,6 +12,9 @@ function Home() {
   const [categories, setCategories] = useState<categoriesProps>();
   const [productName, setProductName] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [categoryName, setCategoryName] = useState("Categorias");
+
+  const [showSelect, setShowSelect] = useState(false);
 
   const [products, setProducts] = useState<ProductProps[]>();
   const [loadingList, setLoadingList] = useState("");
@@ -28,32 +31,6 @@ function Home() {
   useEffect(() => {
     fetchCategories();
   }, []);
-
-  // const categoriesSelect = categories?.map((category) => (
-  //   <option value={category.id} key={category.id}>
-  //     {category.name}
-  //   </option>
-  // ));
-
-  // const categoriesLi = categories?.map((category) => (
-  //   <button
-  //     className="button-li"
-  //     key={category.id}
-  //     onClick={(e) => {
-  //       const target = e.target as HTMLLIElement;
-  //       setCategoryId(target.dataset.value || "");
-  //     }}
-  //     data-value={category.id}
-  //   >
-  //     {category.name}
-  //   </button>
-  // ));
-
-  const categoryOptions = categories?.map((category) => (
-    <option className="category-option" key={category.id} value={category.id}>
-      {category.name}
-    </option>
-  ));
 
   // Fetch products from API using categoryId and productName
 
@@ -145,23 +122,38 @@ function Home() {
 
   const isMobile = useMediaQuery({ query: "(max-width: 500px)" });
 
+  const categoriesSpan = categories?.map((category) => (
+    <span
+      onClick={() => {
+        setCategoryId(category.id);
+        setCategoryName(category.name);
+        setShowSelect(false);
+      }}
+      className="categories-span"
+    >
+      {category.name}
+    </span>
+  ));
+
   return (
     <>
       <div className="top-page">
         <form onSubmit={handleSubmit} className="product-input">
           <div className="search-div">
-            <label className="category-label" htmlFor="category-select">
-              <select
-                id="category-select"
-                className="category-select"
-                onChange={(e) => setCategoryId(e.target.value)}
+            <div className="categories-newselect">
+              <span
+                className="category-header"
+                onClick={() =>
+                  showSelect ? setShowSelect(false) : setShowSelect(true)
+                }
               >
-                <option defaultValue="">Categorias</option>
-                {categoryOptions}
-              </select>
-              <FaAngleDown id="category-select" />
-            </label>
-
+                <p>{categoryName}</p>
+                <FaAngleDown id="category-select" />
+              </span>
+              {showSelect && (
+                <div className="categories-div">{categoriesSpan}</div>
+              )}
+            </div>
             <label className="product-input-label" htmlFor="product-name-input">
               <input
                 className="product-name-input"
@@ -181,23 +173,6 @@ function Home() {
       </div>
 
       <div className="home-grid">
-        {/* <nav className="nav-menu">
-          <h2 style={{ margin: 20 }}>Categorias</h2>
-          <ul className="category-ul">{categoriesLi}</ul>
-
-          <div className="sort-select-div">
-            <label htmlFor="sort-select">Ordernar por:</label>
-            <select
-              onChange={(e) => setSortChoice(e.target.value)}
-              name="sort-select-name"
-              id="sort-select"
-              className="sort-select"
-            >
-              {selectChoices}
-            </select>
-          </div>
-        </nav> */}
-
         {products !== undefined && (
           <div className="sort-select-div">
             <label htmlFor="sort-select">Ordernar por:</label>
