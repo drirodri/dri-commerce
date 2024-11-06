@@ -84,10 +84,13 @@
 
 .category-select {
   flex: 1;
+  -webkit-box-shadow: none; /* Chrome, Safari, Edge */
+  -moz-box-shadow: none; /* Firefox */
+  box-shadow: none; /* General */
+  outline: none;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  box-shadow: none;
   border: none;
   color: var(--blue-gray);
   font-size: 0.9rem;
