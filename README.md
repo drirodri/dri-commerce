@@ -17,4 +17,4 @@ Dri-Commerce is an e-commerce application built using modern web technologies. T
 - ✅ **Shopping cart functionality**
 - ✅ **Design** 
 - ✅ **Responsive design for mobile and desktop**
-- ✅ **<a href="https://dri-commerce.netlify.app" target="_blank">Deploy on Netlify</a>**
+- ✅ **[Deploy on Netlify](https://dri-commerce.netlify.app)**
