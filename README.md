@@ -15,5 +15,6 @@ Dri-Commerce is an e-commerce application built using modern web technologies. T
 - ✅ **Integration with Mercado Livre**
 - ✅ **Product listings** 
 - ✅ **Shopping cart functionality**
-- 🎨 **Design** (In Progress)
-- 📱 **Responsive design for mobile and desktop** (To Do)
+- ✅ **Design** 
+- ✅ **Responsive design for mobile and desktop**
+- ✅ **<a href="https://dri-commerce.netlify.app" target="_blank">Deploy on Netlify</a>**
