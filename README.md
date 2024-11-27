@@ -1,7 +1,7 @@
 # Dri-Commerce
 
-## 🚀 Project Status
-**In Progress**
+## 🚀 Project Status: Deployed!
+
 
 Dri-Commerce is an e-commerce application built using modern web technologies. The project is currently under development
 
