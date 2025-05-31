@@ -24,6 +24,9 @@ dist-ssr
 *.sln
 *.sw?
 
+.env
+.env.*
+
 # Old Source Files
 src/old
 
