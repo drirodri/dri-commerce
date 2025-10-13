@@ -8,6 +8,8 @@ import Button from "../../components/Button";
 import Box from "../../components/Box";
 import { LoginFormValues } from "../../type";
 import "./Login.css";
+import { login, getCurrentUser } from "../../services/auth";
+import { setUserInfo } from "../../services/auth-storage";
 
 function Login() {
   const {
@@ -23,25 +25,31 @@ function Login() {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>("");
 
   const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true);
+    setError("");
+
     try {
-      // TODO: Integrar com a API de login do backend
-      console.log("Login data:", data);
+      await login(data);
 
-      // Simulando chamada de API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const user = await getCurrentUser();
 
-      // TODO: Armazenar tokens e dados do usuário
-      // localStorage.setItem('accessToken', response.token);
-      // localStorage.setItem('refreshToken', response.refreshToken);
+      setUserInfo({
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      });
 
-      alert("Login realizado com sucesso!");
       navigate("/");
-    } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      alert("Erro ao fazer login. Verifique suas credenciais.");
+    } catch (err) {
+      console.error("Erro ao fazer login:", err);
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Erro ao fazer login. Verifique suas credenciais.";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -100,6 +108,19 @@ function Login() {
               Esqueceu a senha?
             </a>
           </div>
+
+          {error && (
+            <div
+              className="login-error"
+              style={{
+                color: "red",
+                marginBottom: "1rem",
+                textAlign: "center",
+              }}
+            >
+              {error}
+            </div>
+          )}
 
           <Button type="submit" isLoading={isLoading} loadingText="Entrando...">
             Entrar
