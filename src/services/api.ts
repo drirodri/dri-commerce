@@ -1,27 +1,55 @@
-export async function getCategories() {
-  const categories = await fetch(
-    "https://api.mercadolibre.com/sites/MLB/categories"
-  ).then((response) => response.json());
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// Mock data imports
+import categoriesMock from "../__mocks__/categories";
+import queryMock from "../__mocks__/query";
 
-  return categories;
+export async function getCategories() {
+  // Simulando delay de rede
+  await new Promise((resolve) => setTimeout(resolve, 300));
+
+  return categoriesMock;
 }
 
 export async function getProductsFromCategoryAndQuery(
-  categoryId: string,
-  query: string,
+  _categoryId: string,
+  _query: string,
   paging: number
 ) {
-  const products = await fetch(
-    `https://api.mercadolibre.com/sites/MLB/search?category=${categoryId}&q=${query}&offset=${paging}`
-  ).then((response) => response.json());
+  // Simulando delay de rede
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  return products;
+  // Retornando o mock com paging ajustado
+  return {
+    ...queryMock,
+    paging: {
+      ...queryMock.paging,
+      offset: paging,
+    },
+  };
 }
 
 export async function getProduct(id: string | undefined) {
-  const product = await fetch(`https://api.mercadolibre.com/items/${id}`).then(
-    (response) => response.json()
-  );
+  // Simulando delay de rede
+  await new Promise((resolve) => setTimeout(resolve, 400));
 
-  return product;
+  // Retornando um produto mock baseado no id
+  const mockProduct =
+    queryMock.results.find((p: any) => p.id === id) || queryMock.results[0];
+
+  return {
+    ...mockProduct,
+    // Adicionando campos extras que podem estar na resposta de produto individual
+    pictures: [
+      {
+        id: "1",
+        url: mockProduct.thumbnail,
+      },
+      {
+        id: "2",
+        url: mockProduct.thumbnail,
+      },
+    ],
+    warranty: "Garantia de 90 dias",
+    description: `Descrição detalhada do produto: ${mockProduct.title}`,
+  };
 }
