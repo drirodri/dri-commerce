@@ -1,16 +1,15 @@
 .product-form {
-  border-radius: 8px;
   margin-bottom: 10px;
-  padding: 20px;
-  width: 240px;
   height: 500px;
+  position: relative;
+  flex: 0 0 calc(20% - 20px);
+}
+
+.product-form-content {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  background-color: white;
-  box-shadow: var(--blue-gray) 0px 5px 15px;
-  position: relative;
-  flex: 0 0 calc(20% - 20px);
+  height: 100%;
 }
 
 .product-form img {
@@ -59,48 +58,39 @@
   font-size: 0.9rem;
 }
 
-/* Send-to-Cart button */
+/* Send-to-Cart button customization */
 
 .send-to-cart {
-  padding: 10px;
-  margin: 20px;
-  height: 50px;
+  margin: 20px auto 0;
   width: 80%;
-  align-self: center;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  border: none;
-  background-color: var(--blue-gray);
-  color: var(--sky-blue);
-  cursor: pointer;
-}
-.send-to-cart:hover {
-  background-color: var(--cyan-black);
-  border: none;
-}
-.send-to-cart:disabled {
-  background-color: var(--cyan-black);
-  color: var(--sky-blue);
-  border: none;
+  height: 50px;
 }
 
-/* Different css for products thar are in cart */
+/* Different css for products that are in cart */
 
-#item-found {
-  box-shadow: rgba(41, 206, 41, 0.185) 0px 1px 4px,
-    rgba(50, 189, 50, 0.562) 0px 0px 0px 3px;
+.product-form.item-found {
+  position: relative;
+}
+
+.product-form.item-found::before {
+  content: "✓ No carrinho";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+  z-index: 10;
+  letter-spacing: 0.3px;
 }
 
 @media (max-width: 550px) {
-  #item-found {
-    box-shadow: rgba(41, 206, 41, 0.185) 0px 6px 24px 0px,
-      rgba(50, 189, 50, 0.562) 0px 0px 0px 1px;
-  }
-  .product-form {
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  .product-form.item-found::before {
+    font-size: 0.7rem;
+    padding: 3px 8px;
   }
 }
