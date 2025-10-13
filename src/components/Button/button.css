@@ -1,0 +1,70 @@
+/* Base button styles */
+.custom-button {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.custom-button-full {
+  width: 100%;
+}
+
+/* Primary variant (default) */
+.custom-button-primary {
+  background-color: var(--soft-aqua);
+  color: white;
+}
+
+.custom-button-primary:hover:not(:disabled) {
+  background-color: var(--blue-gray);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(87, 115, 122, 0.3);
+}
+
+/* Secondary variant */
+.custom-button-secondary {
+  background-color: transparent;
+  color: var(--soft-aqua);
+  border: 2px solid var(--soft-aqua);
+}
+
+.custom-button-secondary:hover:not(:disabled) {
+  background-color: var(--soft-aqua);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(133, 189, 191, 0.3);
+}
+
+/* Danger variant */
+.custom-button-danger {
+  background-color: #ef4444;
+  color: white;
+}
+
+.custom-button-danger:hover:not(:disabled) {
+  background-color: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Common states */
+.custom-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.custom-button:disabled {
+  background-color: #d1d5db;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  border-color: #d1d5db;
+}
