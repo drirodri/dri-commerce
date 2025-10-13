@@ -85,3 +85,8 @@ export type cartDataProps = {
 export type itemProps = {
   item: ProductProps;
 };
+
+export type LoginFormValues = {
+  email: string;
+  password: string;
+};
