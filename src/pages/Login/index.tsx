@@ -1,141 +1,166 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { FaUser, FaLock } from "react-icons/fa";
-import FormInput from "../../components/FormInput";
-import PasswordInput from "../../components/PasswordInput";
-import Button from "../../components/Button";
-import Box from "../../components/Box";
+import { User, Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { LoginFormValues } from "../../type";
-import "./Login.css";
-import { login, getCurrentUser } from "../../services/auth";
-import { setUserInfo } from "../../services/auth-storage";
+import useLogin from "../../hooks/useLogin";
 
 function Login() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormValues>({
+  const loginMutation = useLogin();
+
+  const form = useForm<LoginFormValues>({
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string>("");
-
-  const onSubmit = async (data: LoginFormValues) => {
-    setIsLoading(true);
-    setError("");
-
-    try {
-      await login(data);
-
-      const user = await getCurrentUser();
-
-      setUserInfo({
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      });
-
-      navigate("/");
-    } catch (err) {
-      console.error("Erro ao fazer login:", err);
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "Erro ao fazer login. Verifique suas credenciais.";
-      setError(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
+  const onSubmit = (data: LoginFormValues) => {
+    loginMutation.mutate(data);
   };
 
+  const errorMessage = loginMutation.isError
+    ? loginMutation.error instanceof Error
+      ? loginMutation.error.message
+      : "Erro ao fazer login"
+    : "";
+
   return (
-    <div className="login-page">
-      <Box>
-        <div className="login-header">
-          <h1>Bem-vindo ao Dri-Commerce</h1>
-          <p>Faça login para continuar</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-sky-100 via-white to-cyan-100 flex items-center justify-center px-4 py-10">
+      <Card className="w-full max-w-md shadow-xl">
+        <CardHeader className="space-y-2 text-center">
+          <CardTitle className="text-2xl font-semibold">
+            Bem-vindo ao Dri-Commerce
+          </CardTitle>
+          <CardDescription>
+            Faça login para continuar explorando nossos produtos.
+          </CardDescription>
+        </CardHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="login-form">
-          <FormInput
-            id="email"
-            label="Email"
-            type="email"
-            placeholder="seu@email.com"
-            icon={<FaUser />}
-            error={errors.email?.message}
-            register={register}
-            validation={{
-              required: "Email é obrigatório",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Email inválido",
-              },
-            }}
-            disabled={isLoading}
-          />
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="email"
+                rules={{
+                  required: "Email é obrigatório",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Email inválido",
+                  },
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          type="email"
+                          placeholder="seu@email.com"
+                          className="pl-9"
+                          disabled={loginMutation.isPending}
+                          {...field}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <PasswordInput
-            id="password"
-            label="Senha"
-            placeholder="Digite sua senha"
-            icon={<FaLock />}
-            error={errors.password?.message}
-            register={register}
-            validation={{
-              required: "Senha é obrigatória",
-              minLength: {
-                value: 6,
-                message: "Senha deve ter no mínimo 6 caracteres",
-              },
-            }}
-            disabled={isLoading}
-          />
+              <FormField
+                control={form.control}
+                name="password"
+                rules={{
+                  required: "Senha é obrigatória",
+                  minLength: {
+                    value: 6,
+                    message: "Senha deve ter no mínimo 6 caracteres",
+                  },
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Senha</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          type="password"
+                          placeholder="Digite sua senha"
+                          className="pl-9"
+                          disabled={loginMutation.isPending}
+                          {...field}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <div className="login-options">
-            <label className="remember-me">
-              <input type="checkbox" />
-              <span>Lembrar-me</span>
-            </label>
-            <a href="#" className="forgot-password">
-              Esqueceu a senha?
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Checkbox
+                    id="remember"
+                    disabled={loginMutation.isPending}
+                    className="border-muted-foreground/40"
+                  />
+                  <Label htmlFor="remember">Lembrar-me</Label>
+                </div>
+                <a
+                  href="#"
+                  className="text-primary font-medium transition-colors hover:underline"
+                >
+                  Esqueceu a senha?
+                </a>
+              </div>
+
+              {errorMessage && (
+                <p className="text-sm text-destructive text-center">
+                  {errorMessage}
+                </p>
+              )}
+
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={loginMutation.isPending}
+              >
+                {loginMutation.isPending ? "Entrando..." : "Entrar"}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+
+        <CardFooter className="flex justify-center">
+          <p className="text-sm text-muted-foreground">
+            Não tem uma conta?{" "}
+            <a href="#" className="font-semibold text-primary hover:underline">
+              Cadastre-se
             </a>
-          </div>
-
-          {error && (
-            <div
-              className="login-error"
-              style={{
-                color: "red",
-                marginBottom: "1rem",
-                textAlign: "center",
-              }}
-            >
-              {error}
-            </div>
-          )}
-
-          <Button type="submit" isLoading={isLoading} loadingText="Entrando...">
-            Entrar
-          </Button>
-
-          <div className="login-footer">
-            <p>
-              Não tem uma conta?{" "}
-              <a href="#" className="register-link">
-                Cadastre-se
-              </a>
-            </p>
-          </div>
-        </form>
-      </Box>
+          </p>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
