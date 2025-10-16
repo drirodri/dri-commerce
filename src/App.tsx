@@ -6,21 +6,24 @@ import CheckoutPage from "./pages/CheckoutPage";
 import { CartProvider } from "./context/CartContext/CartProvider";
 import Layout from "./pages/Layout";
 import Login from "./pages/Login";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
   return (
     <>
-      <CartProvider>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/product/:id/:quantity" element={<Product />} />
-            <Route path="/cartcheckout" element={<CheckoutPage />} />
-            <Route path="/*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </CartProvider>
+      <QueryClientProvider client={new QueryClient()}>
+        <CartProvider>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/product/:id/:quantity" element={<Product />} />
+              <Route path="/cartcheckout" element={<CheckoutPage />} />
+              <Route path="/*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </CartProvider>
+      </QueryClientProvider>
     </>
   );
 }
