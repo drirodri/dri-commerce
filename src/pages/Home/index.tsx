@@ -4,9 +4,61 @@ import { categoriesProps, ProductProps } from "../../type";
 import * as api from "../../services/api";
 import "./Home.css";
 import ProductForm from "../../components/ProductForm";
-import { FaAngleDown, FaSearch } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import CartButton from "../../components/CartButton";
 import { useMediaQuery } from "react-responsive";
+import Sidebar from "@/components/Sidebar";
+
+const normalizeProducts = (items: any[] = []): ProductProps[] =>
+  items.map((item: any) => {
+    const secureThumbnail = item.thumbnail
+      ? item.thumbnail.replace(/^(http:)?\/\//, "https://")
+      : "";
+
+    const fallbackId =
+      item.id ??
+      (typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
+
+    return {
+      id: item.id ?? fallbackId,
+      title: item.title ?? "Produto sem título",
+      price: item.price ?? 0,
+      quantity: item.quantity ?? 1,
+      available_quantity: item.available_quantity ?? 0,
+      permalink: item.permalink ?? "",
+      thumbnail: secureThumbnail,
+      warranty: item.warranty ?? "",
+      shipping: {
+        free_shipping: Boolean(item.shipping?.free_shipping),
+      },
+      pictures: item.pictures?.length
+        ? item.pictures.map((picture: any, pictureIndex: number) => ({
+            id:
+              picture.id ?? `${fallbackId}-picture-${pictureIndex.toString()}`,
+            url:
+              picture.url?.replace(/^(http:)?\/\//, "https://") ??
+              picture.secure_url?.replace(/^(http:)?\/\//, "https://") ??
+              secureThumbnail,
+          }))
+        : secureThumbnail
+        ? [
+            {
+              id: `${fallbackId}-thumb`,
+              url: secureThumbnail,
+            },
+          ]
+        : [],
+      attributes: Array.isArray(item.attributes)
+        ? item.attributes.map((attribute: any) => ({
+            id: attribute.id ?? `${fallbackId}-${attribute.name ?? "attr"}`,
+            name: attribute.name ?? "",
+            value_name: attribute.value_name ?? "",
+          }))
+        : [],
+    } satisfies ProductProps;
+  });
 
 function Home() {
   const [categories, setCategories] = useState<categoriesProps>();
@@ -14,7 +66,7 @@ function Home() {
   const [categoryId, setCategoryId] = useState("");
   const [categoryName, setCategoryName] = useState("Categorias");
 
-  const [showSelect, setShowSelect] = useState(false);
+  const [showSelect, setShowSelect] = useState(true);
 
   const [products, setProducts] = useState<ProductProps[]>();
   const [loadingList, setLoadingList] = useState("");
@@ -46,21 +98,22 @@ function Home() {
         productName,
         page
       );
-      if (sort === "1") {
-        setProducts(
-          product?.results.sort((a: any, b: any) => a.price - b.price)
-        );
+      const normalizedProducts = normalizeProducts(product?.results ?? []);
 
-        setLoadingList("found");
-      } else if (sort === "2") {
-        setProducts(
-          product?.results.sort((a: any, b: any) => b.price - a.price)
+      let nextProducts = normalizedProducts;
+
+      if (sort === "1") {
+        nextProducts = [...normalizedProducts].sort(
+          (a, b) => a.price - b.price
         );
-        setLoadingList("found");
-      } else {
-        setProducts(product?.results);
-        setLoadingList("found");
+      } else if (sort === "2") {
+        nextProducts = [...normalizedProducts].sort(
+          (a, b) => b.price - a.price
+        );
       }
+
+      setProducts(nextProducts);
+      setLoadingList("found");
     } catch (err) {
       setProducts([]);
       console.error(err);
@@ -122,83 +175,100 @@ function Home() {
 
   const isMobile = useMediaQuery({ query: "(max-width: 500px)" });
 
+  useEffect(() => {
+    if (isMobile) {
+      setShowSelect(false);
+    } else {
+      setShowSelect(true);
+    }
+  }, [isMobile]);
+
   const categoriesSpan = categories?.map((category) => (
-    <span
+    <button
+      key={category.id}
+      type="button"
       onClick={() => {
         setCategoryId(category.id);
         setCategoryName(category.name);
-        setShowSelect(false);
+        if (isMobile) {
+          setShowSelect(false);
+        }
       }}
-      className="categories-span"
+      className={`categories-span ${
+        category.id === categoryId ? "active" : ""
+      }`}
     >
       {category.name}
-    </span>
+    </button>
   ));
 
   return (
-    <>
-      <div className="top-page">
-        <form onSubmit={handleSubmit} className="product-input">
-          <div className="search-div">
-            <div className="categories-newselect">
-              <span
-                className="category-header"
-                onClick={() =>
-                  showSelect ? setShowSelect(false) : setShowSelect(true)
-                }
-              >
-                <p>{categoryName}</p>
-                <FaAngleDown id="category-select" />
-              </span>
-              {showSelect && (
-                <div className="categories-div">{categoriesSpan}</div>
-              )}
-            </div>
-            <label className="product-input-label" htmlFor="product-name-input">
-              <input
-                className="product-name-input"
-                id="product-name-input"
-                defaultValue=""
-                type="text"
-                name="product-name"
-              />
-              <button className="search-button" type="submit">
-                <FaSearch />
-              </button>
-            </label>
-          </div>
-
-          {isMobile && <CartButton />}
-        </form>
-      </div>
-
-      <div className="home-grid">
-        {products !== undefined && (
-          <div className="sort-select-div">
-            <label htmlFor="sort-select">Ordernar por:</label>
-            <select
-              onChange={(e) => setSortChoice(e.target.value)}
-              name="sort-select-name"
-              id="sort-select"
-              className="sort-select"
-            >
-              {selectChoices}
-            </select>
-          </div>
-        )}
-        <div className="products-list">
-          {loadingList === "searching" && <h2>Pesquisando produtos!</h2>}
-          {loadingList === "found" && (
-            <div className="products">
-              {products?.map((product) => (
-                <ProductForm key={product.id} item={product} />
-              ))}
-            </div>
+    <div className="home-layout">
+      <Sidebar
+        title="Categorias"
+        subtitle={categoryName}
+        isCollapsible={isMobile}
+        isOpen={showSelect}
+        onToggle={() => setShowSelect((prev) => !prev)}
+        className="search-sidebar"
+      >
+        <div className="categories-list">
+          {categoriesSpan?.length ? (
+            categoriesSpan
+          ) : (
+            <span className="categories-empty">Carregando categorias...</span>
           )}
         </div>
-      </div>
-      {loadingList === "found" && <div className="pages">{pages}</div>}
-    </>
+      </Sidebar>
+
+      <section className="home-content">
+        <form onSubmit={handleSubmit} className="product-search-form">
+          <input type="hidden" name="category" value={categoryId} />
+          <label className="product-input-label" htmlFor="product-name-input">
+            <input
+              className="product-name-input"
+              id="product-name-input"
+              defaultValue=""
+              type="text"
+              name="product-name"
+              placeholder="Busque por produtos, marcas ou termos"
+            />
+            <button className="search-button" type="submit">
+              <FaSearch />
+            </button>
+          </label>
+          {isMobile && <CartButton />}
+        </form>
+
+        <div className="home-grid">
+          {products !== undefined && (
+            <div className="sort-select-div">
+              <label htmlFor="sort-select">Ordenar por:</label>
+              <select
+                onChange={(e) => setSortChoice(e.target.value)}
+                name="sort-select-name"
+                id="sort-select"
+                className="sort-select"
+              >
+                {selectChoices}
+              </select>
+            </div>
+          )}
+          <div className="products-list">
+            {loadingList === "searching" && <h2>Pesquisando produtos!</h2>}
+            {loadingList === "found" && (
+              <div className="products">
+                {products?.map((product) => (
+                  <ProductForm key={product.id} item={product} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {loadingList === "found" && <div className="pages">{pages}</div>}
+      </section>
+    </div>
   );
 }
 
