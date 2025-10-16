@@ -19,22 +19,3 @@ input::-webkit-inner-spin-button {
   gap: 5px;
   height: 30px;
 }
-
-.quantity-button {
-  padding: 10px;
-  border-radius: 100px;
-  border: none;
-  height: 25px;
-  width: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 1000;
-  background-color: var(--sky-blue);
-}
-.quantity-button:hover {
-  background-color: var(--soft-aqua);
-}
-.quantity-button:disabled {
-  background-color: rgba(238, 43, 43, 0.267);
-}

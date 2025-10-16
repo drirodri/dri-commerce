@@ -1,12 +1,17 @@
 import { useCartContext } from "../../context/CartContext/CartContext";
-import "./clear-button.css";
+import { Button } from "@/components/ui/button";
 
 function ClearButton() {
   const { handleClearButton } = useCartContext();
   return (
-    <button onClick={handleClearButton} className="clear-button">
+    <Button
+      type="button"
+      variant="outline"
+      onClick={handleClearButton}
+      className="w-full sm:w-auto"
+    >
       Limpar carrinho
-    </button>
+    </Button>
   );
 }
 

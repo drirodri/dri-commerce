@@ -1,13 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import "./finish-button.css";
+import { Button } from "@/components/ui/button";
 
 function FinishButton() {
   const navigate = useNavigate();
 
   return (
-    <button onClick={() => navigate("/cartcheckout")} className="finish-button">
+    <Button
+      type="button"
+      onClick={() => navigate("/cartcheckout")}
+      className="w-full sm:w-auto"
+    >
       Finalizar compra
-    </button>
+    </Button>
   );
 }
 
