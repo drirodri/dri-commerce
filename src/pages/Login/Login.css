@@ -3,11 +3,6 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    var(--pale-aqua) 0%,
-    var(--sky-blue) 100%
-  );
   padding: 20px;
 }
 
