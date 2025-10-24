@@ -7,6 +7,7 @@ import { CartProvider } from "./context/CartContext/CartProvider";
 import Layout from "./pages/Layout";
 import Login from "./pages/Login";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SignUp from "./pages/SignUp";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
               <Route path="/product/:id/:quantity" element={<Product />} />
               <Route path="/cartcheckout" element={<CheckoutPage />} />
               <Route path="/*" element={<NotFound />} />
