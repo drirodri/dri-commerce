@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import CartButton from "../../components/CartButton";
 import "./layout.css";
 import { useCallback, useEffect, useRef } from "react";
@@ -12,9 +12,18 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import useCurrentUserQuery from "@/hooks/useCurrentUserQuery";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
+import { logout } from "@/services/auth";
+import { clearUserInfo } from "@/services/auth-storage";
+import { useQueryClient } from "@tanstack/react-query";
 
 function Layout() {
   const contentPageRef = useRef<HTMLDivElement | null>(null);
+  const { data: currentUser } = useCurrentUserQuery();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const updateHeight = useCallback(() => {
     const contentPage = contentPageRef.current;
@@ -35,7 +44,6 @@ function Layout() {
 
     window.addEventListener("resize", updateHeight);
 
-    // Cleanup
     return () => {
       observer.disconnect();
       window.removeEventListener("resize", updateHeight);
@@ -44,10 +52,26 @@ function Layout() {
 
   const notMobile = useMediaQuery({ query: "(min-width:501px)" });
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      clearUserInfo();
+      queryClient.clear();
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
+  };
+
   const navLinks = [
     { to: "/", label: "Início" },
-    { to: "/login", label: "Entrar" },
-    { to: "/cartcheckout", label: "Checkout" },
+    ...(currentUser
+      ? []
+      : [
+          { to: "/signup", label: "Cadastrar" },
+          { to: "/login", label: "Entrar" },
+        ]),
+    { to: "/cartcheckout", label: "Carrinho" },
   ];
 
   return (
@@ -90,45 +114,58 @@ function Layout() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        {notMobile && <CartButton />}
+        <div className="layout-actions">
+          {notMobile && <CartButton />}
+          {currentUser && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleLogout}
+              className="gap-2 text-sm sm:text-base"
+            >
+              <LogOut className="h-4 w-4" />
+              Sair
+            </Button>
+          )}
+        </div>
       </header>
 
       <main className="content-page">
         <Outlet />
       </main>
 
-        <footer className="layout-footer">
-          <Separator className="layout-footer-separator" />
-          <div className="layout-footer-content">
-            <div className="layout-footer-meta">
-              <span className="layout-footer-title">Dri-Commerce</span>
-              <span className="layout-footer-credit">
-                Desenvolvido por Adriano Rodrigues
-              </span>
-            </div>
-
-            <nav className="layout-footer-links">
-              <a
-                href="http://github.com/drirodri"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="layout-footer-link"
-              >
-                <img src="/github-mark.png" alt="GitHub" width="24" height="24" />
-                <span>GitHub</span>
-              </a>
-              <a
-                href="http://linkedin.com/in/drirodri"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="layout-footer-link"
-              >
-                <img src="/linkedin.png" alt="LinkedIn" width="24" height="24" />
-                <span>LinkedIn</span>
-              </a>
-            </nav>
+      <footer className="layout-footer">
+        <Separator className="layout-footer-separator" />
+        <div className="layout-footer-content">
+          <div className="layout-footer-meta">
+            <span className="layout-footer-title">Dri-Commerce</span>
+            <span className="layout-footer-credit">
+              Desenvolvido por Adriano Rodrigues
+            </span>
           </div>
-        </footer>
+
+          <nav className="layout-footer-links">
+            <a
+              href="http://github.com/drirodri"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="layout-footer-link"
+            >
+              <img src="/github-mark.png" alt="GitHub" width="24" height="24" />
+              <span>GitHub</span>
+            </a>
+            <a
+              href="http://linkedin.com/in/drirodri"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="layout-footer-link"
+            >
+              <img src="/linkedin.png" alt="LinkedIn" width="24" height="24" />
+              <span>LinkedIn</span>
+            </a>
+          </nav>
+        </div>
+      </footer>
     </div>
   );
 }
