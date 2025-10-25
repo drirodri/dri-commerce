@@ -44,7 +44,7 @@ function Login() {
     : "";
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-2 text-center">
           <CardTitle className="text-2xl font-semibold">

@@ -103,7 +103,7 @@ function SignUp() {
 
   if (createUserMutation.isSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 py-10">
+      <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
         <div className="text-center space-y-6 max-w-md">
           <div className="flex justify-center">
             <div className="animate-in fade-in duration-500">
@@ -143,7 +143,7 @@ function SignUp() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
       <Card className="w-full max-w-2xl shadow-xl">
         <CardHeader className="space-y-2 text-center">
           <CardTitle className="text-2xl font-semibold">
