@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import HomeV2 from "./pages/HomeV2";
 import Product from "./pages/Product";
 import NotFound from "./pages/NotFound";
 import CheckoutPage from "./pages/CheckoutPage";
@@ -16,7 +17,8 @@ function App() {
         <CartProvider>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
+              <Route index element={<HomeV2 />} />
+              <Route path="/home-old" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/product/:id/:quantity" element={<Product />} />
