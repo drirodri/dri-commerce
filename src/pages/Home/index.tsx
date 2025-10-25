@@ -8,6 +8,13 @@ import { FaSearch } from "react-icons/fa";
 import CartButton from "../../components/CartButton";
 import { useMediaQuery } from "react-responsive";
 import Sidebar from "@/components/Sidebar";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const normalizeProducts = (items: any[] = []): ProductProps[] =>
   items.map((item: any) => {
@@ -153,17 +160,11 @@ function Home() {
     setCategoryId(category ?? "");
   };
 
-  const sortChoices = ["Mais relevante", "Menor preço", "Maior preço"];
-
-  const selectChoices = sortChoices.map((choice, index) => (
-    <option
-      key={index}
-      defaultValue={index === 0 ? "0" : undefined}
-      value={index}
-    >
-      {choice}
-    </option>
-  ));
+  const sortChoices = [
+    { value: "0", label: "Mais relevante" },
+    { value: "1", label: "Menor preço" },
+    { value: "2", label: "Maior preço" },
+  ];
 
   const pages = Array.from({ length: 10 }, (_, index) => index).map(
     (page, index) => (
@@ -243,15 +244,21 @@ function Home() {
         <div className="home-grid">
           {products !== undefined && (
             <div className="sort-select-div">
-              <label htmlFor="sort-select">Ordenar por:</label>
-              <select
-                onChange={(e) => setSortChoice(e.target.value)}
-                name="sort-select-name"
-                id="sort-select"
-                className="sort-select"
-              >
-                {selectChoices}
-              </select>
+              <label htmlFor="sort-select" className="text-sm font-medium">
+                Ordenar por:
+              </label>
+              <Select value={sortChoice} onValueChange={setSortChoice}>
+                <SelectTrigger className="w-[180px] border-none bg-sky-100 text-sky-700 hover:bg-sky-200">
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
+                <SelectContent>
+                  {sortChoices.map((choice) => (
+                    <SelectItem key={choice.value} value={choice.value}>
+                      {choice.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           )}
           <div className="products-list">

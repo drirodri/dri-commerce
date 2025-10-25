@@ -3,9 +3,7 @@
   grid-template-columns: minmax(220px, 280px) 1fr;
   gap: 2rem;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 3rem;
+  /* padding: 2rem 1.5rem 3rem 2rem; */
 }
 
 .search-sidebar {
@@ -147,19 +145,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: #0f172a;
-}
-
-.sort-select {
-  border: none;
-  border-radius: 999px;
-  padding: 0.35rem 0.75rem;
-  background: rgba(14, 165, 233, 0.15);
-  color: #0369a1;
-  cursor: pointer;
-  font-weight: 500;
+  gap: 0.75rem;
 }
 
 .products-list {
@@ -171,8 +157,8 @@
 
 .products {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   width: 100%;
 }
 
