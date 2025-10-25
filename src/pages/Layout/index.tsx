@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import CartButton from "../../components/CartButton";
 import "./layout.css";
 import { useCallback, useEffect, useRef } from "react";
@@ -13,17 +13,29 @@ import {
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import useCurrentUserQuery from "@/hooks/useCurrentUserQuery";
-import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
 import { logout } from "@/services/auth";
 import { clearUserInfo } from "@/services/auth-storage";
 import { useQueryClient } from "@tanstack/react-query";
+import { SearchBar } from "@/components/SearchBar";
+import { useProductSearch } from "@/hooks/useProductSearch";
+import { UserMenu } from "@/components/UserMenu";
 
 function Layout() {
   const contentPageRef = useRef<HTMLDivElement | null>(null);
   const { data: currentUser } = useCurrentUserQuery();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const location = useLocation();
+  const { updateSearch } = useProductSearch();
+
+  const isHomePage = location.pathname === "/";
+
+  const handleSearch = (query: string) => {
+    if (!isHomePage) {
+      navigate("/");
+    }
+    updateSearch({ productName: query });
+  };
 
   const updateHeight = useCallback(() => {
     const contentPage = contentPageRef.current;
@@ -90,42 +102,47 @@ function Layout() {
           </span>
         </div>
 
-        <NavigationMenu className="layout-navigation">
-          <NavigationMenuList>
-            {navLinks.map((link) => (
-              <NavigationMenuItem key={link.to}>
-                <NavigationMenuLink asChild>
-                  <NavLink
-                    to={link.to}
-                    className={({ isActive }) =>
-                      cn(
-                        navigationMenuTriggerStyle(),
-                        "bg-transparent px-3 py-2 text-sm sm:text-base",
-                        isActive &&
-                          "bg-accent/40 text-primary font-semibold shadow-sm"
-                      )
-                    }
-                  >
-                    {link.label}
-                  </NavLink>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
+        <div className="layout-center">
+          {isHomePage && (
+            <div className="layout-search">
+              <SearchBar onSearch={handleSearch} />
+            </div>
+          )}
+
+          <NavigationMenu className="layout-navigation">
+            <NavigationMenuList>
+              {navLinks.map((link) => (
+                <NavigationMenuItem key={link.to}>
+                  <NavigationMenuLink asChild>
+                    <NavLink
+                      to={link.to}
+                      className={({ isActive }) =>
+                        cn(
+                          navigationMenuTriggerStyle(),
+                          "bg-transparent px-3 py-2 text-sm sm:text-base",
+                          isActive &&
+                            "bg-accent/40 text-primary font-semibold shadow-sm"
+                        )
+                      }
+                    >
+                      {link.label}
+                    </NavLink>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
 
         <div className="layout-actions">
           {notMobile && <CartButton />}
           {currentUser && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleLogout}
-              className="gap-2 text-sm sm:text-base"
-            >
-              <LogOut className="h-4 w-4" />
-              Sair
-            </Button>
+            <UserMenu
+              userName={currentUser.name}
+              userEmail={currentUser.email}
+              userRole={currentUser.role}
+              onLogout={handleLogout}
+            />
           )}
         </div>
       </header>
