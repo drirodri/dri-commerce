@@ -3,12 +3,21 @@ import * as api from "../../services/api";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ProductProps } from "../../type";
-import EvaluationForm from "../../components/EvaluationForm";
-import useEvaluationData from "../../hooks/EvaluationData";
-import { Rating } from "@smastrom/react-rating";
 import { useCartContext } from "../../context/CartContext/CartContext";
 import GallerySlider from "../../components/GallerySlider";
-import { LuUserCircle } from "react-icons/lu";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  ShoppingCart,
+  Minus,
+  Plus,
+  Package,
+  Shield,
+  TruckIcon,
+} from "lucide-react";
 
 function Product() {
   // const navigate = useNavigate();
@@ -18,7 +27,6 @@ function Product() {
   const available_quantity: number = Number(params.quantity);
   const [cartItem, setCartItem] = useState<ProductProps>();
   const { parsedData, setParsedData } = useCartContext();
-  const { evaluationData, setEvaluationData } = useEvaluationData();
 
   useEffect(() => {
     const existingItem = parsedData
@@ -35,7 +43,8 @@ function Product() {
       if (!apiProduct) {
         throw new Error("Produto não encontrado");
       }
-      setProduct(apiProduct);
+      // Adiciona quantity ao produto da API para compatibilidade com ProductProps
+      setProduct({ ...apiProduct, quantity: 1 } as ProductProps);
     } catch (err) {
       console.error(err);
     }
@@ -128,118 +137,136 @@ function Product() {
 
   const productDescription = product && (
     <div className="product-main-box">
-      <form
-        onSubmit={(event) => handleCartSubmit(event, product)}
-        className="product-box"
-      >
-        <GallerySlider pictures={product.pictures} />
-        <div className="product-info">
-          <h4>{product.title}</h4>
-          <p className="price-text">
-            Preço R$
-            {new Intl.NumberFormat("BRL", { maximumFractionDigits: 2 }).format(
-              product.price
-            )}
-          </p>
-          <p>{product.available_quantity}</p>
-          <p>{product.warranty}</p>
-          <div>
-            {product.shipping.free_shipping && (
-              <p className="product-free-shipping">Frete grátis!</p>
-            )}
-          </div>
+      <Card>
+        <CardContent className="p-6">
+          <form
+            onSubmit={(event) => handleCartSubmit(event, product)}
+            className="product-box"
+          >
+            <GallerySlider pictures={product.pictures} />
 
-          <p>
-            Esta é uma demonstração,{" "}
-            <a
-              style={{ fontWeight: 550 }}
-              target="_blank"
-              href={product.permalink}
-            >
-              clique aqui
-            </a>{" "}
-            para encontrar este produto no MercadoLivre.
-          </p>
-          <div className="div-quantity">
-            <button
-              className="quantity-button"
-              type="button"
-              onClick={handleQuantityClick}
-              value="-"
-            >
-              -
-            </button>
-            <input
-              className="quantity-input"
-              onChange={handleInputChange}
-              type="number"
-              name="quantity"
-              value={quantity}
-              id="quantity"
-            />
-            <button
-              className="quantity-button"
-              disabled={isDisabled()}
-              type="button"
-              onClick={handleQuantityClick}
-              value="+"
-            >
-              +
-            </button>
-          </div>
-
-          <button className="send-to-cart" type="submit">
-            Adicionar ao Carrinho
-          </button>
-        </div>
-      </form>
-      <div className="attributes-div">
-        <h2 style={{ margin: 20 }}>Características do produto</h2>
-
-        <table>
-          <tbody className="attributes-body">{productAttributes}</tbody>
-        </table>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="product-page">
-      {productDescription}
-
-      {evaluationData.some((evaluation) => evaluation.id === params.id) && (
-        <>
-          <h3 style={{ margin: 20 }}>Avaliação de clientes:</h3>
-          <div className="evaluations-div">
-            {evaluationData
-              .filter((evaluation) => evaluation.id === params.id)
-              .map((evaluation, index) => (
-                <div className="user-evaluation" key={index}>
-                  <span className="user-span">
-                    <LuUserCircle />
-                    <h4>{evaluation.email}</h4>
+            <div className="product-info space-y-4">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                  {product.title}
+                </h1>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-3xl font-bold text-primary">
+                    R${" "}
+                    {new Intl.NumberFormat("pt-BR", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }).format(product.price)}
                   </span>
-                  <span className="user-rating">
-                    <Rating
-                      style={{ maxWidth: 100 }}
-                      readOnly
-                      value={evaluation.rating}
-                    />
-                  </span>
-                  {evaluation.message !== "" && <p>{evaluation.message}</p>}
-                  <p className="user-evaluation-date">
-                    Avaliado em {evaluation.currentDate.toLocaleString()}
-                  </p>
                 </div>
-              ))}
-          </div>
-        </>
-      )}
-      <EvaluationForm setEvaluationData={setEvaluationData} />
+              </div>
 
-      {/* <button onClick={handleBack}>Voltar</button> */}
+              <Separator />
+
+              <div className="flex flex-col gap-2">
+                {product.shipping.free_shipping && (
+                  <Badge
+                    variant="default"
+                    className="w-fit bg-green-500 hover:bg-green-600"
+                  >
+                    <TruckIcon className="w-3 h-3 mr-1" />
+                    Frete grátis
+                  </Badge>
+                )}
+
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <Package className="w-4 h-4" />
+                  <span>{product.available_quantity} unidades disponíveis</span>
+                </div>
+
+                {product.warranty && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Shield className="w-4 h-4" />
+                    <span>{product.warranty}</span>
+                  </div>
+                )}
+              </div>
+
+              <Separator />
+
+              <div className="bg-blue-50 p-3 rounded-lg text-sm">
+                <p className="text-gray-700">
+                  Esta é uma demonstração,{" "}
+                  <a
+                    className="font-semibold text-primary hover:underline"
+                    target="_blank"
+                    rel="noreferrer"
+                    href={product.permalink}
+                  >
+                    clique aqui
+                  </a>{" "}
+                  para encontrar este produto no MercadoLivre.
+                </p>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-gray-700">
+                  Quantidade:
+                </label>
+                <div className="flex items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={handleQuantityClick}
+                    value="-"
+                    disabled={quantity <= 1}
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+
+                  <Input
+                    type="number"
+                    name="quantity"
+                    value={quantity}
+                    onChange={handleInputChange}
+                    className="w-20 text-center"
+                    min="1"
+                  />
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={handleQuantityClick}
+                    value="+"
+                    disabled={isDisabled()}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              <Button type="submit" className="w-full" size="lg">
+                <ShoppingCart className="mr-2 h-5 w-5" />
+                Adicionar ao Carrinho
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle>Características do produto</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <table className="w-full">
+            <tbody className="attributes-body">{productAttributes}</tbody>
+          </table>
+        </CardContent>
+      </Card>
     </div>
   );
+
+  return <div className="product-page">{productDescription}</div>;
 }
 
 export default Product;
