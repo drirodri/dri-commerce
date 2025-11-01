@@ -83,6 +83,9 @@ function Layout() {
           { to: "/signup", label: "Cadastrar" },
           { to: "/login", label: "Entrar" },
         ]),
+    ...(currentUser?.role === "ADMIN"
+      ? [{ to: "/dashboard", label: "Dashboard" }]
+      : []),
     { to: "/cartcheckout", label: "Carrinho" },
   ];
 

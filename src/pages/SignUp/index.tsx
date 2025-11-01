@@ -45,11 +45,6 @@ const roleOptions: {
     value: "SELLER",
     description: "Cadastre e gerencie anúncios de produtos.",
   },
-  {
-    label: "Administrador",
-    value: "ADMIN",
-    description: "Gerencie usuários e catálogo.",
-  },
 ];
 
 function SignUp() {
@@ -265,7 +260,7 @@ function SignUp() {
                   <FormItem>
                     <FormLabel>Qual perfil melhor descreve você?</FormLabel>
                     <FormControl>
-                      <div className="grid gap-3 md:grid-cols-3">
+                      <div className="grid gap-3 md:grid-cols-2">
                         {roleOptions.map((option) => (
                           <Button
                             key={option.value}
