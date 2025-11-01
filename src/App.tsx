@@ -4,11 +4,14 @@ import HomeV2 from "./pages/HomeV2";
 import Product from "./pages/Product";
 import NotFound from "./pages/NotFound";
 import CheckoutPage from "./pages/CheckoutPage";
+import CheckoutFormPage from "./pages/CheckoutFormPage";
 import { CartProvider } from "./context/CartContext/CartProvider";
 import Layout from "./pages/Layout";
 import Login from "./pages/Login";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignUp from "./pages/SignUp";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -23,6 +26,15 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/product/:id/:quantity" element={<Product />} />
               <Route path="/cartcheckout" element={<CheckoutPage />} />
+              <Route path="/checkout" element={<CheckoutFormPage />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute requiredRole="ADMIN">
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/*" element={<NotFound />} />
             </Route>
           </Routes>

@@ -2,12 +2,28 @@
 import { useNavigate } from "react-router-dom";
 import { cartDataProps, FormValues } from "../../type";
 import { inputsArray } from "../../utils/inputsArray";
-import "./checkout-form.css";
 import { useForm } from "react-hook-form";
-import { FaCcMastercard, FaPix, FaBarcode, FaCcVisa } from "react-icons/fa6";
-import ErrorTooltip from "../ErrorTooltip";
-import { MdError } from "react-icons/md";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import {
+  CreditCard,
+  Barcode,
+  Smartphone,
+  AlertCircle,
+  Package,
+} from "lucide-react";
 
 function CheckoutForm({ cartData }: cartDataProps) {
   const {
@@ -42,6 +58,7 @@ function CheckoutForm({ cartData }: cartDataProps) {
         setValue("street", data.logradouro);
         setValue("city", data.localidade);
         setValue("state", data.uf);
+        setSelectedState(data.uf); // Atualiza o estado visual do Select
         setValue("houseComplement", data.complemento);
         setFocus("houseNumber");
       })
@@ -77,64 +94,83 @@ function CheckoutForm({ cartData }: cartDataProps) {
     "SE",
     "TO",
   ];
-  const stateOptions = brazilianStates.map((state) => (
-    <option className="state-option" key={state} value={state}>
-      {state}
-    </option>
-  ));
 
   const paymentMethods = [
-    { value: "boleto", label: "Boleto", icon: <FaBarcode size={50} /> },
-    { value: "visa", label: "Visa", icon: <FaCcVisa size={50} /> },
+    {
+      value: "boleto",
+      label: "Boleto",
+      icon: <Barcode className="w-12 h-12" />,
+    },
+    {
+      value: "visa",
+      label: "Visa",
+      icon: <CreditCard className="w-12 h-12" />,
+    },
     {
       value: "master-card",
       label: "MasterCard",
-      icon: <FaCcMastercard size={50} />,
+      icon: <CreditCard className="w-12 h-12" />,
     },
-    { value: "pix", label: "Pix", icon: <FaPix size={50} /> },
+    { value: "pix", label: "Pix", icon: <Smartphone className="w-12 h-12" /> },
   ];
 
   const [selectedRadio, setSelectedRadio] = useState<string | null>(null);
+  const [selectedState, setSelectedState] = useState<string>("");
 
   const paymentRadios = paymentMethods.map((method) => (
-    <label
-      onClick={() => setSelectedRadio(method.value)}
-      className={`payment-method ${
-        selectedRadio === method.value ? "selected" : ""
-      }`}
+    <Card
       key={method.value}
-      htmlFor={method.value}
+      className={`cursor-pointer transition-all hover:shadow-md ${
+        selectedRadio === method.value
+          ? "border-primary border-2 bg-primary/5"
+          : "border-gray-200"
+      }`}
+      onClick={() => {
+        setSelectedRadio(method.value);
+        setValue("paymentMethod", method.value);
+      }}
     >
-      <input
-        {...register("paymentMethod", {
-          required: "Selecione uma forma de pagamento",
-        })}
-        type="radio"
-        id={method.value}
-        value={method.value}
-        checked={method.value === selectedRadio}
-        readOnly
-        className="method-radio"
-      />
-      {method.label}
-      {method.icon}
-    </label>
+      <CardContent className="flex flex-col items-center justify-center p-6 gap-3">
+        <input
+          {...register("paymentMethod", {
+            required: "Selecione uma forma de pagamento",
+          })}
+          type="radio"
+          id={method.value}
+          value={method.value}
+          checked={method.value === selectedRadio}
+          readOnly
+          className="sr-only"
+        />
+        <div
+          className={
+            selectedRadio === method.value ? "text-primary" : "text-gray-400"
+          }
+        >
+          {method.icon}
+        </div>
+        <span className="font-semibold text-sm">{method.label}</span>
+        {selectedRadio === method.value && (
+          <Badge variant="default" className="mt-1">
+            Selecionado
+          </Badge>
+        )}
+      </CardContent>
+    </Card>
   ));
 
   const mapInputs = inputsArray.map((input, index) => (
     <div
-      className={`checkout-input ${index === 5 ? "city-state-box" : ""} `}
+      className={`space-y-2 ${index === 5 ? "md:col-span-2" : ""}`}
       key={input.id}
     >
-      <label className="input-title" htmlFor={input.id}>
-        {input.placeholder}:
+      <Label htmlFor={input.id} className="flex items-center gap-2">
+        {input.placeholder}
         {errors[input.id as keyof FormValues] && (
-          <ErrorTooltip text={errors[input.id as keyof FormValues]?.message}>
-            <MdError />
-          </ErrorTooltip>
+          <AlertCircle className="h-4 w-4 text-destructive" />
         )}
-      </label>
-      <input
+      </Label>
+      <Input
         {...register(input.id as keyof FormValues, {
           required: input.required
             ? `${input.placeholder} é obrigatório`
@@ -160,60 +196,99 @@ function CheckoutForm({ cartData }: cartDataProps) {
         })}
         id={input.id}
         type={input.type}
-        // placeholder={input.placeholder}
+        placeholder={input.placeholder}
         className={
           errors[input.id as keyof FormValues]
-            ? "input-error"
-            : "checkout-input-unity"
+            ? "border-destructive focus-visible:ring-1 focus-visible:ring-offset-0"
+            : "focus-visible:ring-1 focus-visible:ring-offset-0"
         }
         onBlur={input.onBlur ? (event: any) => checkCep(event) : undefined}
       />
-
-      {/* <p>{errors[input.id as keyof FormValues]?.message}</p> */}
+      {errors[input.id as keyof FormValues] && (
+        <p className="text-sm text-destructive">
+          {errors[input.id as keyof FormValues]?.message}
+        </p>
+      )}
 
       {index === 5 && (
-        <div key="select-key" className="select-state">
-          <label htmlFor="state">Estado:</label>
-          <select
-            {...register("state", {
-              required: "Selecione um estado",
-            })}
-            id="state"
-            className="checkout-select"
+        <div key="select-key" className="space-y-2">
+          <Label htmlFor="state">Estado</Label>
+          <Select
+            value={selectedState}
+            onValueChange={(value) => {
+              setValue("state", value);
+              setSelectedState(value);
+            }}
           >
-            {stateOptions}
-          </select>
+            <SelectTrigger
+              id="state"
+              className="focus:ring-1 focus:ring-offset-0"
+            >
+              <SelectValue placeholder="Selecione um estado" />
+            </SelectTrigger>
+            <SelectContent>
+              {brazilianStates.map((state) => (
+                <SelectItem key={state} value={state}>
+                  {state}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors.state && (
+            <p className="text-sm text-destructive">{errors.state.message}</p>
+          )}
         </div>
       )}
     </div>
   ));
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit((data) => {
-          const submitData = { ...data, cart: parsedData };
-          console.log(submitData);
-          alert("Obrigado por comprar no Dri-Commerce!");
-          localStorage.clear();
-          navigate("/");
-        })}
-        id="checkout-form"
-        className="checkout-form"
-      >
-        <h2 style={{ margin: 20 }}>Dados de Entrega</h2>
+    <Card>
+      <CardContent className="pt-6">
+        <form
+          onSubmit={handleSubmit((data) => {
+            const submitData = { ...data, cart: parsedData };
+            console.log(submitData);
+            alert("Obrigado por comprar no Dri-Commerce!");
+            localStorage.clear();
+            navigate("/");
+          })}
+          className="space-y-8"
+        >
+          <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Package className="w-5 h-5" />
+              Informações de Entrega
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {mapInputs}
+            </div>
+          </div>
 
-        <div className="checkout-div">{mapInputs}</div>
+          <Separator />
 
-        <div className="payment-selection">
-          <h2 style={{ margin: 20 }}>Selecione uma forma de pagamento:</h2>
-          <div className="methods">{paymentRadios}</div>
-        </div>
-        <button className="checkout-button" type="submit">
-          Finalizar compra!
-        </button>
-      </form>
-    </>
+          <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <CreditCard className="w-5 h-5" />
+              Método de Pagamento
+            </h3>
+            {errors.paymentMethod && (
+              <div className="flex items-center gap-2 text-sm text-red-500 mb-4 bg-red-50 p-3 rounded-md">
+                <AlertCircle className="w-4 h-4" />
+                <span>{errors.paymentMethod.message}</span>
+              </div>
+            )}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {paymentRadios}
+            </div>
+          </div>
+
+          <Button type="submit" className="w-full" size="lg">
+            Finalizar Compra
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
 
