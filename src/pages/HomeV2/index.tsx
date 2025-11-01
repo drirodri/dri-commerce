@@ -13,6 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { useProductSearch } from "@/hooks/useProductSearch";
 
 function HomeV2() {
@@ -55,17 +63,35 @@ function HomeV2() {
     { value: "2", label: "Maior preço" },
   ];
 
-  const pages = Array.from({ length: 10 }, (_, index) => index).map(
-    (page, index) => (
-      <button
-        key={index}
-        className="page-button"
-        onClick={() => updatePage(page)}
-      >
-        {page + 1}
-      </button>
-    )
-  );
+  const totalPages = 10; // Número total de páginas (pode vir da API no futuro)
+  const currentPage = searchParams.page || 0;
+
+  const renderPaginationItems = () => {
+    const items = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(0, currentPage - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(totalPages - 1, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(0, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      items.push(
+        <PaginationItem key={i}>
+          <PaginationLink
+            onClick={() => updatePage(i)}
+            isActive={currentPage === i}
+            className="cursor-pointer"
+          >
+            {i + 1}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    return items;
+  };
 
   const categoriesSpan = categories?.map((category) => (
     <button
@@ -180,7 +206,39 @@ function HomeV2() {
           </div>
         </div>
 
-        {hasProducts && <div className="pages">{pages}</div>}
+        {hasProducts && (
+          <div className="flex justify-center mt-8">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() => updatePage(Math.max(0, currentPage - 1))}
+                    className={
+                      currentPage === 0
+                        ? "pointer-events-none opacity-50"
+                        : "cursor-pointer"
+                    }
+                  />
+                </PaginationItem>
+
+                {renderPaginationItems()}
+
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={() =>
+                      updatePage(Math.min(totalPages - 1, currentPage + 1))
+                    }
+                    className={
+                      currentPage === totalPages - 1
+                        ? "pointer-events-none opacity-50"
+                        : "cursor-pointer"
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )}
       </section>
     </div>
   );

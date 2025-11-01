@@ -108,32 +108,6 @@
   width: 100%;
 }
 
-.pages {
-  display: flex;
-  flex-direction: row;
-  gap: 0.6rem;
-  margin: 0 auto 30px;
-  justify-content: center;
-  align-items: center;
-}
-
-.page-button {
-  border: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  color: #0f172a;
-  background-color: rgba(14, 165, 233, 0.2);
-  cursor: pointer;
-  font-weight: 700;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.page-button:hover {
-  background-color: rgba(14, 165, 233, 0.35);
-  transform: translateY(-2px);
-}
-
 @media (max-width: 1024px) {
   .home-layout {
     grid-template-columns: 1fr;
