@@ -1,22 +1,28 @@
+import { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import HomeV2 from "./pages/HomeV2";
-import Product from "./pages/Product";
-import NotFound from "./pages/NotFound";
-import CheckoutPage from "./pages/CheckoutPage";
-import CheckoutFormPage from "./pages/CheckoutFormPage";
-import { CartProvider } from "./context/CartContext/CartProvider";
-import Layout from "./pages/Layout";
-import Login from "./pages/Login";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import SignUp from "./pages/SignUp";
+import { CartProvider } from "./context/CartContext/CartProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Dashboard from "./pages/Dashboard";
+import Loading from "./components/ui/Loading";
+import Layout from "./pages/Layout";
+
+const Home = lazy(() => import("./pages/Home"));
+const HomeV2 = lazy(() => import("./pages/HomeV2"));
+const Product = lazy(() => import("./pages/Product"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const CheckoutFormPage = lazy(() => import("./pages/CheckoutFormPage"));
+const Login = lazy(() => import("./pages/Login"));
+const SignUp = lazy(() => import("./pages/SignUp"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const ProductDashboard = lazy(() => import("./pages/ProductDashboard"));
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <>
-      <QueryClientProvider client={new QueryClient()}>
+    <Suspense fallback={<Loading />}>
+      <QueryClientProvider client={queryClient}>
         <CartProvider>
           <Routes>
             <Route path="/" element={<Layout />}>
@@ -35,12 +41,20 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/products"
+                element={
+                  <ProtectedRoute requiredRoles={["ADMIN", "SELLER"]}>
+                    <ProductDashboard />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/*" element={<NotFound />} />
             </Route>
           </Routes>
         </CartProvider>
       </QueryClientProvider>
-    </>
+    </Suspense>
   );
 }
 

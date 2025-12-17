@@ -87,7 +87,7 @@ export function UserMenu({
 
         {isSeller && (
           <DropdownMenuItem
-            onClick={() => navigate("/meus-produtos")}
+            onClick={() => navigate("/products")}
             className="cursor-pointer"
           >
             <Store className="mr-2 h-4 w-4" />
