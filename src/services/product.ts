@@ -65,6 +65,8 @@ export interface ProductResponse {
 export interface PageRequest {
   page?: number;
   pageSize?: number;
+  categoryId?: string;
+  search?: string;
 }
 
 export interface PageResponse<T> {
@@ -206,7 +208,7 @@ export async function getProductById(id: string): Promise<ProductResponse> {
  *
  * Endpoint público - não requer autenticação
  *
- * @param params - Parâmetros de paginação (page, pageSize)
+ * @param params - Parâmetros de paginação (page, pageSize) e filtros (categoryId, search)
  * @returns Lista de produtos paginada
  * @throws Error se houver erro na busca
  */
@@ -214,11 +216,19 @@ export async function listProducts(
   params: PageRequest = {}
 ): Promise<ProductListResponse> {
   try {
-    const { page = 0, pageSize = 20 } = params;
+    const { page = 0, pageSize = 20, categoryId, search } = params;
     const queryParams = new URLSearchParams({
       page: page.toString(),
       pageSize: pageSize.toString(),
     });
+
+    if (categoryId) {
+      queryParams.append("categoryId", categoryId);
+    }
+
+    if (search) {
+      queryParams.append("search", search);
+    }
 
     const response = await fetch(
       `${API_BASE_URL}${PRODUCTS_PATH}?${queryParams}`,

@@ -1,57 +1,34 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import * as api from "../services/api";
+import { listProducts, ProductResponse } from "../services/product";
 import { ProductProps } from "../type";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const normalizeProducts = (items: any[] = []): ProductProps[] =>
-  items.map((item: any) => {
+const normalizeProducts = (items: ProductResponse[] = []): ProductProps[] =>
+  items.map((item) => {
     const secureThumbnail = item.thumbnail
       ? item.thumbnail.replace(/^(http:)?\/\//, "https://")
       : "";
 
-    const fallbackId =
-      item.id ??
-      (typeof crypto !== "undefined" && "randomUUID" in crypto
-        ? crypto.randomUUID()
-        : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
-
     return {
-      id: item.id ?? fallbackId,
-      title: item.title ?? "Produto sem título",
-      price: item.price ?? 0,
-      quantity: item.quantity ?? 1,
-      available_quantity: item.available_quantity ?? 0,
-      permalink: item.permalink ?? "",
+      id: item.id,
+      title: item.title,
+      price: item.price,
+      quantity: 1, // Default value
+      available_quantity: item.availableQuantity,
+      permalink: "", // Not provided by API
       thumbnail: secureThumbnail,
-      warranty: item.warranty ?? "",
+      warranty: item.condition === "NEW" ? "Garantia do Fabricante" : "Sem garantia",
       shipping: {
-        free_shipping: Boolean(item.shipping?.free_shipping),
+        free_shipping: false, // Default value
       },
-      pictures: item.pictures?.length
-        ? item.pictures.map((picture: any, pictureIndex: number) => ({
-            id:
-              picture.id ?? `${fallbackId}-picture-${pictureIndex.toString()}`,
-            url:
-              picture.url?.replace(/^(http:)?\/\//, "https://") ??
-              picture.secure_url?.replace(/^(http:)?\/\//, "https://") ??
-              secureThumbnail,
-          }))
-        : secureThumbnail
-        ? [
-            {
-              id: `${fallbackId}-thumb`,
-              url: secureThumbnail,
-            },
-          ]
-        : [],
-      attributes: Array.isArray(item.attributes)
-        ? item.attributes.map((attribute: any) => ({
-            id: attribute.id ?? `${fallbackId}-${attribute.name ?? "attr"}`,
-            name: attribute.name ?? "",
-            value_name: attribute.value_name ?? "",
-          }))
-        : [],
+      pictures: [
+        {
+          id: `${item.id}-thumb`,
+          url: secureThumbnail,
+        },
+      ],
+      attributes: [], // Not provided by API list
     } satisfies ProductProps;
   });
 
@@ -64,34 +41,37 @@ export function useProductSearch() {
   });
 
   const {
-    data: products,
+    data: productsData,
     isLoading,
     isError,
   } = useQuery({
     queryKey: ["products", searchParams],
     queryFn: async () => {
-      if (!searchParams.productName && !searchParams.categoryId) {
-        return [];
-      }
+      // Passa os parâmetros de busca para o serviço
+      const result = await listProducts({
+        page: searchParams.page,
+        pageSize: 20, // Default pageSize
+        categoryId: searchParams.categoryId,
+        search: searchParams.productName,
+      });
 
-      const result = await api.getProductsFromCategoryAndQuery(
-        searchParams.categoryId,
-        searchParams.productName,
-        searchParams.page
-      );
+      const normalizedProducts = normalizeProducts(result.results);
+      let parsedProducts = [...normalizedProducts];
 
-      const normalizedProducts = normalizeProducts(result?.results ?? []);
-
-      // Aplicar ordenação
+      // Aplicar ordenação no cliente se o backend não suportar (ou se quisermos garantir)
+      // Nota: Idealmente a ordenação deve ser feita no backend
       if (searchParams.sortChoice === "1") {
-        return [...normalizedProducts].sort((a, b) => a.price - b.price);
+        parsedProducts.sort((a, b) => a.price - b.price);
       } else if (searchParams.sortChoice === "2") {
-        return [...normalizedProducts].sort((a, b) => b.price - a.price);
+        parsedProducts.sort((a, b) => b.price - a.price);
       }
 
-      return normalizedProducts;
+      return {
+        results: parsedProducts,
+        paging: result.paging,
+      };
     },
-    enabled: !!(searchParams.productName || searchParams.categoryId),
+    // Removido enabled condicional para carregar produtos iniciais se desejado
     staleTime: 1000 * 60 * 5, // 5 minutos
   });
 
@@ -108,7 +88,13 @@ export function useProductSearch() {
   };
 
   return {
-    products: products ?? [],
+    products: productsData?.results || [],
+    paging: productsData?.paging || {
+      total: 0,
+      page: 0,
+      pageSize: 0,
+      totalPages: 0,
+    },
     isLoading,
     isError,
     searchParams,

@@ -30,6 +30,7 @@ function HomeV2() {
 
   const {
     products,
+    paging,
     isLoading,
     searchParams,
     updateSearch,
@@ -63,7 +64,8 @@ function HomeV2() {
     { value: "2", label: "Maior preço" },
   ];
 
-  const totalPages = 10; // Número total de páginas (pode vir da API no futuro)
+  const totalPages = paging?.totalPages || 1; // Usa o total de páginas da API ou default 1
+
   const currentPage = searchParams.page || 0;
 
   const renderPaginationItems = () => {
@@ -192,7 +194,7 @@ function HomeV2() {
               </div>
             )}
 
-            {!hasSearch && (
+            {!hasSearch && !hasProducts && !isLoading && (
               <div className="text-center py-12 text-gray-500">
                 <p className="text-lg font-semibold">
                   Bem-vindo ao Dri-Commerce!
