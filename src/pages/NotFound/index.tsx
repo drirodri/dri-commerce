@@ -9,26 +9,26 @@ function NotFound() {
   const { data: currentUser } = useCurrentUserQuery();
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <Card className="w-full max-w-2xl shadow-lg">
         <CardContent className="pt-12 pb-12">
           <div className="text-center space-y-6">
             {/* Número 404 grande */}
             <div className="relative">
-              <h1 className="text-9xl font-bold text-gray-200 select-none">
+              <h1 className="text-9xl font-bold text-gray-200 dark:text-gray-800 select-none">
                 404
               </h1>
               <div className="absolute inset-0 flex items-center justify-center">
-                <Search className="h-24 w-24 text-gray-400 animate-pulse" />
+                <Search className="h-24 w-24 text-gray-400 dark:text-gray-600 animate-pulse" />
               </div>
             </div>
 
             {/* Mensagem principal */}
             <div className="space-y-3">
-              <h2 className="text-3xl font-bold text-gray-900">
+              <h2 className="text-3xl font-bold text-foreground">
                 Página não encontrada
               </h2>
-              <p className="text-gray-600 max-w-md mx-auto">
+              <p className="text-muted-foreground max-w-md mx-auto">
                 Ops! A página que você está procurando não existe ou foi movida
                 para outro endereço.
               </p>
@@ -55,7 +55,7 @@ function NotFound() {
 
             {/* Sugestões */}
             <div className="pt-8 border-t mt-8">
-              <p className="text-sm text-gray-500 mb-4">Você pode tentar:</p>
+              <p className="text-sm text-muted-foreground mb-4">Você pode tentar:</p>
               <div className="flex flex-wrap gap-2 justify-center">
                 <Button
                   variant="ghost"
@@ -65,7 +65,7 @@ function NotFound() {
                 >
                   Explorar produtos
                 </Button>
-                <span className="text-gray-300">•</span>
+                <span className="text-muted-foreground/50">•</span>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -76,7 +76,7 @@ function NotFound() {
                 </Button>
                 {!currentUser && (
                   <>
-                    <span className="text-gray-300">•</span>
+                    <span className="text-muted-foreground/50">•</span>
                     <Button
                       variant="ghost"
                       size="sm"

@@ -123,7 +123,7 @@ function CheckoutForm({ cartData }: cartDataProps) {
       className={`cursor-pointer transition-all hover:shadow-md ${
         selectedRadio === method.value
           ? "border-primary border-2 bg-primary/5"
-          : "border-gray-200"
+          : "border-input"
       }`}
       onClick={() => {
         setSelectedRadio(method.value);
@@ -144,7 +144,7 @@ function CheckoutForm({ cartData }: cartDataProps) {
         />
         <div
           className={
-            selectedRadio === method.value ? "text-primary" : "text-gray-400"
+            selectedRadio === method.value ? "text-primary" : "text-muted-foreground"
           }
         >
           {method.icon}

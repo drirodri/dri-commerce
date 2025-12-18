@@ -18,7 +18,7 @@ function CheckoutFormPage() {
   // Se o carrinho estiver vazio, redirecionar
   if (parsedData.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <Card className="max-w-md w-full">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -41,7 +41,7 @@ function CheckoutFormPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold mb-8">Finalizar Compra</h1>
@@ -72,7 +72,7 @@ function CheckoutFormPage() {
                       {parsedData.map((item: ProductProps) => (
                         <div
                           key={item.id}
-                          className="flex gap-3 p-3 bg-gray-50 rounded-lg"
+                          className="flex gap-3 p-3 bg-secondary/50 rounded-lg"
                         >
                           <img
                             src={item.thumbnail}

@@ -77,7 +77,7 @@ function ProductForm({ item }: itemProps) {
             onClick={() =>
               navigate(`/product/${item.id}/${item.available_quantity}`)
             }
-            className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+            className="relative aspect-square w-full overflow-hidden rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
           >
             <img
               src={item.thumbnail.replace(/^(http:)?\/\//, "https://")}
@@ -91,7 +91,7 @@ function ProductForm({ item }: itemProps) {
             onClick={() =>
               navigate(`/product/${item.id}/${item.available_quantity}`)
             }
-            className="text-sm font-medium text-gray-900 line-clamp-2 min-h-[2.5rem] cursor-pointer hover:text-primary transition-colors"
+            className="text-sm font-medium text-foreground line-clamp-2 min-h-[2.5rem] cursor-pointer hover:text-primary transition-colors"
             title={item.title}
           >
             {item.title}
@@ -99,17 +99,17 @@ function ProductForm({ item }: itemProps) {
 
           {/* Informações de preço e disponibilidade */}
           <div className="space-y-1.5">
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-foreground">
               {formatPrice(item.price)}
             </p>
 
             {item.price > 149.99 && (
-              <p className="text-xs text-gray-600">
+              <p className="text-xs text-muted-foreground">
                 em 12x de {formatPrice(item.price / 12)}
               </p>
             )}
 
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               {item.available_quantity} unidades disponíveis
             </p>
 
