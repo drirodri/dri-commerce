@@ -42,7 +42,10 @@ import {
 } from "lucide-react";
 import { ProductDialog } from "@/components/ProductDialog";
 import { ProductResponse } from "@/services/product";
+import { getUserInfo } from "@/services/auth-storage";
 import { useProducts } from "@/hooks/useProducts";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import "./product-dashboard.css";
 
 const conditionMapper: Record<string, string> = {
@@ -83,6 +86,19 @@ const ProductDashboard: React.FC = () => {
     variant: "default",
   });
 
+  const [deleteDialog, setDeleteDialog] = useState<{
+    open: boolean;
+    product: ProductResponse | null;
+    inputValue: string;
+  }>({
+    open: false,
+    product: null,
+    inputValue: "",
+  });
+
+  const userInfo = getUserInfo();
+  const listType = userInfo?.role === "ADMIN" ? "admin" : "seller";
+
   const {
     products,
     paging,
@@ -99,7 +115,7 @@ const ProductDashboard: React.FC = () => {
     activateStatus,
     deactivateStatus,
     deleteStatus,
-  } = useProducts(currentPage, pageSize);
+  } = useProducts(currentPage, pageSize, listType);
 
   const totalPages = paging.totalPages;
 
@@ -175,18 +191,22 @@ const ProductDashboard: React.FC = () => {
     });
   };
 
-  const handleDelete = (id: string) => {
-    setConfirmDialog({
+  const handleDelete = (product: ProductResponse) => {
+    setDeleteDialog({
       open: true,
-      title: "Deletar produto",
-      description:
-        "Deseja realmente deletar este produto? Esta ação não pode ser desfeita.",
-      variant: "destructive",
-      action: () => {
-        deleteProduct(id);
-        setConfirmDialog((prev) => ({ ...prev, open: false }));
-      },
+      product,
+      inputValue: "",
     });
+  };
+
+  const confirmDelete = () => {
+    if (deleteDialog.product && deleteDialog.inputValue === deleteDialog.product.title) {
+      deleteProduct({ 
+        id: deleteDialog.product.id, 
+        confirmationName: deleteDialog.inputValue 
+      });
+      setDeleteDialog({ open: false, product: null, inputValue: "" });
+    }
   };
 
   const renderPaginationItems = () => {
@@ -409,7 +429,7 @@ const ProductDashboard: React.FC = () => {
                                   variant="destructive"
                                   size="sm"
                                   disabled={deleteStatus === "pending"}
-                                  onClick={() => handleDelete(product.id)}
+                                  onClick={() => handleDelete(product)}
                                   title="Deletar produto"
                                 >
                                   <Trash2 className="h-4 w-4" />
@@ -493,6 +513,61 @@ const ProductDashboard: React.FC = () => {
               }
             >
               Confirmar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete Confirmation Dialog with Name Input */}
+      <AlertDialog
+        open={deleteDialog.open}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteDialog({ open: false, product: null, inputValue: "" });
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-destructive">
+              Deletar produto permanentemente
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-4">
+              <p>
+                Esta ação <strong>não pode ser desfeita</strong>. O produto será
+                removido permanentemente do sistema.
+              </p>
+              <p>
+                Para confirmar, digite o nome exato do produto:
+              </p>
+              <p className="font-mono bg-muted p-2 rounded text-sm break-all">
+                {deleteDialog.product?.title}
+              </p>
+              <div className="space-y-2">
+                <Label htmlFor="confirm-delete-input">Nome do produto:</Label>
+                <Input
+                  id="confirm-delete-input"
+                  value={deleteDialog.inputValue}
+                  onChange={(e) =>
+                    setDeleteDialog((prev) => ({
+                      ...prev,
+                      inputValue: e.target.value,
+                    }))
+                  }
+                  placeholder="Digite o nome do produto"
+                  className="font-mono"
+                />
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              disabled={deleteDialog.inputValue !== deleteDialog.product?.title}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Deletar permanentemente
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

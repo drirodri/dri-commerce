@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   listProducts,
+  listMyProducts,
+  listAllProductsAdmin,
   createProduct,
   updateProduct,
   activateProduct,
@@ -10,21 +12,27 @@ import {
   UpdateProductRequest,
 } from "@/services/product";
 
-export const useProducts = (page: number, pageSize: number) => {
+type ListType = "public" | "seller" | "admin";
+
+export const useProducts = (page: number, pageSize: number, listType: ListType = "public") => {
   const queryClient = useQueryClient();
 
-  // Query para listar produtos
+  const listFn = {
+    public: listProducts,
+    seller: listMyProducts,
+    admin: listAllProductsAdmin,
+  }[listType];
+
   const {
     data: productsData,
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["products", page, pageSize],
-    queryFn: () => listProducts({ page, pageSize }),
+    queryKey: ["products", page, pageSize, listType],
+    queryFn: () => listFn({ page, pageSize }),
   });
 
-  // Mutation para criar produto
   const createProductMutation = useMutation({
     mutationFn: (product: CreateProductRequest) => createProduct(product),
     onSuccess: () => {
@@ -32,7 +40,6 @@ export const useProducts = (page: number, pageSize: number) => {
     },
   });
 
-  // Mutation para atualizar produto
   const updateProductMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateProductRequest }) =>
       updateProduct(id, data),
@@ -41,7 +48,6 @@ export const useProducts = (page: number, pageSize: number) => {
     },
   });
 
-  // Mutation para ativar produto
   const activateProductMutation = useMutation({
     mutationFn: (id: string) => activateProduct(id),
     onSuccess: () => {
@@ -49,7 +55,6 @@ export const useProducts = (page: number, pageSize: number) => {
     },
   });
 
-  // Mutation para desativar produto
   const deactivateProductMutation = useMutation({
     mutationFn: (id: string) => deactivateProduct(id),
     onSuccess: () => {
@@ -57,9 +62,9 @@ export const useProducts = (page: number, pageSize: number) => {
     },
   });
 
-  // Mutation para deletar produto
   const deleteProductMutation = useMutation({
-    mutationFn: (id: string) => deleteProduct(id),
+    mutationFn: ({ id, confirmationName }: { id: string; confirmationName: string }) =>
+      deleteProduct(id, confirmationName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },

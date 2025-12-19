@@ -244,10 +244,8 @@ export async function listProducts(
       await handleErrorResponse(response, "listar produtos");
     }
 
-    // Backend retorna com estrutura diferente, precisamos mapear
     const data = await response.json();
 
-    // Mapeia a resposta do backend para o formato esperado pelo frontend
     return {
       results: data.products || [],
       paging: {
@@ -262,6 +260,94 @@ export async function listProducts(
       throw error;
     }
     throw new Error("Erro desconhecido ao listar produtos.");
+  }
+}
+
+export async function listMyProducts(
+  params: PageRequest = {}
+): Promise<ProductListResponse> {
+  try {
+    const { page = 1, pageSize = 20 } = params;
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+    });
+
+    const response = await authenticatedFetch(
+      `${API_BASE_URL}${PRODUCTS_PATH}/my?${queryParams}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      await handleErrorResponse(response, "listar meus produtos");
+    }
+
+    const data = await response.json();
+    return {
+      results: data.products || [],
+      paging: {
+        total: data.totalElements || 0,
+        page: data.currentPage || 0,
+        pageSize: data.pageSize || 0,
+        totalPages: data.totalPages || 0,
+      },
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Erro desconhecido ao listar meus produtos.");
+  }
+}
+
+/**
+ * Lista todos os produtos (admin) - ativos e inativos
+ * Endpoint: GET /api/v1/products/all
+ */
+export async function listAllProductsAdmin(
+  params: PageRequest = {}
+): Promise<ProductListResponse> {
+  try {
+    const { page = 1, pageSize = 20 } = params;
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+    });
+
+    const response = await authenticatedFetch(
+      `${API_BASE_URL}${PRODUCTS_PATH}/all?${queryParams}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      await handleErrorResponse(response, "listar todos os produtos");
+    }
+
+    const data = await response.json();
+    return {
+      results: data.products || [],
+      paging: {
+        total: data.totalElements || 0,
+        page: data.currentPage || 0,
+        pageSize: data.pageSize || 0,
+        totalPages: data.totalPages || 0,
+      },
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Erro desconhecido ao listar todos os produtos.");
   }
 }
 
@@ -334,15 +420,17 @@ export async function deactivateProduct(id: string): Promise<ProductResponse> {
 }
 
 /**
- * Deleta um produto (soft delete via desativação)
+ * Deleta um produto permanentemente (hard delete)
  *
- * Requer autenticação com role ADMIN
+ * Requer autenticação com role SELLER (dono) ou ADMIN
+ * Exige confirmação do nome do produto para prevenir deleções acidentais
  *
  * @param id - ID do produto a ser deletado
+ * @param confirmationName - Nome exato do produto para confirmação
  * @returns Mensagem de sucesso
- * @throws Error se houver erro na deleção ou usuário não autorizado
+ * @throws Error se houver erro na deleção, nome não corresponder, ou sem permissão
  */
-export async function deleteProduct(id: string): Promise<MessageResponse> {
+export async function deleteProduct(id: string, confirmationName: string): Promise<MessageResponse> {
   try {
     const response = await authenticatedFetch(
       `${API_BASE_URL}${PRODUCTS_PATH}/${id}`,
@@ -351,6 +439,7 @@ export async function deleteProduct(id: string): Promise<MessageResponse> {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ confirmationName }),
       }
     );
 
@@ -390,7 +479,6 @@ async function handleErrorResponse(
       errorMessage = errorData.message;
     }
   } catch {
-    // Se não conseguir parsear o JSON, usa mensagens padrão
   }
 
   switch (response.status) {
