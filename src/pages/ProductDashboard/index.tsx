@@ -99,7 +99,7 @@ const ProductDashboard: React.FC = () => {
     activateStatus,
     deactivateStatus,
     deleteStatus,
-  } = useProducts(currentPage - 1, pageSize);
+  } = useProducts(currentPage, pageSize);
 
   const totalPages = paging.totalPages;
 

@@ -36,7 +36,7 @@ export function useProductSearch() {
   const [searchParams, setSearchParams] = useState({
     productName: "",
     categoryId: "",
-    page: 0,
+    page: 1,
     sortChoice: "0",
   });
 
@@ -76,7 +76,7 @@ export function useProductSearch() {
   });
 
   const updateSearch = (params: Partial<typeof searchParams>) => {
-    setSearchParams((prev) => ({ ...prev, ...params, page: 0 }));
+    setSearchParams((prev) => ({ ...prev, ...params, page: 1 }));
   };
 
   const updatePage = (page: number) => {
@@ -91,7 +91,7 @@ export function useProductSearch() {
     products: productsData?.results || [],
     paging: productsData?.paging || {
       total: 0,
-      page: 0,
+      page: 1,
       pageSize: 0,
       totalPages: 0,
     },

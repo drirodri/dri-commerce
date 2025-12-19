@@ -216,7 +216,7 @@ export async function listProducts(
   params: PageRequest = {}
 ): Promise<ProductListResponse> {
   try {
-    const { page = 0, pageSize = 20, categoryId, search } = params;
+    const { page = 1, pageSize = 20, categoryId, search } = params;
     const queryParams = new URLSearchParams({
       page: page.toString(),
       pageSize: pageSize.toString(),
