@@ -39,8 +39,8 @@ function CheckoutPage() {
     <div className="checkout-page flex justify-center px-4 py-8 bg-transparent">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full max-w-[80%] bg-transparent">
         {/* Cart Items Section */}
-        <div className="lg:col-span-2 bg-transparent">
-          <Card className="bg-white">
+        <div className={`bg-transparent ${isEmpty ? "lg:col-span-3" : "lg:col-span-2"}`}>
+          <Card className="bg-card">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
@@ -59,7 +59,7 @@ function CheckoutPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-destructive"
+                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Limpar carrinho
@@ -88,10 +88,10 @@ function CheckoutPage() {
               {isEmpty ? (
                 <div className="text-center py-12">
                   <ShoppingBag className="h-16 w-16 mx-auto text-gray-300 mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
                     Seu carrinho está vazio
                   </h3>
-                  <p className="text-gray-500 mb-6">
+                  <p className="text-muted-foreground mb-6">
                     Adicione produtos ao seu carrinho para continuar
                   </p>
                   <Button onClick={() => navigate("/")}>
@@ -103,12 +103,12 @@ function CheckoutPage() {
                 <ScrollArea className="h-[600px] pr-4">
                   <div className="space-y-4">
                     {parsedData.map((item) => (
-                      <Card key={item.id} className="overflow-hidden bg-white">
+                      <Card key={item.id} className="overflow-hidden bg-card">
                         <CardContent className="p-4">
                           <div className="flex gap-4">
                             {/* Product Image */}
                             <div
-                              className="w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+                              className="w-24 h-24 flex-shrink-0 bg-secondary/50 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
                               onClick={() =>
                                 navigate(
                                   `/product/${item.id}/${item.available_quantity}`
@@ -128,7 +128,7 @@ function CheckoutPage() {
                             {/* Product Info */}
                             <div className="flex-1 min-w-0">
                               <h4
-                                className="font-semibold text-gray-900 mb-2 cursor-pointer hover:text-primary transition-colors line-clamp-2"
+                                className="font-semibold text-foreground mb-2 cursor-pointer hover:text-primary transition-colors line-clamp-2"
                                 onClick={() =>
                                   navigate(
                                     `/product/${item.id}/${item.available_quantity}`
@@ -139,7 +139,7 @@ function CheckoutPage() {
                               </h4>
 
                               <div className="flex items-center gap-4 mb-3">
-                                <div className="text-sm text-gray-500">
+                                <div className="text-sm text-muted-foreground">
                                   Quantidade:
                                 </div>
                                 <QuantityDiv item={item} />
@@ -155,9 +155,9 @@ function CheckoutPage() {
                                     }).format(item.price)}
                                   </span>
                                   {item.quantity > 1 && (
-                                    <span className="text-sm text-gray-500 ml-2">
+                                    <span className="text-sm text-muted-foreground ml-2">
                                       x {item.quantity} ={" "}
-                                      <span className="font-semibold text-gray-900">
+                                      <span className="font-semibold text-foreground">
                                         R${" "}
                                         {new Intl.NumberFormat("pt-BR", {
                                           minimumFractionDigits: 2,
@@ -174,7 +174,7 @@ function CheckoutPage() {
                                   onClick={(event) =>
                                     removeItem(event, item.id)
                                   }
-                                  className="text-destructive hover:text-destructive"
+                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
                                 >
                                   <X className="h-5 w-5" />
                                 </Button>
@@ -194,14 +194,14 @@ function CheckoutPage() {
         {/* Order Summary Section */}
         {!isEmpty && (
           <div className="lg:col-span-1 bg-transparent">
-            <Card className="sticky top-4 bg-white">
+            <Card className="sticky top-4 bg-card">
               <CardHeader>
                 <CardTitle>Resumo do Pedido</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Subtotal</span>
+                    <span className="text-muted-foreground">Subtotal</span>
                     <span className="font-medium">
                       R${" "}
                       {new Intl.NumberFormat("pt-BR", {
@@ -211,7 +211,7 @@ function CheckoutPage() {
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Frete</span>
+                    <span className="text-muted-foreground">Frete</span>
                     <span className="font-medium text-green-600">Grátis</span>
                   </div>
                   <Separator />

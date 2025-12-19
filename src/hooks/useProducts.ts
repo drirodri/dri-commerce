@@ -69,7 +69,7 @@ export const useProducts = (page: number, pageSize: number) => {
     products: productsData?.results || [],
     paging: productsData?.paging || {
       total: 0,
-      page: 0,
+      page: 1,
       pageSize: 0,
       totalPages: 0,
     },

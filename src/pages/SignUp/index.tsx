@@ -110,10 +110,10 @@ function SignUp() {
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold text-emerald-600">
+            <h1 className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
               Conta criada com sucesso!
             </h1>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Bem-vindo ao Dri-Commerce. Você será redirecionado para o login em
               alguns segundos.
             </p>
@@ -275,7 +275,13 @@ function SignUp() {
                             <span className="font-semibold text-sm">
                               {option.label}
                             </span>
-                            <span className="text-xs text-muted-foreground text-wrap">
+                            <span
+                              className={`text-xs text-wrap ${
+                                roleValue === option.value
+                                  ? "text-primary-foreground/80"
+                                  : "text-muted-foreground"
+                              }`}
+                            >
                               {option.description}
                             </span>
                           </Button>

@@ -34,10 +34,10 @@
 /* Text */
 .price-text {
   font-weight: 700;
-  color: var(--cyan-black);
+  color: hsl(var(--foreground));
 }
 .quantity-text {
-  color: var(--blue-gray);
+  color: hsl(var(--muted-foreground));
   font-size: 0.8rem;
 }
 

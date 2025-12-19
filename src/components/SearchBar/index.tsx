@@ -33,7 +33,7 @@ export function SearchBar({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
-          className="pr-10 bg-white/90 backdrop-blur-sm border-gray-200 focus-visible:ring-primary"
+          className="pr-10 bg-background/90 backdrop-blur-sm border-input focus-visible:ring-primary h-10"
         />
         <Button
           type="submit"

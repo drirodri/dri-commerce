@@ -19,6 +19,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { SearchBar } from "@/components/SearchBar";
 import { useProductSearch } from "@/hooks/useProductSearch";
 import { UserMenu } from "@/components/UserMenu";
+import { ModeToggle } from "@/components/mode-toggle";
 
 function Layout() {
   const contentPageRef = useRef<HTMLDivElement | null>(null);
@@ -106,11 +107,9 @@ function Layout() {
         </div>
 
         <div className="layout-center">
-          {isHomePage && (
-            <div className="layout-search">
-              <SearchBar onSearch={handleSearch} />
-            </div>
-          )}
+          <div className="layout-search">
+            <SearchBar onSearch={handleSearch} />
+          </div>
 
           <NavigationMenu className="layout-navigation">
             <NavigationMenuList>
@@ -138,6 +137,7 @@ function Layout() {
         </div>
 
         <div className="layout-actions">
+          <ModeToggle />
           {notMobile && <CartButton />}
           {currentUser && (
             <UserMenu

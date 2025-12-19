@@ -66,16 +66,16 @@ function HomeV2() {
 
   const totalPages = paging?.totalPages || 1; // Usa o total de páginas da API ou default 1
 
-  const currentPage = searchParams.page || 0;
+  const currentPage = searchParams.page || 1;
 
   const renderPaginationItems = () => {
     const items = [];
     const maxVisiblePages = 5;
-    let startPage = Math.max(0, currentPage - Math.floor(maxVisiblePages / 2));
-    const endPage = Math.min(totalPages - 1, startPage + maxVisiblePages - 1);
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(0, endPage - maxVisiblePages + 1);
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
 
     for (let i = startPage; i <= endPage; i++) {
@@ -86,7 +86,7 @@ function HomeV2() {
             isActive={currentPage === i}
             className="cursor-pointer"
           >
-            {i + 1}
+            {i}
           </PaginationLink>
         </PaginationItem>
       );
@@ -214,9 +214,9 @@ function HomeV2() {
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious
-                    onClick={() => updatePage(Math.max(0, currentPage - 1))}
+                    onClick={() => updatePage(Math.max(1, currentPage - 1))}
                     className={
-                      currentPage === 0
+                      currentPage === 1
                         ? "pointer-events-none opacity-50"
                         : "cursor-pointer"
                     }
@@ -228,10 +228,10 @@ function HomeV2() {
                 <PaginationItem>
                   <PaginationNext
                     onClick={() =>
-                      updatePage(Math.min(totalPages - 1, currentPage + 1))
+                      updatePage(Math.min(totalPages, currentPage + 1))
                     }
                     className={
-                      currentPage === totalPages - 1
+                      currentPage === totalPages
                         ? "pointer-events-none opacity-50"
                         : "cursor-pointer"
                     }

@@ -12,7 +12,7 @@
 }
 
 .search-sidebar .sidebar-toggle {
-  color: #0f172a;
+  color: hsl(var(--foreground));
   width: 100%;
   justify-content: space-between;
 }
@@ -23,11 +23,11 @@
 
 .search-sidebar .sidebar-subtitle {
   font-size: 0.75rem;
-  color: #64748b;
+  color: hsl(var(--muted-foreground));
 }
 
 .search-sidebar .sidebar-toggle-icon {
-  color: #0ea5e9;
+  color: hsl(var(--primary));
 }
 
 .categories-list {
@@ -46,20 +46,20 @@
   border-radius: 0.75rem;
   padding: 0.55rem 0.75rem;
   font-size: 0.9rem;
-  color: #475569;
+  color: hsl(var(--muted-foreground));
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .categories-span:hover {
-  background-color: rgba(14, 165, 233, 0.14);
-  color: #0f172a;
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
   transform: translateX(4px);
 }
 
 .categories-span.active {
-  background-color: rgba(14, 165, 233, 0.25);
-  color: #0f172a;
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
   font-weight: 600;
 }
 

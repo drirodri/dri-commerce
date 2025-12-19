@@ -2,18 +2,12 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(
-    180deg,
-    rgba(251, 254, 255, 0.9) 0%,
-    #f0fbff 55%,
-    #eef6ff 100%
-  );
+  background: hsl(var(--background));
 }
 
 .layout-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 2rem;
   padding: 1.25rem 2rem;
@@ -25,13 +19,15 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  flex: 1;
+  width: 100%;
+  min-width: 400px;
+  max-width: 600px;
+  justify-self: center;
   align-items: center;
 }
 
 .layout-search {
   width: 100%;
-  max-width: 600px;
 }
 
 .layout-brand {
@@ -41,35 +37,13 @@
   justify-self: start;
 }
 
-.layout-brand-title {
-  color: #0f172a;
-  font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  text-decoration: none;
-}
-
-.layout-brand-title:focus-visible {
-  outline: 2px solid rgba(34, 211, 238, 0.6);
-  outline-offset: 4px;
-  border-radius: 6px;
-}
-
-.layout-brand-tagline {
-  color: #475569;
-  font-size: 0.9rem;
-}
-
-.layout-navigation {
-  display: flex;
-  justify-content: center;
-}
+/* ... existing styles ... */
 
 .layout-actions {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  flex-shrink: 0;
+  justify-self: end;
 }
 
 .layout-navigation .group {
@@ -103,7 +77,7 @@
   gap: 2rem;
   align-items: center;
   flex-wrap: wrap;
-  color: #1e293b;
+  color: hsl(var(--foreground));
 }
 
 .layout-footer-meta {
@@ -119,7 +93,7 @@
 
 .layout-footer-credit {
   font-size: 0.95rem;
-  color: #475569;
+  color: hsl(var(--muted-foreground));
 }
 
 .layout-footer-links {
@@ -135,8 +109,8 @@
   gap: 0.5rem;
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
-  background: rgba(14, 165, 233, 0.1);
-  color: #0369a1;
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
   transition: transform 0.2s ease, background-color 0.2s ease;
   text-decoration: none;
   font-weight: 500;
@@ -159,6 +133,7 @@
 
 @media (max-width: 900px) {
   .layout-header {
+    display: flex;
     flex-direction: column;
     gap: 1rem;
     align-items: stretch;
@@ -171,6 +146,7 @@
 
   .layout-center {
     width: 100%;
+    min-width: 0;
   }
 
   .layout-navigation {
