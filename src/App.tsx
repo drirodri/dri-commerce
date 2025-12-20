@@ -16,6 +16,7 @@ const Login = lazy(() => import("./pages/Login"));
 const SignUp = lazy(() => import("./pages/SignUp"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const ProductDashboard = lazy(() => import("./pages/ProductDashboard"));
+const CategoryDashboard = lazy(() => import("./pages/CategoryDashboard"));
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,14 @@ function App() {
                 element={
                   <ProtectedRoute requiredRoles={["ADMIN", "SELLER"]}>
                     <ProductDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/categories"
+                element={
+                  <ProtectedRoute requiredRole="ADMIN">
+                    <CategoryDashboard />
                   </ProtectedRoute>
                 }
               />

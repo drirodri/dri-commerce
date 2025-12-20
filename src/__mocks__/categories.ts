@@ -2,127 +2,127 @@ import { categoriesProps } from "../type";
 
 export const categoriesMock: categoriesProps = [
   {
-    id: "MLB5672",
+    id: 1,
     name: "Acessórios para Veículos",
   },
   {
-    id: "MLB271599",
+    id: 2,
     name: "Agro",
   },
   {
-    id: "MLB1403",
+    id: 3,
     name: "Alimentos e Bebidas",
   },
   {
-    id: "MLB1071",
+    id: 4,
     name: "Animais",
   },
   {
-    id: "MLB1367",
+    id: 5,
     name: "Antiguidades e Coleções",
   },
   {
-    id: "MLB1368",
+    id: 6,
     name: "Arte, Papelaria e Armarinho",
   },
   {
-    id: "MLB1384",
+    id: 7,
     name: "Bebês",
   },
   {
-    id: "MLB1246",
+    id: 8,
     name: "Beleza e Cuidado Pessoal",
   },
   {
-    id: "MLB1132",
+    id: 9,
     name: "Brinquedos e Hobbies",
   },
   {
-    id: "MLB1430",
+    id: 10,
     name: "Calçados, Roupas e Bolsas",
   },
   {
-    id: "MLB1039",
+    id: 11,
     name: "Câmeras e Acessórios",
   },
   {
-    id: "MLB1743",
+    id: 12,
     name: "Carros, Motos e Outros",
   },
   {
-    id: "MLB1574",
+    id: 13,
     name: "Casa, Móveis e Decoração",
   },
   {
-    id: "MLB1051",
+    id: 14,
     name: "Celulares e Telefones",
   },
   {
-    id: "MLB1500",
+    id: 15,
     name: "Construção",
   },
   {
-    id: "MLB5726",
+    id: 16,
     name: "Eletrodomésticos",
   },
   {
-    id: "MLB1000",
+    id: 17,
     name: "Eletrônicos, Áudio e Vídeo",
   },
   {
-    id: "MLB1276",
+    id: 18,
     name: "Esportes e Fitness",
   },
   {
-    id: "MLB263532",
+    id: 19,
     name: "Ferramentas",
   },
   {
-    id: "MLB12404",
+    id: 20,
     name: "Festas e Lembrancinhas",
   },
   {
-    id: "MLB1144",
+    id: 21,
     name: "Games",
   },
   {
-    id: "MLB1459",
+    id: 22,
     name: "Imóveis",
   },
   {
-    id: "MLB1499",
+    id: 23,
     name: "Indústria e Comércio",
   },
   {
-    id: "MLB1648",
+    id: 24,
     name: "Informática",
   },
   {
-    id: "MLB218519",
+    id: 25,
     name: "Ingressos",
   },
   {
-    id: "MLB1182",
+    id: 26,
     name: "Instrumentos Musicais",
   },
   {
-    id: "MLB3937",
+    id: 27,
     name: "Joias e Relógios",
   },
   {
-    id: "MLB1196",
+    id: 28,
     name: "Livros, Revistas e Comics",
   },
   {
-    id: "MLB1168",
+    id: 29,
     name: "Música, Filmes e Seriados",
   },
   {
-    id: "MLB264586",
+    id: 30,
     name: "Saúde",
   },
   {
-    id: "MLB1540",
+    id: 31,
     name: "Serviços",
   },
 ];

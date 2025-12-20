@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useRef } from "react";
-import { categoriesProps, ProductProps } from "../../type";
+import { ProductProps } from "../../type";
 import * as api from "../../services/api";
 import "./Home.css";
 import ProductForm from "../../components/ProductForm";
@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCategories } from "@/hooks/useCategories";
 
 const normalizeProducts = (items: any[] = []): ProductProps[] =>
   items.map((item: any) => {
@@ -68,9 +69,9 @@ const normalizeProducts = (items: any[] = []): ProductProps[] =>
   });
 
 function Home() {
-  const [categories, setCategories] = useState<categoriesProps>();
+  const { categories, isLoading: isCategoriesLoading } = useCategories();
   const [productName, setProductName] = useState("");
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState<number | null>(null);
   const [categoryName, setCategoryName] = useState("Categorias");
 
   const [showSelect, setShowSelect] = useState(true);
@@ -81,27 +82,16 @@ function Home() {
 
   const [page, setPage] = useState<number>(0);
 
-  // Fetch categories from API to create select options
-  async function fetchCategories() {
-    const data = await api.getCategories();
-    setCategories(data);
-  }
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  // Fetch products from API using categoryId and productName
 
   async function fetchProduct(
-    categoryId: string,
+    categoryId: number | null,
     productName: string,
     sort: string,
     page: number
   ) {
     try {
       const product = await api.getProductsFromCategoryAndQuery(
-        categoryId,
+        categoryId !== null ? String(categoryId) : "",
         productName,
         page
       );
@@ -155,9 +145,9 @@ function Home() {
     const formData = new FormData(event.currentTarget);
 
     const name = formData.get("product-name") as string | null;
-    const category = formData.get("category") as string | null;
+    const categoryStr = formData.get("category") as string | null;
     setProductName(name ?? "");
-    setCategoryId(category ?? "");
+    setCategoryId(categoryStr ? parseInt(categoryStr, 10) : null);
   };
 
   const sortChoices = [
@@ -214,17 +204,19 @@ function Home() {
         className="search-sidebar"
       >
         <div className="categories-list">
-          {categoriesSpan?.length ? (
+          {isCategoriesLoading ? (
+            <span className="categories-empty">Carregando categorias...</span>
+          ) : categoriesSpan?.length ? (
             categoriesSpan
           ) : (
-            <span className="categories-empty">Carregando categorias...</span>
+            <span className="categories-empty">Nenhuma categoria encontrada</span>
           )}
         </div>
       </Sidebar>
 
       <section className="home-content">
         <form onSubmit={handleSubmit} className="product-search-form">
-          <input type="hidden" name="category" value={categoryId} />
+          <input type="hidden" name="category" value={categoryId !== null ? String(categoryId) : ""} />
           <label className="product-input-label" htmlFor="product-name-input">
             <input
               className="product-name-input"

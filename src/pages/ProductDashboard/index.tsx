@@ -143,7 +143,7 @@ const ProductDashboard: React.FC = () => {
     thumbnail: string;
     availableQuantity: number;
     condition: "NEW" | "USED";
-    categoryId: string;
+    categoryId: number | null;
   }) => {
     if (isCreating) {
       createProduct(data, {

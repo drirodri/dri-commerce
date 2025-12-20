@@ -3,7 +3,6 @@ import { useState } from "react";
 import { listProducts, ProductResponse } from "../services/product";
 import { ProductProps } from "../type";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 const normalizeProducts = (items: ProductResponse[] = []): ProductProps[] =>
   items.map((item) => {
     const secureThumbnail = item.thumbnail
@@ -14,13 +13,13 @@ const normalizeProducts = (items: ProductResponse[] = []): ProductProps[] =>
       id: item.id,
       title: item.title,
       price: item.price,
-      quantity: 1, // Default value
+      quantity: 1,
       available_quantity: item.availableQuantity,
-      permalink: "", // Not provided by API
+      permalink: "",
       thumbnail: secureThumbnail,
       warranty: item.condition === "NEW" ? "Garantia do Fabricante" : "Sem garantia",
       shipping: {
-        free_shipping: false, // Default value
+        free_shipping: false, 
       },
       pictures: [
         {
@@ -28,14 +27,14 @@ const normalizeProducts = (items: ProductResponse[] = []): ProductProps[] =>
           url: secureThumbnail,
         },
       ],
-      attributes: [], // Not provided by API list
+      attributes: [],
     } satisfies ProductProps;
   });
 
 export function useProductSearch() {
   const [searchParams, setSearchParams] = useState({
     productName: "",
-    categoryId: "",
+    categoryId: null as number | null,
     page: 1,
     sortChoice: "0",
   });
@@ -47,19 +46,16 @@ export function useProductSearch() {
   } = useQuery({
     queryKey: ["products", searchParams],
     queryFn: async () => {
-      // Passa os parâmetros de busca para o serviço
       const result = await listProducts({
         page: searchParams.page,
-        pageSize: 20, // Default pageSize
-        categoryId: searchParams.categoryId,
+        pageSize: 20,
+        categoryId: searchParams.categoryId !== null ? String(searchParams.categoryId) : undefined,
         search: searchParams.productName,
       });
 
       const normalizedProducts = normalizeProducts(result.results);
       let parsedProducts = [...normalizedProducts];
 
-      // Aplicar ordenação no cliente se o backend não suportar (ou se quisermos garantir)
-      // Nota: Idealmente a ordenação deve ser feita no backend
       if (searchParams.sortChoice === "1") {
         parsedProducts.sort((a, b) => a.price - b.price);
       } else if (searchParams.sortChoice === "2") {
@@ -71,8 +67,7 @@ export function useProductSearch() {
         paging: result.paging,
       };
     },
-    // Removido enabled condicional para carregar produtos iniciais se desejado
-    staleTime: 1000 * 60 * 5, // 5 minutos
+    staleTime: 1000 * 60 * 5,
   });
 
   const updateSearch = (params: Partial<typeof searchParams>) => {

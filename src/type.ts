@@ -1,7 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export type categoryProps = {
-  id: string;
+  id: number;
   name: string;
+  description?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type categoriesProps = categoryProps[];

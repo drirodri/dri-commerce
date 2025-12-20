@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { categoriesProps } from "../../type";
-import * as api from "../../services/api";
 import "./HomeV2.css";
 import ProductForm from "../../components/ProductForm";
 import CartButton from "../../components/CartButton";
@@ -22,9 +20,10 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useProductSearch } from "@/hooks/useProductSearch";
+import { useCategories } from "@/hooks/useCategories";
 
 function HomeV2() {
-  const [categories, setCategories] = useState<categoriesProps>();
+  const { categories, isLoading: isCategoriesLoading } = useCategories();
   const [categoryName, setCategoryName] = useState("Categorias");
   const [showSelect, setShowSelect] = useState(true);
 
@@ -40,16 +39,6 @@ function HomeV2() {
 
   const isMobile = useMediaQuery({ query: "(max-width: 500px)" });
 
-  // Fetch categories from API to create select options
-  async function fetchCategories() {
-    const data = await api.getCategories();
-    setCategories(data);
-  }
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
   useEffect(() => {
     if (isMobile) {
       setShowSelect(false);
@@ -64,7 +53,7 @@ function HomeV2() {
     { value: "2", label: "Maior preço" },
   ];
 
-  const totalPages = paging?.totalPages || 1; // Usa o total de páginas da API ou default 1
+  const totalPages = paging?.totalPages || 1;
 
   const currentPage = searchParams.page || 1;
 
@@ -128,10 +117,12 @@ function HomeV2() {
         className="search-sidebar"
       >
         <div className="categories-list">
-          {categoriesSpan?.length ? (
+          {isCategoriesLoading ? (
+            <span className="categories-empty">Carregando categorias...</span>
+          ) : categoriesSpan?.length ? (
             categoriesSpan
           ) : (
-            <span className="categories-empty">Carregando categorias...</span>
+            <span className="categories-empty">Nenhuma categoria encontrada</span>
           )}
         </div>
       </Sidebar>

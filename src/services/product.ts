@@ -36,7 +36,7 @@ export interface CreateProductRequest {
   thumbnail: string;
   availableQuantity: number;
   condition: "NEW" | "USED";
-  categoryId: string;
+  categoryId: number | null;
 }
 
 export interface UpdateProductRequest {
@@ -45,7 +45,7 @@ export interface UpdateProductRequest {
   thumbnail?: string;
   availableQuantity?: number;
   condition?: "NEW" | "USED";
-  categoryId?: string;
+  categoryId?: number | null;
 }
 
 export interface ProductResponse {
@@ -55,7 +55,7 @@ export interface ProductResponse {
   thumbnail: string;
   availableQuantity: number;
   condition: "NEW" | "USED";
-  categoryId: string;
+  categoryId: number | null;
   sellerId: string;
   active: boolean;
   createdAt: string;

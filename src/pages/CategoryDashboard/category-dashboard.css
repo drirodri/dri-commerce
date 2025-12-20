@@ -1,0 +1,28 @@
+.category-dashboard-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.category-dashboard-container .summary-card {
+  height: fit-content;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.category-dashboard-container .table-container {
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .category-dashboard-container {
+    grid-template-columns: 1fr;
+  }
+
+  .category-dashboard-container .summary-card {
+    position: static;
+  }
+}

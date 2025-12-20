@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ProductResponse } from "@/services/product";
+import { useCategories } from "@/hooks/useCategories";
 
 interface ProductFormData {
   title: string;
@@ -26,7 +27,7 @@ interface ProductFormData {
   thumbnail: string;
   availableQuantity: number;
   condition: "NEW" | "USED";
-  categoryId: string;
+  categoryId: number | null;
 }
 
 interface ProductDialogProps {
@@ -44,6 +45,8 @@ export const ProductDialog: React.FC<ProductDialogProps> = ({
   onSave,
   isLoading,
 }) => {
+  const { categories, isLoading: isCategoriesLoading } = useCategories();
+
   const {
     register,
     handleSubmit,
@@ -58,11 +61,12 @@ export const ProductDialog: React.FC<ProductDialogProps> = ({
       thumbnail: "",
       availableQuantity: 0,
       condition: "NEW",
-      categoryId: "",
+      categoryId: null,
     },
   });
 
   const condition = watch("condition");
+  const categoryId = watch("categoryId");
 
   useEffect(() => {
     if (product) {
@@ -81,13 +85,21 @@ export const ProductDialog: React.FC<ProductDialogProps> = ({
         thumbnail: "",
         availableQuantity: 0,
         condition: "NEW",
-        categoryId: "",
+        categoryId: null,
       });
     }
   }, [product, reset]);
 
   const onSubmit = (data: ProductFormData) => {
     onSave(data);
+  };
+
+  const handleCategoryChange = (value: string) => {
+    if (value === "none") {
+      setValue("categoryId", null);
+    } else {
+      setValue("categoryId", parseInt(value, 10));
+    }
   };
 
   return (
@@ -210,19 +222,29 @@ export const ProductDialog: React.FC<ProductDialogProps> = ({
               </Select>
             </div>
 
-            {/* Category ID */}
+            {/* Category */}
             <div className="grid gap-2">
-              <Label htmlFor="categoryId">ID da Categoria *</Label>
-              <Input
-                id="categoryId"
-                {...register("categoryId", {
-                  required: "ID da categoria é obrigatório",
-                })}
-                placeholder="Ex: MLB1234"
-              />
-              {errors.categoryId && (
-                <span className="text-sm text-destructive">
-                  {errors.categoryId.message}
+              <Label htmlFor="categoryId">Categoria</Label>
+              <Select
+                value={categoryId !== null ? String(categoryId) : "none"}
+                onValueChange={handleCategoryChange}
+                disabled={isCategoriesLoading}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={isCategoriesLoading ? "Carregando..." : "Selecione uma categoria"} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Sem categoria</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={String(category.id)}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {categories.length === 0 && !isCategoriesLoading && (
+                <span className="text-sm text-muted-foreground">
+                  Nenhuma categoria cadastrada
                 </span>
               )}
             </div>

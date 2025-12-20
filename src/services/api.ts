@@ -1,13 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// Mock data imports
-import categoriesMock from "../__mocks__/categories";
 import queryMock from "../__mocks__/query";
+import { listCategories as fetchCategories } from "./category";
 
 export async function getCategories() {
-  // Simulando delay de rede
-  await new Promise((resolve) => setTimeout(resolve, 300));
-
-  return categoriesMock;
+  try {
+    const response = await fetchCategories();
+    return response.categories;
+  } catch (error) {
+    console.error("Erro ao buscar categorias:", error);
+    return [];
+  }
 }
 
 export async function getProductsFromCategoryAndQuery(
@@ -15,10 +16,8 @@ export async function getProductsFromCategoryAndQuery(
   _query: string,
   paging: number
 ) {
-  // Simulando delay de rede
   await new Promise((resolve) => setTimeout(resolve, 500));
 
-  // Retornando o mock com paging ajustado
   return {
     ...queryMock,
     paging: {
@@ -29,16 +28,13 @@ export async function getProductsFromCategoryAndQuery(
 }
 
 export async function getProduct(id: string | undefined) {
-  // Simulando delay de rede
   await new Promise((resolve) => setTimeout(resolve, 400));
 
-  // Retornando um produto mock baseado no id
   const mockProduct =
     queryMock.results.find((p: any) => p.id === id) || queryMock.results[0];
 
   return {
     ...mockProduct,
-    // Adicionando campos extras que podem estar na resposta de produto individual
     pictures: [
       {
         id: "1",

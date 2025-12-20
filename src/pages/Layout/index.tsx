@@ -84,8 +84,14 @@ function Layout() {
           { to: "/signup", label: "Cadastrar" },
           { to: "/login", label: "Entrar" },
         ]),
+    ...(currentUser?.role === "ADMIN" || currentUser?.role === "SELLER"
+      ? [{ to: "/products", label: "Produtos" }]
+      : []),
     ...(currentUser?.role === "ADMIN"
-      ? [{ to: "/dashboard", label: "Dashboard" }]
+      ? [
+          { to: "/categories", label: "Categorias" },
+          { to: "/dashboard", label: "Usuários" },
+        ]
       : []),
     { to: "/cartcheckout", label: "Carrinho" },
   ];
