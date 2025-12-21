@@ -20,22 +20,20 @@ const useLogin = () => {
 
   return useMutation<AuthPayload, unknown, LoginVariables>({
     mutationFn: async (credentials) => {
-      const auth = (await login(
-        credentials as LoginVariables
-      )) as LoginResponse;
-      const user = await queryClient.fetchQuery({
-        queryKey: ["currentUser"],
-        queryFn: getCurrentUser,
-      });
+      const auth = (await login(credentials as LoginVariables)) as LoginResponse;
+      const user = await getCurrentUser();
+      
       return { auth, user };
     },
     onSuccess: (data) => {
+      queryClient.setQueryData(["currentUser"], data.user);
+      
       setUserInfo({
         name: data.user.name,
         email: data.user.email,
         role: data.user.role,
       });
-      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+      
       navigate("/");
     },
   });
