@@ -222,23 +222,23 @@ export async function listProducts(
       pageSize: pageSize.toString(),
     });
 
-    if (categoryId) {
-      queryParams.append("categoryId", categoryId);
-    }
-
     if (search) {
       queryParams.append("search", search);
     }
 
-    const response = await fetch(
-      `${API_BASE_URL}${PRODUCTS_PATH}?${queryParams}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    let url: string;
+    if (categoryId) {
+      url = `${API_BASE_URL}${PRODUCTS_PATH}/category/${categoryId}?${queryParams}`;
+    } else {
+      url = `${API_BASE_URL}${PRODUCTS_PATH}?${queryParams}`;
+    }
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       await handleErrorResponse(response, "listar produtos");
