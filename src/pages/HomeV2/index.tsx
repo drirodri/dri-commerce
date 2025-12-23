@@ -19,12 +19,13 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useProductSearch } from "@/hooks/useProductSearch";
 import { useCategories } from "@/hooks/useCategories";
 
 function HomeV2() {
   const { categories, isLoading: isCategoriesLoading } = useCategories();
-  const [categoryName, setCategoryName] = useState("Categorias");
+
   const [showSelect, setShowSelect] = useState(true);
 
   const {
@@ -90,7 +91,6 @@ function HomeV2() {
       type="button"
       onClick={() => {
         updateSearch({ categoryId: category.id });
-        setCategoryName(category.name);
         if (isMobile) {
           setShowSelect(false);
         }
@@ -110,7 +110,6 @@ function HomeV2() {
     <div className="home-layout">
       <Sidebar
         title="Categorias"
-        subtitle={categoryName}
         isCollapsible={isMobile}
         isOpen={showSelect}
         onToggle={() => setShowSelect((prev) => !prev)}
@@ -118,7 +117,14 @@ function HomeV2() {
       >
         <div className="categories-list">
           {isCategoriesLoading ? (
-            <span className="categories-empty">Carregando categorias...</span>
+            <div className="flex flex-col gap-[0.4rem] w-full">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <Skeleton 
+                  key={index} 
+                  className="h-[38px] w-full rounded-xl" 
+                />
+              ))}
+            </div>
           ) : categoriesSpan?.length ? (
             categoriesSpan
           ) : (

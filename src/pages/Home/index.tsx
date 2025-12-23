@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCategories } from "@/hooks/useCategories";
 
 const normalizeProducts = (items: any[] = []): ProductProps[] =>
@@ -205,7 +206,14 @@ function Home() {
       >
         <div className="categories-list">
           {isCategoriesLoading ? (
-            <span className="categories-empty">Carregando categorias...</span>
+            <div className="flex flex-col gap-2 w-full">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <Skeleton 
+                  key={index} 
+                  className="h-9 w-full rounded-md" 
+                />
+              ))}
+            </div>
           ) : categoriesSpan?.length ? (
             categoriesSpan
           ) : (
