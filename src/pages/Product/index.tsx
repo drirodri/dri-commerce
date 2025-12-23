@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ProductProps } from "../../type";
 import { useCartContext } from "../../context/CartContext/CartContext";
-import GallerySlider from "../../components/GallerySlider";
+import GalleryCarousel from "../../components/GalleryCarousel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,11 +20,9 @@ import {
 } from "lucide-react";
 
 function Product() {
-  // const navigate = useNavigate();
   const [product, setProduct] = useState<ProductProps>();
   const params = useParams();
   const productId: string = params.id ?? "no-id";
-  const available_quantity: number = Number(params.quantity);
   const [cartItem, setCartItem] = useState<ProductProps>();
   const { parsedData, setParsedData } = useCartContext();
 
@@ -43,7 +41,6 @@ function Product() {
       if (!apiProduct) {
         throw new Error("Produto não encontrado");
       }
-      // Adiciona quantity ao produto da API para compatibilidade com ProductProps
       setProduct({ ...apiProduct, quantity: 1 } as ProductProps);
     } catch (err) {
       console.error(err);
@@ -66,16 +63,14 @@ function Product() {
 
     setParsedData((prevCart) => {
       if (cartItem) {
-        return prevCart.map((product) =>
-          product.id === productToSend.id
+        return prevCart.map((p) =>
+          p.id === productToSend.id
             ? {
-                ...product,
-                quantity: quantity ? quantity : product.quantity + 1,
-                available_quantity: product.available_quantity
-                  ? product.available_quantity
-                  : available_quantity,
+                ...p,
+                quantity: quantity ? quantity : p.quantity + 1,
+                available_quantity: productToSend.available_quantity,
               }
-            : product
+            : p
         );
       } else {
         return [
@@ -83,7 +78,6 @@ function Product() {
           {
             ...productToSend,
             quantity: quantity ? quantity : 1,
-            available_quantity: available_quantity,
           },
         ];
       }
@@ -109,30 +103,66 @@ function Product() {
     setQuantity(newValue);
   };
 
-  // const handleBack = () => {
-  //   if (window.history.length > 1) {
-  //     navigate(-1);
-  //   } else {
-  //     navigate("/");
-  //   }
-  // };
-
   const isDisabled = () => {
     if (cartItem) {
       return quantity >= cartItem.available_quantity;
     } else {
-      return quantity >= available_quantity;
+      return product ? quantity >= product.available_quantity : false;
     }
   };
 
-  const productAttributes = product?.attributes.map((attribute) => (
-    <tr key={attribute.id} className="product-attribute">
-      <th>{attribute.name}</th>
-      <td>{attribute.value_name}</td>
+  const staticCharacteristics = product
+    ? [
+        {
+          id: "condition",
+          name: "Condição",
+          value_name: product.condition === "new" ? "Novo" : "Usado",
+        },
+        {
+          id: "stock",
+          name: "Estoque",
+          value_name: `${product.available_quantity} unidades`,
+        },
+        ...(product.warranty
+          ? [
+              {
+                id: "warranty",
+                name: "Garantia",
+                value_name: product.warranty,
+              },
+            ]
+          : []),
+        ...(product.createdAt
+          ? [
+              {
+                id: "createdAt",
+                name: "Publicado em",
+                value_name: new Date(product.createdAt).toLocaleDateString(
+                  "pt-BR",
+                  {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  }
+                ),
+              },
+            ]
+          : []),
+      ]
+    : [];
+
+  // Combine static characteristics with dynamic attributes from backend
+  // When backend implements attributes, they will appear here automatically
+  const allCharacteristics = [
+    ...staticCharacteristics,
+    ...(product?.attributes || []),
+  ];
+
+  const productCharacteristics = allCharacteristics.map((attr) => (
+    <tr key={attr.id} className="product-attribute">
+      <th>{attr.name}</th>
+      <td>{attr.value_name}</td>
     </tr>
-    // <p key={attribute.id} className="product-attribute">
-    //   {attribute.name} : {attribute.value_name}
-    // </p>
   ));
 
   const productDescription = product && (
@@ -143,11 +173,11 @@ function Product() {
             onSubmit={(event) => handleCartSubmit(event, product)}
             className="product-box"
           >
-            <GallerySlider pictures={product.pictures} />
+            <GalleryCarousel pictures={product.pictures} />
 
             <div className="product-info space-y-4">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                <h1 className="text-2xl font-bold text-foreground mb-2">
                   {product.title}
                 </h1>
                 <div className="flex items-center gap-3 mb-4">
@@ -174,13 +204,13 @@ function Product() {
                   </Badge>
                 )}
 
-                <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Package className="w-4 h-4" />
                   <span>{product.available_quantity} unidades disponíveis</span>
                 </div>
 
                 {product.warranty && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Shield className="w-4 h-4" />
                     <span>{product.warranty}</span>
                   </div>
@@ -189,25 +219,18 @@ function Product() {
 
               <Separator />
 
-              <div className="bg-blue-50 p-3 rounded-lg text-sm">
-                <p className="text-gray-700">
-                  Esta é uma demonstração,{" "}
-                  <a
-                    className="font-semibold text-primary hover:underline"
-                    target="_blank"
-                    rel="noreferrer"
-                    href={product.permalink}
-                  >
-                    clique aqui
-                  </a>{" "}
-                  para encontrar este produto no MercadoLivre.
+              <div className="bg-amber-100/80 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700 p-3 rounded-lg text-sm">
+                <p className="text-amber-800 dark:text-amber-200">
+                  <strong>⚠️ Aviso:</strong> Este é um site de demonstração. 
+                  Os produtos exibidos são fictícios e servem apenas para 
+                  ilustrar as funcionalidades de um e-commerce. Nenhuma compra real será processada.
                 </p>
               </div>
 
               <Separator />
 
               <div className="space-y-3">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-muted-foreground">
                   Quantidade:
                 </label>
                 <div className="flex items-center gap-3">
@@ -259,7 +282,7 @@ function Product() {
         </CardHeader>
         <CardContent>
           <table className="w-full">
-            <tbody className="attributes-body">{productAttributes}</tbody>
+            <tbody className="attributes-body">{productCharacteristics}</tbody>
           </table>
         </CardContent>
       </Card>
