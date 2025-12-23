@@ -75,7 +75,7 @@ function ProductForm({ item }: itemProps) {
           <button
             type="button"
             onClick={() =>
-              navigate(`/product/${item.id}/${item.available_quantity}`)
+              navigate(`/product/${item.id}`)
             }
             className="relative aspect-square w-full overflow-hidden rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
           >
@@ -89,7 +89,7 @@ function ProductForm({ item }: itemProps) {
           {/* Título */}
           <h3
             onClick={() =>
-              navigate(`/product/${item.id}/${item.available_quantity}`)
+              navigate(`/product/${item.id}`)
             }
             className="text-sm font-medium text-foreground line-clamp-2 min-h-[2.5rem] cursor-pointer hover:text-primary transition-colors"
             title={item.title}

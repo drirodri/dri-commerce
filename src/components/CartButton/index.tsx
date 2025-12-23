@@ -36,7 +36,7 @@ function CartButton() {
     >
       <button
         onClick={() =>
-          navigate(`/product/${item.id}/${item.available_quantity}`)
+          navigate(`/product/${item.id}`)
         }
         className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border border-border"
       >
@@ -50,7 +50,7 @@ function CartButton() {
         <div className="flex items-start justify-between gap-2">
           <button
             onClick={() =>
-              navigate(`/product/${item.id}/${item.available_quantity}`)
+              navigate(`/product/${item.id}`)
             }
             className="text-left text-sm font-medium leading-snug hover:underline"
           >
