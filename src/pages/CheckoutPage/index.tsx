@@ -111,7 +111,7 @@ function CheckoutPage() {
                               className="w-24 h-24 flex-shrink-0 bg-secondary/50 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
                               onClick={() =>
                                 navigate(
-                                  `/product/${item.id}/${item.available_quantity}`
+                                  `/product/${item.id}`
                                 )
                               }
                             >
@@ -131,7 +131,7 @@ function CheckoutPage() {
                                 className="font-semibold text-foreground mb-2 cursor-pointer hover:text-primary transition-colors line-clamp-2"
                                 onClick={() =>
                                   navigate(
-                                    `/product/${item.id}/${item.available_quantity}`
+                                    `/product/${item.id}`
                                   )
                                 }
                               >
