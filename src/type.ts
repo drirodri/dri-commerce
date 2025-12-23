@@ -33,6 +33,10 @@ export interface ProductProps {
   shipping: Shipping;
   pictures: GalleryUnity[];
   attributes: ProductAttributes[];
+  condition?: string;
+  categoryId?: number | null;
+  sellerId?: string;
+  createdAt?: string;
 }
 
 type Shipping = {

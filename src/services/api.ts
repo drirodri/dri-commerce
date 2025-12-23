@@ -1,5 +1,5 @@
-import queryMock from "../__mocks__/query";
 import { listCategories as fetchCategories } from "./category";
+import { listProducts, getProductById, ProductResponse } from "./product";
 
 export async function getCategories() {
   try {
@@ -12,40 +12,88 @@ export async function getCategories() {
 }
 
 export async function getProductsFromCategoryAndQuery(
-  _categoryId: string,
-  _query: string,
+  categoryId: string,
+  query: string,
   paging: number
 ) {
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  try {
+    const response = await listProducts({
+      page: paging + 1,
+      pageSize: 20,
+      categoryId: categoryId || undefined,
+      search: query || undefined,
+    });
 
-  return {
-    ...queryMock,
-    paging: {
-      ...queryMock.paging,
-      offset: paging,
-    },
-  };
+    return {
+      results: response.results.map((product: ProductResponse) => ({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        available_quantity: product.availableQuantity,
+        thumbnail: product.thumbnail,
+        condition: product.condition?.toLowerCase() || "new",
+        permalink: "",
+        shipping: {
+          free_shipping: false,
+        },
+        pictures: product.thumbnail
+          ? [{ id: "1", url: product.thumbnail }]
+          : [],
+        attributes: [],
+      })),
+      paging: {
+        total: response.paging.total,
+        offset: paging,
+        limit: response.paging.pageSize,
+        primary_results: response.paging.total,
+      },
+    };
+  } catch (error) {
+    console.error("Erro ao buscar produtos:", error);
+    return {
+      results: [],
+      paging: {
+        total: 0,
+        offset: paging,
+        limit: 20,
+        primary_results: 0,
+      },
+    };
+  }
 }
 
 export async function getProduct(id: string | undefined) {
-  await new Promise((resolve) => setTimeout(resolve, 400));
+  if (!id) {
+    throw new Error("ID do produto é obrigatório");
+  }
 
-  const mockProduct =
-    queryMock.results.find((p: any) => p.id === id) || queryMock.results[0];
+  try {
+    const product = await getProductById(id);
 
-  return {
-    ...mockProduct,
-    pictures: [
-      {
-        id: "1",
-        url: mockProduct.thumbnail,
+    return {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      available_quantity: product.availableQuantity,
+      thumbnail: product.thumbnail,
+      condition: product.condition?.toLowerCase() || "new",
+      categoryId: product.categoryId,
+      sellerId: product.sellerId,
+      createdAt: product.createdAt,
+      permalink: "",
+      shipping: {
+        free_shipping: false,
       },
-      {
-        id: "2",
-        url: mockProduct.thumbnail,
-      },
-    ],
-    warranty: "Garantia de 90 dias",
-    description: `Descrição detalhada do produto: ${mockProduct.title}`,
-  };
+      pictures: product.thumbnail
+        ? [{ id: "1", url: product.thumbnail }]
+        : [],
+      // Dynamic attributes from backend (empty for now, will be populated when backend implements it)
+      attributes: [],
+      warranty: "Garantia de 90 dias",
+      description: `Descrição detalhada do produto: ${product.title}`,
+    };
+  } catch (error) {
+    console.error("Erro ao buscar produto:", error);
+    throw error;
+  }
 }
